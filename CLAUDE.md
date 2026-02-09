@@ -5,14 +5,14 @@ SMP (scalp micropigmentation) business directory. Static site hosted on Cloudfla
 
 ## Architecture
 - Single-file app: index.html (242KB, 348 listings embedded as JSON)
-- Static city SEO pages: /smp/{city-state}/index.html (292 city pages)
+- Static city SEO pages: /near-me/{city-state}/index.html (292 city pages)
 - Hash routing for individual listings: /#/business-slug
 - No backend yet (Supabase planned)
 - No build step — raw static files
 
 ## Key Files
 - index.html — Main app (directory, explore feed, detail pages, signup modal, lightbox)
-- /smp/ — City landing pages for SEO
+- /near-me/ — City landing pages for SEO
 - sitemap.xml — 294 URLs
 - robots.txt — All crawlers allowed
 
