@@ -180,12 +180,12 @@ a{color:var(--ac);text-decoration:none}
   <div class="field">
     <label>Services Offered</label>
     <div class="checks" id="svcChecks">
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Hairline Restoration">Hairline Restoration</label>
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Density Fill">Density Fill</label>
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Scar Camouflage">Scar Camouflage</label>
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Female SMP">Female SMP</label>
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Beard SMP">Beard SMP</label>
-      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Alopecia Treatment">Alopecia Treatment</label>
+      <label class="check"><input type="checkbox" value="Hairline Restoration" onchange="this.parentElement.classList.toggle('on',this.checked)">Hairline Restoration</label>
+      <label class="check"><input type="checkbox" value="Density Fill" onchange="this.parentElement.classList.toggle('on',this.checked)">Density Fill</label>
+      <label class="check"><input type="checkbox" value="Scar Camouflage" onchange="this.parentElement.classList.toggle('on',this.checked)">Scar Camouflage</label>
+      <label class="check"><input type="checkbox" value="Female SMP" onchange="this.parentElement.classList.toggle('on',this.checked)">Female SMP</label>
+      <label class="check"><input type="checkbox" value="Beard SMP" onchange="this.parentElement.classList.toggle('on',this.checked)">Beard SMP</label>
+      <label class="check"><input type="checkbox" value="Alopecia Treatment" onchange="this.parentElement.classList.toggle('on',this.checked)">Alopecia Treatment</label>
     </div>
   </div>
   <div class="field">
@@ -476,6 +476,7 @@ async function publish(){
 
   const{data:{user}}=await SB.auth.getUser();
   const row={...d,claimed_by:user?user.id:null};
+  console.log('Publishing listing:',JSON.parse(JSON.stringify(row)));
 
   let result;
   if(claimData){
