@@ -7,11 +7,19 @@ SMP (scalp micropigmentation) business directory. Static site hosted on Cloudfla
 - Single-file app: index.html (242KB, 348 listings embedded as JSON)
 - Static city SEO pages: /near-me/{city-state}/index.html (292 city pages)
 - Hash routing for individual listings: /#/business-slug
-- No backend yet (Supabase planned)
+- Supabase backend (Postgres + RLS + Auth)
 - No build step — raw static files
+
+## Database (Supabase)
+- **listings** — Business directory entries (name, slug, city, state, services, coords, claimed_by)
+- **leads** — Contact form submissions (linked to listing_id)
+- **signups** — Business signup requests (pending → approved flow)
+- RLS: public read on listings, public insert on leads/signups, owners update own listings
+- Schema: schema.sql
 
 ## Key Files
 - index.html — Main app (directory, explore feed, detail pages, signup modal, lightbox)
+- schema.sql — Supabase database schema (listings, leads, signups)
 - /near-me/ — City landing pages for SEO
 - sitemap.xml — 294 URLs
 - robots.txt — All crawlers allowed
