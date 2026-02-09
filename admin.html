@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif;--mw:1200px}
 body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:var(--ac);text-decoration:none}
 
@@ -32,8 +32,12 @@ a{color:var(--ac);text-decoration:none}
 .nav-link{font-size:.8125rem;color:#aaa;transition:color .15s}
 .nav-link:hover{color:#fff}
 
+/* LAYOUT — shared horizontal rhythm */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:var(--mw);margin:0 auto;padding:1.5rem 1.5rem .75rem}
+.tabs-bar{display:flex;gap:0;border-bottom:1px solid var(--bd);background:var(--card);max-width:var(--mw);margin:0 auto;padding:0 1.5rem}
+.container{max-width:var(--mw);margin:0 auto;padding:1rem 1.5rem 1.5rem}
+
 /* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:1.5rem;max-width:1200px;margin:0 auto}
 .stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;position:relative}
 .stat-icon{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:var(--rs);background:var(--al);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .stat-num{font-size:1.75rem;font-weight:700;line-height:1.2}
@@ -41,14 +45,11 @@ a{color:var(--ac);text-decoration:none}
 .stat-sub{font-size:.6875rem;color:var(--t3);margin-top:.25rem}
 
 /* TABS */
-.tabs-bar{display:flex;gap:0;border-bottom:1px solid var(--bd);padding:0 1.5rem;background:var(--card);max-width:1200px;margin:0 auto}
 .tab{padding:.75rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
 .tab:hover{color:var(--t2)}
 .tab.active{color:var(--ac);border-bottom-color:var(--ac)}
 .tab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--al);color:var(--ac);font-size:.6875rem;font-weight:700;margin-left:.375rem}
 
-/* CONTAINER */
-.container{max-width:1200px;margin:0 auto;padding:1.5rem}
 .section{display:none}
 .section.active{display:block}
 
@@ -62,16 +63,21 @@ a{color:var(--ac);text-decoration:none}
 .chip.active{background:var(--ac);color:#fff;border-color:var(--ac)}
 
 /* TABLE */
-.tbl{width:100%;border-collapse:collapse;font-size:.8125rem}
+.tbl{width:100%;border-collapse:collapse;font-size:.8125rem;table-layout:fixed}
 .tbl th{text-align:left;padding:.5rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);border-bottom:1px solid var(--bd);background:var(--card);position:sticky;top:0}
-.tbl td{padding:.625rem .75rem;border-bottom:1px solid var(--bd);vertical-align:middle}
+.tbl td{padding:.625rem .75rem;border-bottom:1px solid var(--bd);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tbl tr{background:var(--card);transition:background .1s}
 .tbl tr:hover{background:var(--bg)}
-.tbl tr.hidden-row{opacity:.5}
 .tbl-wrap{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
 
+/* Hidden row: muted text + subtle bg, but keep actions column legible */
+.tbl tr.hidden-row{background:#F5F3F0}
+.tbl tr.hidden-row:hover{background:#EFECE8}
+.tbl tr.hidden-row>td{color:var(--t3)}
+.tbl tr.hidden-row>td:last-child{color:var(--text)}
+
 /* BADGES */
-.badge-s{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;text-transform:uppercase}
+.badge-s{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;text-transform:uppercase;white-space:nowrap}
 .b-active{background:#D1FAE5;color:#065F46}
 .b-hidden{background:#FEF3C7;color:#92400E}
 .b-archived{background:#FEE2E2;color:#991B1B}
@@ -82,11 +88,12 @@ a{color:var(--ac);text-decoration:none}
 .b-read{background:var(--al);color:var(--ac)}
 .b-unread{background:#DBEAFE;color:#1D4ED8}
 
-/* ACTIONS */
-.act-wrap{position:relative}
+/* ACTIONS — three-dot button */
 .act-btn{width:28px;height:28px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.875rem;color:var(--t2);transition:all .15s}
 .act-btn:hover{background:var(--bg);border-color:var(--ac);color:var(--ac)}
-.act-menu{position:absolute;right:0;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:50;min-width:140px;padding:.25rem 0;display:none}
+
+/* ACTIONS — floating menu (position:fixed, placed by JS) */
+.act-menu{position:fixed;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:150;min-width:140px;padding:.25rem 0;display:none}
 .act-menu.open{display:block}
 .act-item{display:block;width:100%;padding:.5rem .75rem;font-size:.8125rem;color:var(--text);cursor:pointer;border:none;background:none;text-align:left;font-family:var(--f);transition:background .1s}
 .act-item:hover{background:var(--bg)}
@@ -123,6 +130,8 @@ a{color:var(--ac);text-decoration:none}
 .panel-save:hover{background:var(--ac2)}
 .panel-save:disabled{opacity:.5;cursor:not-allowed}
 .panel-msg{text-align:center;padding:.5rem;font-size:.8125rem;margin-top:.5rem}
+/* Panel read-only rows */
+.pf-static{font-size:.8125rem;color:var(--text);padding:.375rem 0}
 
 /* LEADS TABLE */
 .lead-expand{display:none;padding:.75rem;background:var(--bg);border-radius:var(--rs);margin-top:.5rem;font-size:.8125rem;color:var(--text);line-height:1.6}
@@ -130,6 +139,15 @@ a{color:var(--ac);text-decoration:none}
 .lead-row:hover{background:#F5F5F3}
 .mark-read{padding:.25rem .5rem;border:1px solid var(--bd);border-radius:4px;background:var(--card);font-size:.6875rem;font-family:var(--f);cursor:pointer;color:var(--t2);transition:all .15s}
 .mark-read:hover{border-color:var(--ac);color:var(--ac)}
+
+/* SIGNUP INLINE ACTIONS */
+.su-btn{padding:.25rem .5rem;border-radius:4px;font-size:.6875rem;font-family:var(--f);font-weight:500;cursor:pointer;border:1px solid;transition:all .15s;background:var(--card)}
+.su-approve{border-color:var(--ac);color:var(--ac)}
+.su-approve:hover{background:var(--al)}
+.su-reject{border-color:#DC2626;color:#DC2626}
+.su-reject:hover{background:#FEF2F2}
+.su-view{border-color:var(--bd);color:var(--t2)}
+.su-view:hover{border-color:var(--ac);color:var(--ac)}
 
 /* CONFIRM DIALOG */
 .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
@@ -177,7 +195,7 @@ a{color:var(--ac);text-decoration:none}
     <a href="/" target="_blank" class="nav-link">View Site &rarr;</a>
   </nav>
 
-  <div class="stats" id="statsRow">
+  <div class="stats">
     <div class="stat"><div class="stat-icon">📋</div><div class="stat-num" id="sTotal">-</div><div class="stat-label">Total Listings</div></div>
     <div class="stat"><div class="stat-icon">👁</div><div class="stat-num" id="sViews">-</div><div class="stat-label">Page Views</div></div>
     <div class="stat"><div class="stat-icon">💬</div><div class="stat-num" id="sLeads">-</div><div class="stat-label">Total Leads</div></div>
@@ -204,8 +222,9 @@ a{color:var(--ac);text-decoration:none}
         </div>
       </div>
       <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th>Name</th><th>City / State</th><th>Status</th><th>Promo</th><th>Views</th><th>Leads</th><th style="width:48px"></th></tr></thead>
+        <table class="tbl" id="listTbl">
+          <colgroup><col style="width:25%"><col style="width:18%"><col style="width:12%"><col style="width:12%"><col style="width:10%"><col style="width:10%"><col style="width:48px"></colgroup>
+          <thead><tr><th>Name</th><th>City / State</th><th>Status</th><th>Promo</th><th>Views</th><th>Leads</th><th></th></tr></thead>
           <tbody id="listBody"></tbody>
         </table>
       </div>
@@ -216,7 +235,8 @@ a{color:var(--ac);text-decoration:none}
     <div class="section" id="sec-leads">
       <div class="tbl-wrap">
         <table class="tbl">
-          <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Message</th><th>Listing</th><th>Status</th><th style="width:60px"></th></tr></thead>
+          <colgroup><col style="width:10%"><col style="width:18%"><col style="width:15%"><col style="width:25%"><col style="width:15%"><col style="width:8%"><col style="width:60px"></colgroup>
+          <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Message</th><th>Listing</th><th>Status</th><th></th></tr></thead>
           <tbody id="leadBody"></tbody>
         </table>
       </div>
@@ -227,7 +247,8 @@ a{color:var(--ac);text-decoration:none}
     <div class="section" id="sec-signups">
       <div class="tbl-wrap">
         <table class="tbl">
-          <thead><tr><th>Date</th><th>Business</th><th>Email</th><th>Phone</th><th>City</th><th>Instagram</th><th>Status</th></tr></thead>
+          <colgroup><col style="width:9%"><col style="width:18%"><col style="width:18%"><col style="width:12%"><col style="width:14%"><col style="width:10%"><col style="width:8%"><col style="width:100px"></colgroup>
+          <thead><tr><th>Date</th><th>Business</th><th>Email</th><th>Phone</th><th>City</th><th>Instagram</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="signupBody"></tbody>
         </table>
       </div>
@@ -236,11 +257,14 @@ a{color:var(--ac);text-decoration:none}
   </div>
 </div>
 
+<!-- FLOATING ACTION MENU (positioned by JS, outside table overflow) -->
+<div class="act-menu" id="actMenu"></div>
+
 <!-- EDIT PANEL -->
 <div class="overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
   <div class="panel-head"><h2 id="panelTitle">Edit Listing</h2><button class="panel-close" onclick="closePanel()">&times;</button></div>
-  <div class="panel-body">
+  <div class="panel-body" id="panelBody">
     <input type="hidden" id="editId">
     <div class="pf"><label>Name</label><input id="eName"></div>
     <div class="pf"><label>Address</label><input id="eAddress"></div>
@@ -332,11 +356,11 @@ function showTab(name){
 
 // ── LOAD ALL DATA ──
 async function loadAll(){
-  const[listings,views,leads,signups]=await Promise.all([
+  const[listings,leads,signups,viewData]=await Promise.all([
     SB.from('listings').select('*').neq('status','archived').order('name'),
-    SB.from('page_views').select('id,listing_id',{count:'exact',head:true}),
     SB.from('leads').select('*,listings(name,slug)').order('created_at',{ascending:false}),
-    SB.from('signups').select('*').order('created_at',{ascending:false})
+    SB.from('signups').select('*').order('created_at',{ascending:false}),
+    SB.from('page_views').select('listing_id')
   ]);
 
   allListings=listings.data||[];
@@ -344,7 +368,6 @@ async function loadAll(){
   allSignups=signups.data||[];
 
   // Count views per listing
-  const viewData=await SB.from('page_views').select('listing_id');
   const viewMap={};
   (viewData.data||[]).forEach(v=>{viewMap[v.listing_id]=(viewMap[v.listing_id]||0)+1;});
   allListings.forEach(l=>{l._views=viewMap[l.id]||0;});
@@ -403,26 +426,17 @@ function renderListings(){
       const st=l.status||'active';
       const cls=st==='hidden'?' hidden-row':'';
       return `<tr class="${cls}" data-id="${l.id}">
-        <td style="font-weight:600">${esc(l.name)}</td>
+        <td style="font-weight:600" title="${esc(l.name)}">${esc(l.name)}</td>
         <td>${esc(l.city)}, ${esc(l.state)}</td>
         <td><span class="badge-s b-${st}">${st}</span></td>
         <td>${l.promoted?'<span class="badge-s b-promoted">Promoted</span>':'-'}</td>
         <td>${l._views||0}</td>
         <td>${l._leads||0}</td>
-        <td><div class="act-wrap">
-          <button class="act-btn" onclick="event.stopPropagation();toggleMenu(${l.id})">&#8943;</button>
-          <div class="act-menu" id="menu-${l.id}">
-            <button class="act-item" onclick="openEdit(${l.id})">Edit</button>
-            <button class="act-item" onclick="toggleHide(${l.id})">${st==='hidden'?'Unhide':'Hide'}</button>
-            <button class="act-item" onclick="togglePromote(${l.id})">${l.promoted?'Unpromote':'Promote'}</button>
-            <button class="act-item danger" onclick="confirmDelete(${l.id})">Delete</button>
-          </div>
-        </div></td>
+        <td><button class="act-btn" data-menu-id="${l.id}" onclick="event.stopPropagation();toggleMenu(${l.id},this)">&#8943;</button></td>
       </tr>`;
     }).join('');
   }
 
-  // Pagination
   const pagEl=document.getElementById('listPag');
   if(pages<=1){pagEl.innerHTML='';return;}
   pagEl.innerHTML=`
@@ -433,21 +447,38 @@ function renderListings(){
     </div>`;
 }
 
-// ── ACTIONS MENU ──
-function toggleMenu(id){
+// ── FLOATING ACTION MENU ──
+function toggleMenu(id,btnEl){
+  const menu=document.getElementById('actMenu');
   if(openMenuId===id){closeMenus();return;}
   closeMenus();
-  const m=document.getElementById('menu-'+id);
-  if(m){m.classList.add('open');openMenuId=id;}
+
+  const l=allListings.find(x=>x.id===id);if(!l)return;
+  const st=l.status||'active';
+
+  menu.innerHTML=`
+    <button class="act-item" onclick="openEdit(${id})">Edit</button>
+    <button class="act-item" onclick="toggleHide(${id})">${st==='hidden'?'Unhide':'Hide'}</button>
+    <button class="act-item" onclick="togglePromote(${id})">${l.promoted?'Unpromote':'Promote'}</button>
+    <button class="act-item danger" onclick="confirmDelete(${id})">Delete</button>`;
+
+  // Position menu relative to button
+  const rect=btnEl.getBoundingClientRect();
+  menu.style.top=(rect.bottom+4)+'px';
+  menu.style.left='auto';
+  menu.style.right=(window.innerWidth-rect.right)+'px';
+
+  menu.classList.add('open');
+  openMenuId=id;
 }
 function closeMenus(){
-  if(openMenuId!==null){
-    const m=document.getElementById('menu-'+openMenuId);
-    if(m)m.classList.remove('open');
-    openMenuId=null;
-  }
+  const menu=document.getElementById('actMenu');
+  menu.classList.remove('open');
+  openMenuId=null;
 }
-document.addEventListener('click',closeMenus);
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.act-btn')&&!e.target.closest('.act-menu')) closeMenus();
+});
 
 // ── HIDE / PROMOTE ──
 async function toggleHide(id){
@@ -509,7 +540,6 @@ function openEdit(id){
   document.getElementById('ePriceRange').value=l.price_range||'$$';
   document.getElementById('eStatus').value=l.status||'active';
 
-  // Services
   const svcs=l.services||[];
   document.getElementById('eSvcChecks').innerHTML=ALL_SERVICES.map(s=>{
     const on=svcs.includes(s)?'on':'';
@@ -517,6 +547,7 @@ function openEdit(id){
   }).join('');
 
   document.getElementById('panelMsg').textContent='';
+  document.getElementById('saveBtn').style.display='';
   document.getElementById('overlay').classList.add('open');
   document.getElementById('panel').classList.add('open');
 }
@@ -558,7 +589,6 @@ async function saveListing(){
     return;
   }
   document.getElementById('panelMsg').innerHTML='<span style="color:var(--ac)">Saved successfully</span>';
-  // Update local data
   const l=allListings.find(x=>x.id===id);
   if(l) Object.assign(l,row);
   renderListings();
@@ -583,7 +613,7 @@ function renderLeads(){
       <td>${dateStr}</td>
       <td style="font-weight:600">${esc(l.sender_name)}</td>
       <td>${esc(l.sender_phone)}</td>
-      <td>${msgPreview}</td>
+      <td title="${l.sender_message?esc(l.sender_message):''}">${msgPreview}</td>
       <td style="color:var(--ac)">${listing}</td>
       <td><span class="badge-s ${isRead?'b-read':'b-unread'}">${isRead?'Read':'New'}</span></td>
       <td>${!isRead?`<button class="mark-read" onclick="event.stopPropagation();markRead(${l.id},${i})">Mark read</button>`:''}</td>
@@ -619,29 +649,96 @@ function renderSignups(){
     return;
   }
   document.getElementById('signupEmpty').innerHTML='';
-  body.innerHTML=allSignups.map(s=>{
+  body.innerHTML=allSignups.map((s,i)=>{
     const dt=new Date(s.created_at);
     const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     const st=s.status||'pending';
+    const isPending=st==='pending';
     return `<tr>
       <td>${dateStr}</td>
-      <td style="font-weight:600">${esc(s.business_name)}</td>
-      <td>${esc(s.email)}</td>
+      <td style="font-weight:600" title="${esc(s.business_name)}">${esc(s.business_name)}</td>
+      <td title="${esc(s.email)}">${esc(s.email)}</td>
       <td>${esc(s.phone||'-')}</td>
       <td>${esc(s.city_state||'-')}</td>
       <td>${s.instagram?esc(s.instagram):'-'}</td>
       <td><span class="badge-s b-${st}">${st}</span></td>
+      <td style="white-space:nowrap">${isPending
+        ?`<button class="su-btn su-approve" onclick="approveSignup(${i})">Approve</button> <button class="su-btn su-reject" onclick="rejectSignup(${i})">Reject</button>`
+        :`<button class="su-btn su-view" onclick="viewSignup(${i})">View</button>`
+      }</td>
     </tr>`;
   }).join('');
 }
 
+async function approveSignup(idx){
+  const s=allSignups[idx];if(!s)return;
+  const parts=(s.city_state||'').split(',').map(p=>p.trim());
+  const slug=(s.business_name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+  const listing={
+    name:s.business_name,
+    slug:slug,
+    city:parts[0]||'',
+    state:parts[1]||'',
+    email:s.email||null,
+    phone:s.phone||null,
+    instagram:s.instagram?s.instagram.replace(/^@/,''):null,
+    status:'active',
+    services:[],
+    price_range:'$$',
+    claimed:false
+  };
+
+  const{error:insertErr}=await SB.from('listings').upsert(listing,{onConflict:'slug'}).select();
+  if(insertErr){alert('Error creating listing: '+insertErr.message);return;}
+
+  const{error:updateErr}=await SB.from('signups').update({status:'approved'}).eq('id',s.id);
+  if(updateErr){alert('Listing created but failed to update signup status: '+updateErr.message);return;}
+
+  s.status='approved';
+  renderSignups();
+  loadAll();
+}
+
+async function rejectSignup(idx){
+  const s=allSignups[idx];if(!s)return;
+  const{error}=await SB.from('signups').update({status:'rejected'}).eq('id',s.id);
+  if(error){alert('Error: '+error.message);return;}
+  s.status='rejected';
+  renderSignups();
+}
+
+function viewSignup(idx){
+  const s=allSignups[idx];if(!s)return;
+  document.getElementById('panelTitle').textContent='Signup: '+s.business_name;
+  document.getElementById('panelBody').innerHTML=`
+    <div class="pf"><label>Business Name</label><div class="pf-static">${esc(s.business_name)}</div></div>
+    <div class="pf"><label>Email</label><div class="pf-static">${esc(s.email)}</div></div>
+    <div class="pf"><label>Phone</label><div class="pf-static">${esc(s.phone||'-')}</div></div>
+    <div class="pf"><label>City / State</label><div class="pf-static">${esc(s.city_state||'-')}</div></div>
+    <div class="pf"><label>Instagram</label><div class="pf-static">${s.instagram?esc(s.instagram):'-'}</div></div>
+    <div class="pf"><label>Status</label><div class="pf-static"><span class="badge-s b-${s.status}">${s.status}</span></div></div>
+    <div class="pf"><label>Submitted</label><div class="pf-static">${new Date(s.created_at).toLocaleString()}</div></div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+}
+
+// Restore edit panel HTML when closing after a signup view
+const editPanelHTML=document.getElementById('panelBody').innerHTML;
+function closePanel(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+  // Restore edit form if it was replaced by signup view
+  setTimeout(()=>{document.getElementById('panelBody').innerHTML=editPanelHTML;},300);
+}
+
 // ── UTILS ──
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function timeAgo(d){const s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
 
-// Close panel on Escape
+// Close on Escape
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closePanel();closeConfirm();}
+  if(e.key==='Escape'){closePanel();closeConfirm();closeMenus();}
 });
 </script>
 </body>
