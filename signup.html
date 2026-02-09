@@ -499,15 +499,19 @@ async function publish(){
 }
 
 // --- INIT ---
-async function init(){
-  const{data:{session}}=await SB.auth.getSession();
-  if(session){
-    userEmail=session.user.email;
-    await prefillClaim();
-    goStep(2);
+// Listen for auth state changes — handles both existing sessions and magic link callbacks.
+// Never redirect to / — if anything fails, Step 1 stays visible.
+SB.auth.onAuthStateChange(async(event, session)=>{
+  try {
+    if((event==='INITIAL_SESSION'||event==='SIGNED_IN') && session && currentStep===1){
+      userEmail=session.user.email;
+      await prefillClaim();
+      goStep(2);
+    }
+  } catch(e){
+    console.error('Auth error:', e);
   }
-}
-init();
+});
 </script>
 </body>
 </html>
