@@ -133,6 +133,25 @@ a{color:var(--ac);text-decoration:none}
 /* Panel read-only rows */
 .pf-static{font-size:.8125rem;color:var(--text);padding:.375rem 0}
 
+/* Panel tabs */
+.ptabs{display:flex;gap:0;padding:0 1.5rem;border-bottom:1px solid var(--bd);background:var(--card);position:sticky;top:52px;z-index:1}
+.ptab{padding:.625rem 1rem;font-size:.8125rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
+.ptab:hover{color:var(--t2)}
+.ptab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.ptab-content{display:none}
+.ptab-content.active{display:block}
+
+/* Photos tab */
+.photo-placeholder{text-align:center;padding:2rem 1rem;color:var(--t3)}
+.photo-placeholder svg{display:block;margin:0 auto .75rem;color:var(--bd)}
+.photo-placeholder p{font-size:.8125rem;margin-bottom:.25rem}
+.photo-placeholder .hint{font-size:.75rem;color:var(--t3);margin-top:.5rem}
+.photo-avatar-area{display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--bd)}
+.photo-avatar{width:80px;height:80px;border-radius:50%;border:2px dashed var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--t3);font-size:.75rem;margin-bottom:.5rem}
+.photo-grid-p{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem}
+.photo-slot{aspect-ratio:1;border:2px dashed var(--bd);border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);color:var(--t3);font-size:.6875rem;gap:.25rem}
+.photo-note{font-size:.75rem;color:var(--t3);text-align:center;padding:.75rem;border-top:1px solid var(--bd);margin-top:.5rem}
+
 /* LEADS TABLE */
 .lead-expand{display:none;padding:.75rem;background:var(--bg);border-radius:var(--rs);margin-top:.5rem;font-size:.8125rem;color:var(--text);line-height:1.6}
 .lead-row{cursor:pointer}
@@ -264,38 +283,72 @@ a{color:var(--ac);text-decoration:none}
 <div class="overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
   <div class="panel-head"><h2 id="panelTitle">Edit Listing</h2><button class="panel-close" onclick="closePanel()">&times;</button></div>
+  <div class="ptabs" id="panelTabs">
+    <div class="ptab active" onclick="showPanelTab('details')">Details</div>
+    <div class="ptab" onclick="showPanelTab('photos')">Photos</div>
+  </div>
   <div class="panel-body" id="panelBody">
     <input type="hidden" id="editId">
-    <div class="pf"><label>Name</label><input id="eName"></div>
-    <div class="pf"><label>Address</label><input id="eAddress"></div>
-    <div class="pf-row">
-      <div class="pf"><label>City</label><input id="eCity"></div>
-      <div class="pf"><label>State</label><input id="eState" maxlength="2" style="text-transform:uppercase"></div>
+
+    <!-- DETAILS TAB -->
+    <div class="ptab-content active" id="ptab-details">
+      <div class="pf"><label>Name</label><input id="eName"></div>
+      <div class="pf"><label>Address</label><input id="eAddress"></div>
+      <div class="pf-row">
+        <div class="pf"><label>City</label><input id="eCity"></div>
+        <div class="pf"><label>State</label><input id="eState" maxlength="2" style="text-transform:uppercase"></div>
+      </div>
+      <div class="pf-row">
+        <div class="pf"><label>Zip</label><input id="eZip"></div>
+        <div class="pf"><label>Phone</label><input id="ePhone"></div>
+      </div>
+      <div class="pf"><label>Email</label><input id="eEmail" type="email"></div>
+      <div class="pf"><label>Website</label><input id="eWebsite"></div>
+      <div class="pf">
+        <label>Services</label>
+        <div class="pf-checks" id="eSvcChecks"></div>
+      </div>
+      <div class="pf"><label>Price Range</label>
+        <select id="ePriceRange"><option value="$">$</option><option value="$$">$$</option><option value="$$$">$$$</option></select>
+      </div>
+      <div class="pf"><label>About</label><textarea id="eAbout"></textarea></div>
+      <div class="pf-row">
+        <div class="pf"><label>Instagram</label><input id="eInstagram"></div>
+        <div class="pf"><label>Facebook</label><input id="eFacebook"></div>
+      </div>
+      <div class="pf"><label>TikTok</label><input id="eTiktok"></div>
+      <div class="pf"><label>Status</label>
+        <select id="eStatus"><option value="active">Active</option><option value="hidden">Hidden</option><option value="archived">Archived</option></select>
+      </div>
+      <button class="panel-save" id="saveBtn" onclick="saveListing()">Save Changes</button>
+      <div class="panel-msg" id="panelMsg"></div>
     </div>
-    <div class="pf-row">
-      <div class="pf"><label>Zip</label><input id="eZip"></div>
-      <div class="pf"><label>Phone</label><input id="ePhone"></div>
+
+    <!-- PHOTOS TAB -->
+    <div class="ptab-content" id="ptab-photos">
+      <div class="photo-avatar-area">
+        <div class="photo-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+        </div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.03em">Profile Photo</div>
+        <div style="font-size:.75rem;color:var(--t3);margin-top:.25rem">No photo uploaded</div>
+      </div>
+      <div style="font-size:.75rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.75rem">Gallery (up to 6)</div>
+      <div class="photo-grid-p">
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+        <div class="photo-slot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Empty</span></div>
+      </div>
+      <div class="photo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p>Photo management will be available once image uploads are configured</p>
+      </div>
+      <div class="photo-note">AI content moderation coming soon</div>
     </div>
-    <div class="pf"><label>Email</label><input id="eEmail" type="email"></div>
-    <div class="pf"><label>Website</label><input id="eWebsite"></div>
-    <div class="pf">
-      <label>Services</label>
-      <div class="pf-checks" id="eSvcChecks"></div>
-    </div>
-    <div class="pf"><label>Price Range</label>
-      <select id="ePriceRange"><option value="$">$</option><option value="$$">$$</option><option value="$$$">$$$</option></select>
-    </div>
-    <div class="pf"><label>About</label><textarea id="eAbout"></textarea></div>
-    <div class="pf-row">
-      <div class="pf"><label>Instagram</label><input id="eInstagram"></div>
-      <div class="pf"><label>Facebook</label><input id="eFacebook"></div>
-    </div>
-    <div class="pf"><label>TikTok</label><input id="eTiktok"></div>
-    <div class="pf"><label>Status</label>
-      <select id="eStatus"><option value="active">Active</option><option value="hidden">Hidden</option><option value="archived">Archived</option></select>
-    </div>
-    <button class="panel-save" id="saveBtn" onclick="saveListing()">Save Changes</button>
-    <div class="panel-msg" id="panelMsg"></div>
+
   </div>
 </div>
 
@@ -548,8 +601,15 @@ function openEdit(id){
 
   document.getElementById('panelMsg').textContent='';
   document.getElementById('saveBtn').style.display='';
+  showPanelTab('details');
+  document.getElementById('panelTabs').style.display='';
   document.getElementById('overlay').classList.add('open');
   document.getElementById('panel').classList.add('open');
+}
+
+function showPanelTab(name){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase()===name));
+  document.querySelectorAll('.ptab-content').forEach(c=>c.classList.toggle('active',c.id==='ptab-'+name));
 }
 function closePanel(){
   document.getElementById('overlay').classList.remove('open');
@@ -711,6 +771,7 @@ async function rejectSignup(idx){
 function viewSignup(idx){
   const s=allSignups[idx];if(!s)return;
   document.getElementById('panelTitle').textContent='Signup: '+s.business_name;
+  document.getElementById('panelTabs').style.display='none';
   document.getElementById('panelBody').innerHTML=`
     <div class="pf"><label>Business Name</label><div class="pf-static">${esc(s.business_name)}</div></div>
     <div class="pf"><label>Email</label><div class="pf-static">${esc(s.email)}</div></div>
