@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard — HairTattoo</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--sh:0 1px 3px rgba(0,0,0,.06);--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+html{font-size:16px}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--ac);text-decoration:none}
+button{font-family:var(--f);cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:var(--f);font-size:1rem}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em;cursor:pointer}
+.logo span{color:var(--ac)}
+.nav-r{display:flex;gap:.75rem;align-items:center}
+.nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-r a:hover{color:var(--ac)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;transition:all .15s}
+.btn-p{background:var(--ac);color:#fff}.btn-p:hover{background:var(--ac2)}
+.btn-o{border:1px solid var(--bd);color:var(--text)}.btn-o:hover{border-color:var(--ac);color:var(--ac)}
+
+/* LOADING */
+.dash-loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--t3);font-size:.875rem}
+.dash-empty{max-width:480px;margin:4rem auto;text-align:center;padding:2rem}
+.dash-empty h2{font-size:1.25rem;margin-bottom:.5rem}
+.dash-empty p{color:var(--t2);font-size:.875rem;margin-bottom:1.5rem}
+
+/* LAYOUT */
+.dash{display:flex;max-width:1200px;margin:0 auto;min-height:calc(100vh - 57px)}
+.sidebar{width:220px;border-right:1px solid var(--bd);padding:1.5rem 0;flex-shrink:0}
+.sb-link{display:flex;align-items:center;gap:.625rem;padding:.625rem 1.25rem;font-size:.875rem;color:var(--t2);font-weight:500;transition:all .15s;cursor:pointer;border-left:3px solid transparent}
+.sb-link:hover{color:var(--text);background:var(--al)}
+.sb-link.on{color:var(--ac);border-left-color:var(--ac);background:var(--al);font-weight:600}
+.sb-link.disabled{color:var(--t3);cursor:default;pointer-events:none}
+.sb-link .soon{font-size:.625rem;background:var(--bd);color:var(--t3);padding:.125rem .375rem;border-radius:4px;margin-left:auto}
+.sb-user{padding:1rem 1.25rem;border-bottom:1px solid var(--bd);margin-bottom:.5rem;display:flex;align-items:center;gap:.625rem}
+.sb-av{width:36px;height:36px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-size:.8125rem;font-weight:700;color:var(--ac);flex-shrink:0}
+.sb-email{font-size:.75rem;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dash-main{flex:1;padding:1.5rem 2rem;min-width:0}
+.dtab{display:none}.dtab.active{display:block}
+.dtab h2{font-size:1.25rem;font-weight:700;margin-bottom:1.25rem}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem 1rem}
+.form-grid.full{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column}
+.fg label{font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem}
+.fg input,.fg textarea,.fg select{padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);outline:none;font-size:.875rem;background:#fff;transition:border-color .15s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--ac)}
+.fg textarea{resize:vertical;min-height:100px}
+.form-actions{display:flex;gap:.75rem;align-items:center;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--bd)}
+.form-actions .saved{font-size:.8125rem;color:var(--ac);font-weight:500;display:none}
+.svc-checks{display:flex;flex-wrap:wrap;gap:.375rem;margin-bottom:.75rem}
+.svc-check{font-size:.75rem;padding:.25rem .625rem;border:1px solid var(--bd);border-radius:20px;cursor:pointer;transition:all .15s;background:var(--card);color:var(--t2)}
+.svc-check.on{border-color:var(--ac);background:var(--al);color:var(--ac)}
+
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1.5rem}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1rem}
+.stat-label{font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);font-weight:600;margin-bottom:.25rem}
+.stat-val{font-size:1.5rem;font-weight:700;color:var(--text)}
+
+/* BAR CHART */
+.chart-wrap{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem}
+.chart-wrap h3{font-size:.8125rem;font-weight:600;color:var(--text);margin-bottom:1rem}
+.chart{display:flex;align-items:flex-end;gap:2px;height:140px;padding-top:.5rem}
+.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.chart-bar{width:100%;background:var(--ac);border-radius:3px 3px 0 0;min-height:2px;transition:height .3s ease}
+.chart-label{font-size:.5rem;color:var(--t3);margin-top:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.chart-none{color:var(--t3);font-size:.8125rem;text-align:center;padding:2rem 0}
+
+/* LEADS / MESSAGES TABLE */
+.msg-list{display:flex;flex-direction:column;gap:.5rem}
+.msg-item{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.msg-head{display:flex;align-items:center;gap:.75rem;padding:.875rem 1rem;cursor:pointer;transition:background .1s}
+.msg-head:hover{background:var(--al)}
+.msg-head-info{flex:1;min-width:0}
+.msg-head-name{font-size:.875rem;font-weight:600}
+.msg-head-date{font-size:.75rem;color:var(--t3)}
+.msg-head-phone{font-size:.75rem;color:var(--t2)}
+.msg-arrow{color:var(--t3);transition:transform .2s;font-size:.75rem}
+.msg-item.open .msg-arrow{transform:rotate(90deg)}
+.msg-body{display:none;padding:0 1rem .875rem;font-size:.875rem;color:var(--t2);line-height:1.6;border-top:1px solid var(--bd);padding-top:.75rem;margin:0 1rem;white-space:pre-wrap}
+.msg-item.open .msg-body{display:block}
+.msg-none{color:var(--t3);font-size:.875rem;text-align:center;padding:2rem 0}
+
+/* RECENT LEADS (insights) */
+.recent-leads{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem}
+.recent-leads h3{font-size:.8125rem;font-weight:600;color:var(--text);margin-bottom:.75rem}
+.rl-item{display:flex;align-items:center;gap:.625rem;padding:.5rem 0;border-bottom:1px solid var(--bd)}
+.rl-item:last-child{border-bottom:none}
+.rl-name{font-size:.8125rem;font-weight:600;flex:1}
+.rl-date{font-size:.75rem;color:var(--t3)}
+
+@media(max-width:768px){
+  .dash{flex-direction:column}
+  .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--bd);padding:.75rem 0;display:flex;overflow-x:auto}
+  .sb-user{display:none}
+  .sb-link{border-left:none;border-bottom:2px solid transparent;white-space:nowrap;padding:.5rem 1rem}
+  .sb-link.on{border-left-color:transparent;border-bottom-color:var(--ac)}
+  .dash-main{padding:1rem}
+  .form-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <div class="nav-r">
+    <a href="/">← Back to Directory</a>
+    <button class="btn btn-o" id="logoutBtn" onclick="doLogout()" style="display:none">Log Out</button>
+  </div>
+</div></nav>
+
+<div class="dash-loading" id="dashLoading">Loading your dashboard...</div>
+
+<div class="dash-empty" id="dashEmpty" style="display:none">
+  <h2>No listing found</h2>
+  <p>We couldn't find a listing linked to your account. Create or claim a listing to manage it from here.</p>
+  <a href="/signup.html" class="btn btn-p">Create Your Listing</a>
+</div>
+
+<div class="dash" id="dashContent" style="display:none">
+  <aside class="sidebar">
+    <div class="sb-user">
+      <div class="sb-av" id="sbAvatar"></div>
+      <div class="sb-email" id="sbEmail"></div>
+    </div>
+    <a class="sb-link on" onclick="showDashTab('listing')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      My Listing
+    </a>
+    <a class="sb-link" onclick="showDashTab('insights')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Insights
+    </a>
+    <a class="sb-link" onclick="showDashTab('messages')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Messages
+      <span id="msgBadge" style="display:none;background:var(--ac);color:#fff;font-size:.625rem;padding:.125rem .375rem;border-radius:10px;margin-left:auto"></span>
+    </a>
+    <a class="sb-link disabled">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Products <span class="soon">Soon</span>
+    </a>
+    <a class="sb-link disabled">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings <span class="soon">Soon</span>
+    </a>
+  </aside>
+  <main class="dash-main">
+
+    <!-- MY LISTING TAB -->
+    <div id="dtab-listing" class="dtab active">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <h2 style="margin:0">My Listing</h2>
+        <a id="viewLiveLink" href="#" target="_blank" class="btn btn-o" style="font-size:.8125rem">View Live Page →</a>
+      </div>
+      <div class="form-grid">
+        <div class="fg"><label>Business Name</label><input type="text" id="fName"></div>
+        <div class="fg"><label>Price Range</label>
+          <select id="fPrice"><option value="$">$ — Budget</option><option value="$$" selected>$$ — Standard</option><option value="$$$">$$$ — Premium</option></select>
+        </div>
+        <div class="fg"><label>Address</label><input type="text" id="fAddress"></div>
+        <div class="fg"><label>City</label><input type="text" id="fCity"></div>
+        <div class="fg"><label>State</label><input type="text" id="fState"></div>
+        <div class="fg"><label>ZIP Code</label><input type="text" id="fZip"></div>
+        <div class="fg"><label>Phone</label><input type="tel" id="fPhone"></div>
+        <div class="fg"><label>Email</label><input type="email" id="fEmail"></div>
+        <div class="fg"><label>Website</label><input type="url" id="fWebsite"></div>
+        <div class="fg"><label>Instagram Handle</label><input type="text" id="fInstagram" placeholder="@handle"></div>
+        <div class="fg"><label>Facebook</label><input type="text" id="fFacebook"></div>
+        <div class="fg"><label>TikTok Handle</label><input type="text" id="fTiktok" placeholder="@handle"></div>
+      </div>
+      <div class="form-grid full" style="margin-top:.75rem">
+        <div class="fg"><label>About / Description</label><textarea id="fAbout" rows="4"></textarea></div>
+      </div>
+      <div style="margin-top:.75rem">
+        <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:.375rem">Services Offered</label>
+        <div class="svc-checks" id="fServices">
+          <span class="svc-check" onclick="this.classList.toggle('on')">Hairline Restoration</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Density Fill</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Scar Camouflage</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Female SMP</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Beard SMP</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Alopecia Treatment</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Crown/Vertex</span>
+          <span class="svc-check" onclick="this.classList.toggle('on')">Full Head SMP</span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-p" onclick="saveListing()">Save Changes</button>
+        <span class="saved" id="savedMsg">✓ Saved successfully</span>
+      </div>
+    </div>
+
+    <!-- INSIGHTS TAB -->
+    <div id="dtab-insights" class="dtab">
+      <h2>Insights</h2>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Total Views</div><div class="stat-val" id="sTotalViews">—</div></div>
+        <div class="stat"><div class="stat-label">Total Leads</div><div class="stat-val" id="sTotalLeads">—</div></div>
+        <div class="stat"><div class="stat-label">Views This Month</div><div class="stat-val" id="sMonthViews">—</div></div>
+        <div class="stat"><div class="stat-label">Leads This Month</div><div class="stat-val" id="sMonthLeads">—</div></div>
+      </div>
+      <div class="chart-wrap">
+        <h3>Page Views — Last 30 Days</h3>
+        <div class="chart" id="viewsChart"><div class="chart-none">Loading...</div></div>
+      </div>
+      <div class="recent-leads" id="recentLeads">
+        <h3>Recent Messages</h3>
+        <div class="chart-none">Loading...</div>
+      </div>
+    </div>
+
+    <!-- MESSAGES TAB -->
+    <div id="dtab-messages" class="dtab">
+      <h2>Messages</h2>
+      <div class="msg-list" id="messagesList"><div class="msg-none">Loading...</div></div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+
+let myListing=null;
+let myLeads=[];
+let myViews=[];
+
+// Auth gate
+SB.auth.onAuthStateChange(async(event,session)=>{
+  if(!session||!session.user){
+    window.location.href='/signup.html';
+    return;
+  }
+  if(event==='INITIAL_SESSION'||event==='SIGNED_IN'){
+    document.getElementById('logoutBtn').style.display='';
+    await loadDashboard(session.user);
+  }
+});
+
+async function doLogout(){
+  await SB.auth.signOut();
+  window.location.href='/';
+}
+
+async function loadDashboard(user){
+  const email=user.email||'';
+  const ini=email.split('@')[0].slice(0,2).toUpperCase();
+  document.getElementById('sbAvatar').textContent=ini;
+  document.getElementById('sbEmail').textContent=email;
+
+  // Try to find listing by claimed_by or email
+  let{data:listing}=await SB.from('listings').select('*').eq('claimed_by',user.id).limit(1).maybeSingle();
+  if(!listing){
+    ({data:listing}=await SB.from('listings').select('*').ilike('email',email).limit(1).maybeSingle());
+  }
+
+  document.getElementById('dashLoading').style.display='none';
+
+  if(!listing){
+    document.getElementById('dashEmpty').style.display='';
+    return;
+  }
+
+  myListing=listing;
+  document.getElementById('dashContent').style.display='';
+  document.getElementById('viewLiveLink').href='/#/'+listing.slug;
+  populateForm(listing);
+  loadInsights(listing.id);
+  loadMessages(listing.id);
+}
+
+function populateForm(l){
+  document.getElementById('fName').value=l.name||'';
+  document.getElementById('fAddress').value=l.address||'';
+  document.getElementById('fCity').value=l.city||'';
+  document.getElementById('fState').value=l.state||'';
+  document.getElementById('fZip').value=l.zip||'';
+  document.getElementById('fPhone').value=l.phone||'';
+  document.getElementById('fEmail').value=l.email||'';
+  document.getElementById('fWebsite').value=l.website||'';
+  document.getElementById('fInstagram').value=l.instagram||'';
+  document.getElementById('fFacebook').value=l.facebook||'';
+  document.getElementById('fTiktok').value=l.tiktok||'';
+  document.getElementById('fAbout').value=l.about||'';
+  document.getElementById('fPrice').value=l.price_range||'$$';
+  // Services
+  const svcs=l.services||[];
+  document.querySelectorAll('.svc-check').forEach(el=>{
+    el.classList.toggle('on',svcs.includes(el.textContent));
+  });
+}
+
+async function saveListing(){
+  if(!myListing)return;
+  const svcs=[...document.querySelectorAll('.svc-check.on')].map(s=>s.textContent);
+  const updates={
+    name:document.getElementById('fName').value.trim(),
+    address:document.getElementById('fAddress').value.trim(),
+    city:document.getElementById('fCity').value.trim(),
+    state:document.getElementById('fState').value.trim(),
+    zip:document.getElementById('fZip').value.trim(),
+    phone:document.getElementById('fPhone').value.trim(),
+    email:document.getElementById('fEmail').value.trim(),
+    website:document.getElementById('fWebsite').value.trim(),
+    instagram:document.getElementById('fInstagram').value.trim().replace('@',''),
+    facebook:document.getElementById('fFacebook').value.trim(),
+    tiktok:document.getElementById('fTiktok').value.trim().replace('@',''),
+    about:document.getElementById('fAbout').value.trim(),
+    price_range:document.getElementById('fPrice').value,
+    services:svcs
+  };
+  const{error}=await SB.from('listings').update(updates).eq('id',myListing.id);
+  if(error){alert('Error saving: '+error.message);return;}
+  const msg=document.getElementById('savedMsg');
+  msg.style.display='inline';
+  setTimeout(()=>msg.style.display='none',3000);
+}
+
+// === INSIGHTS ===
+async function loadInsights(listingId){
+  // Fetch views
+  const{data:views}=await SB.from('page_views').select('id,created_at').eq('listing_id',listingId);
+  myViews=views||[];
+
+  // Fetch leads
+  const{data:leads}=await SB.from('leads').select('*').eq('listing_id',listingId).order('created_at',{ascending:false});
+  myLeads=leads||[];
+
+  const now=new Date();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+
+  const monthViews=myViews.filter(v=>new Date(v.created_at)>=monthStart).length;
+  const monthLeads=myLeads.filter(l=>new Date(l.created_at)>=monthStart).length;
+
+  document.getElementById('sTotalViews').textContent=myViews.length;
+  document.getElementById('sTotalLeads').textContent=myLeads.length;
+  document.getElementById('sMonthViews').textContent=monthViews;
+  document.getElementById('sMonthLeads').textContent=monthLeads;
+
+  renderChart();
+  renderRecentLeads();
+}
+
+function renderChart(){
+  const chart=document.getElementById('viewsChart');
+  if(!myViews.length){chart.innerHTML='<div class="chart-none">No views yet. Share your listing to get started!</div>';return;}
+
+  // Last 30 days
+  const days=[];
+  const now=new Date();
+  for(let i=29;i>=0;i--){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    days.push({date:d,key:d.toISOString().slice(0,10),count:0});
+  }
+  myViews.forEach(v=>{
+    const k=v.created_at.slice(0,10);
+    const day=days.find(d=>d.key===k);
+    if(day)day.count++;
+  });
+
+  const max=Math.max(...days.map(d=>d.count),1);
+  chart.innerHTML=days.map(d=>{
+    const pct=Math.round((d.count/max)*100);
+    const label=d.date.getDate()===1||days.indexOf(d)===0?d.date.toLocaleDateString('en',{month:'short',day:'numeric'}):(d.date.getDate()%5===0?d.date.getDate():'');
+    return `<div class="chart-col"><div class="chart-bar" style="height:${Math.max(pct,2)}%"  title="${d.key}: ${d.count} views"></div><span class="chart-label">${label}</span></div>`;
+  }).join('');
+}
+
+function renderRecentLeads(){
+  const el=document.getElementById('recentLeads');
+  const recent=myLeads.slice(0,5);
+  if(!recent.length){el.innerHTML='<h3>Recent Messages</h3><div class="chart-none">No messages yet.</div>';return;}
+  el.innerHTML='<h3>Recent Messages</h3>'+recent.map(l=>{
+    const d=new Date(l.created_at).toLocaleDateString('en',{month:'short',day:'numeric'});
+    return `<div class="rl-item"><span class="rl-name">${l.sender_name||'Unknown'}</span><span class="rl-date">${d}</span></div>`;
+  }).join('');
+}
+
+// === MESSAGES ===
+async function loadMessages(listingId){
+  // Use already-fetched leads from insights
+  const el=document.getElementById('messagesList');
+  if(!myLeads.length){el.innerHTML='<div class="msg-none">No messages yet. When potential clients contact you through your listing, their messages will appear here.</div>';return;}
+
+  // Badge
+  const badge=document.getElementById('msgBadge');
+  badge.textContent=myLeads.length;
+  badge.style.display='';
+
+  el.innerHTML=myLeads.map((l,i)=>{
+    const d=new Date(l.created_at).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+    const time=new Date(l.created_at).toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'});
+    return `<div class="msg-item" id="msg-${i}">
+      <div class="msg-head" onclick="document.getElementById('msg-${i}').classList.toggle('open')">
+        <div class="msg-head-info">
+          <div class="msg-head-name">${l.sender_name||'Unknown'}</div>
+          <div class="msg-head-phone">${l.sender_phone||''}</div>
+        </div>
+        <div class="msg-head-date">${d} ${time}</div>
+        <span class="msg-arrow">›</span>
+      </div>
+      <div class="msg-body">${l.sender_message||'No message provided.'}</div>
+    </div>`;
+  }).join('');
+}
+
+// === TAB SWITCHING ===
+function showDashTab(name){
+  document.querySelectorAll('.sb-link:not(.disabled)').forEach(el=>{
+    el.classList.toggle('on',el.textContent.trim().toLowerCase().includes(name==='listing'?'my listing':name));
+  });
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.toggle('active',t.id==='dtab-'+name));
+}
+</script>
+</body>
+</html>
