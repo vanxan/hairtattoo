@@ -130,14 +130,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .cf-sub:hover{background:var(--ac2)}
 .cf-ok{text-align:center;padding:.75rem;color:var(--ac);font-weight:500;font-size:.875rem}
 
-/* MODAL OVERLAY (for signup only now) */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;justify-content:center;align-items:flex-start;padding:1rem;overflow-y:auto}
-.mo.open{display:flex}
-.modal{background:var(--card);border-radius:var(--r);max-width:440px;width:100%;margin:2rem auto;overflow:hidden;animation:mIn .2s ease;position:relative}
-@keyframes mIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.m-x{position:absolute;top:.75rem;right:.75rem;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--t2);z-index:1}
-.m-x:hover{background:rgba(0,0,0,.12)}
-
 footer{background:var(--text);color:#ccc;padding:3rem 1rem;text-align:center;font-size:.8125rem}
 footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
 footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
@@ -198,7 +190,7 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   <div class="nav-r">
     <a href="#" onclick="event.preventDefault();goHome();showTab('directory')" class="hm">Directory</a>
     <a href="#" onclick="event.preventDefault();goHome();showTab('feed')" class="hm">Explore</a>
-    <button class="btn btn-p" onclick="openSignup()">List Your Business</button>
+    <a href="/signup.html" class="btn btn-p">List Your Business</a>
   </div>
 </div></nav>
 
@@ -255,28 +247,6 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <div class="detail-page" id="detailPage"></div>
 
 <!-- SIGNUP MODAL -->
-<div class="mo" id="signupModal" onclick="if(event.target===this)closeSignup()">
-  <div class="modal">
-    <button class="m-x" onclick="closeSignup()">×</button>
-    <div style="padding:1.5rem 1.5rem 1rem;text-align:center">
-      <div style="width:64px;height:64px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem">
-        <svg class="icon" style="width:28px;height:28px;color:var(--ac)" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-      </div>
-      <h2 style="font-size:1.25rem;margin-bottom:.25rem">List Your SMP Business</h2>
-      <p style="font-size:.875rem;color:var(--t2);margin-bottom:1rem">Create your free profile and start getting leads</p>
-    </div>
-    <div style="padding:0 1.5rem 1.5rem">
-      <div class="cf-row"><input type="text" placeholder="Business Name" id="su-name"></div>
-      <div class="cf-row"><input type="email" placeholder="Email Address" id="su-email"></div>
-      <div class="cf-row"><input type="tel" placeholder="Phone Number" id="su-phone"></div>
-      <div class="cf-row"><input type="text" placeholder="City, State" id="su-loc"></div>
-      <div class="cf-row"><input type="text" placeholder="Instagram handle (optional)" id="su-ig" style="padding-left:2rem;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23888%22 stroke-width=%222%22><rect x=%222%22 y=%222%22 width=%2220%22 height=%2220%22 rx=%225%22/><circle cx=%2212%22 cy=%2212%22 r=%225%22/><circle cx=%2217.5%22 cy=%226.5%22 r=%221.5%22/></svg>');background-repeat:no-repeat;background-position:8px center"></div>
-      <button class="cf-sub" onclick="submitSignup()" style="margin-top:.5rem">Create Free Listing →</button>
-      <p style="font-size:.75rem;color:var(--t3);text-align:center;margin-top:.75rem">Already listed? <a href="#" onclick="event.preventDefault();alert('To claim your page, email hello@hairtattoo.com')">Claim your page</a></p>
-    </div>
-  </div>
-</div>
-
 <!-- LIGHTBOX -->
 <div class="lb" id="lightbox" onclick="if(event.target===this)closeLb()">
   <button class="lb-close" onclick="closeLb()">×</button>
@@ -455,7 +425,7 @@ function showDetail(l){
       <div class="cf-row"><textarea placeholder="Hi, I'm interested in learning more about your SMP services..." id="cfm-${l.id}"></textarea></div>
       <button class="cf-sub" onclick="sendMsg(${l.id})">Send Message →</button>
     </div>
-    ${!l.claimed?`<div class="dp-claim"><span style="flex:1">Is this your business? Claim it to manage your listing.</span><button onclick="alert('To claim this listing, email hello@hairtattoo.com with your business name.')">Claim Page</button></div>`:''}
+    ${!l.claimed?`<div class="dp-claim"><span style="flex:1">Is this your business? Claim it to manage your listing.</span><button onclick="location.href='/signup.html?claim=${l.slug}'">Claim Page</button></div>`:''}
   `;
 
   // Inject structured data for this listing
@@ -537,17 +507,7 @@ function renderMasonry(){
 }
 
 // === SIGNUP ===
-function openSignup(){document.getElementById('signupModal').classList.add('open');document.body.style.overflow='hidden';}
-function closeSignup(){document.getElementById('signupModal').classList.remove('open');document.body.style.overflow='';}
-async function submitSignup(){
-  const n=document.getElementById('su-name').value,e=document.getElementById('su-email').value;
-  const p=document.getElementById('su-phone').value,loc=document.getElementById('su-loc').value,ig=document.getElementById('su-ig').value;
-  if(!n||!e){alert('Please fill in your business name and email.');return;}
-  const{error}=await SB.from('signups').insert({business_name:n,email:e,phone:p||null,city_state:loc||null,instagram:ig||null});
-  if(error)console.error('Signup insert error:',error.message);
-  alert('Thank you! Your listing request has been received. We will be in touch within 24 hours.');
-  closeSignup();
-}
+// Moved to /signup.html (multi-step page builder)
 
 // === INIT ===
 async function initApp(){
@@ -577,7 +537,7 @@ async function initApp(){
 document.addEventListener('DOMContentLoaded',()=>initApp());
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeLb();closeSignup();}
+  if(e.key==='Escape'){closeLb();}
   if(document.getElementById('lightbox').classList.contains('open')){
     if(e.key==='ArrowLeft')lbNav(-1);
     if(e.key==='ArrowRight')lbNav(1);

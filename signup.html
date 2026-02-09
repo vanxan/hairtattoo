@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>List Your Business | HairTattoo</title>
+<meta name="description" content="Create your free SMP business listing on HairTattoo.com and start getting leads from local clients.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--ac);text-decoration:none}
+
+/* NAV */
+.nav{background:var(--card);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
+.logo span{color:var(--ac)}
+.close{font-size:.875rem;color:var(--t2);font-weight:500}
+.close:hover{color:var(--text)}
+
+/* PROGRESS */
+.progress{max-width:600px;margin:0 auto;padding:1.5rem 1rem .5rem}
+.prog-bar{height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s ease}
+.prog-label{font-size:.75rem;color:var(--t3);margin-top:.5rem;text-align:right}
+
+/* CONTAINER */
+.wrap{max-width:600px;margin:0 auto;padding:1rem 1rem 3rem}
+
+/* STEPS */
+.step{display:none}
+.step.active{display:block}
+.step-head{text-align:center;margin-bottom:1.5rem}
+.step-head h1{font-family:var(--se);font-size:clamp(1.5rem,3.5vw,2rem);font-weight:400;line-height:1.2;margin-bottom:.375rem}
+.step-head p{color:var(--t2);font-size:.9375rem;max-width:400px;margin:0 auto}
+
+/* FORM ELEMENTS */
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.8125rem;font-weight:500;margin-bottom:.375rem;color:var(--text)}
+.field input,.field textarea,.field select{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem;background:var(--card);color:var(--text);transition:border-color .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--ac)}
+.field textarea{resize:vertical;min-height:100px}
+.field .hint{font-size:.75rem;color:var(--t3);margin-top:.25rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+
+/* CHECKBOXES */
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.check{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;font-size:.8125rem;transition:all .15s;background:var(--card)}
+.check:hover{border-color:var(--ac)}
+.check.on{border-color:var(--ac);background:var(--al);color:var(--ac);font-weight:500}
+.check input{display:none}
+
+/* RADIOS */
+.radios{display:flex;gap:.5rem}
+.radio{flex:1;text-align:center;padding:.625rem;border:1px solid var(--bd);border-radius:var(--rs);cursor:pointer;font-size:.875rem;transition:all .15s;background:var(--card)}
+.radio:hover{border-color:var(--ac)}
+.radio.on{border-color:var(--ac);background:var(--al);color:var(--ac);font-weight:600}
+.radio input{display:none}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;transition:all .15s;border:none;cursor:pointer;font-family:var(--f)}
+.btn-p{background:var(--ac);color:#fff;width:100%;padding:.75rem}.btn-p:hover{background:var(--ac2)}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-back{background:none;color:var(--t2);font-size:.875rem;padding:.75rem 0;cursor:pointer;border:none;font-family:var(--f)}
+.btn-back:hover{color:var(--text)}
+.btn-skip{display:block;text-align:center;color:var(--t3);font-size:.8125rem;margin-top:.75rem;cursor:pointer}
+.btn-skip:hover{color:var(--t2)}
+.actions{margin-top:1.5rem}
+
+/* EMAIL SENT STATE */
+.sent-icon{width:64px;height:64px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.75rem}
+.resend{font-size:.8125rem;color:var(--t3);margin-top:1rem;text-align:center}
+.resend a{color:var(--ac);cursor:pointer}
+
+/* PHOTOS */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.photo-box{aspect-ratio:1;border:2px dashed var(--bd);border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);overflow:hidden;position:relative}
+.photo-box:hover{border-color:var(--ac);background:var(--al)}
+.photo-box svg{color:var(--t3);margin-bottom:.25rem}
+.photo-box span{font-size:.6875rem;color:var(--t3)}
+.photo-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.photo-box .remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer;display:none}
+.photo-box:hover .remove{display:flex}
+.avatar-wrap{width:100px;height:100px;margin:0 auto 1rem;position:relative}
+.avatar-box{width:100px;height:100px;border-radius:50%;border:2px dashed var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);overflow:hidden}
+.avatar-box:hover{border-color:var(--ac)}
+.avatar-box img{width:100%;height:100%;object-fit:cover}
+
+/* PREVIEW CARD */
+.preview{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.pv-head{padding:1.25rem;display:flex;gap:.75rem;align-items:flex-start}
+.pv-av{width:48px;height:48px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-family:var(--se);font-size:1.125rem;color:var(--ac);flex-shrink:0;overflow:hidden}
+.pv-av img{width:100%;height:100%;object-fit:cover}
+.pv-info{flex:1}
+.pv-name{font-weight:700;font-size:1rem}
+.pv-loc{font-size:.8125rem;color:var(--t2);margin-top:2px}
+.pv-price{font-size:.8125rem;font-weight:600;color:var(--ac)}
+.pv-about{padding:0 1.25rem .75rem;font-size:.8125rem;color:var(--t2)}
+.pv-tags{padding:0 1.25rem 1rem;display:flex;flex-wrap:wrap;gap:.25rem}
+.pv-tag{font-size:.6875rem;padding:.125rem .5rem;background:var(--al);color:var(--ac);border-radius:4px}
+.pv-links{padding:.75rem 1.25rem;border-top:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:.75rem;font-size:.8125rem}
+
+/* SUCCESS */
+.success{text-align:center;padding:2rem 0}
+.success-icon{width:80px;height:80px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:2.5rem}
+.success h2{font-family:var(--se);font-size:1.5rem;margin-bottom:.5rem}
+.success p{color:var(--t2);font-size:.9375rem;margin-bottom:1.5rem}
+.success a.btn{display:inline-flex;text-decoration:none}
+
+/* ERROR */
+.err{color:#DC2626;font-size:.8125rem;margin-top:.375rem}
+
+@media(max-width:480px){.row{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.photo-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <a href="/" class="close">Close</a>
+</div></nav>
+
+<div class="progress"><div class="prog-bar"><div class="prog-fill" id="progFill" style="width:20%"></div></div><div class="prog-label" id="progLabel">Step 1 of 5</div></div>
+
+<div class="wrap">
+
+<!-- STEP 1: EMAIL -->
+<div class="step active" id="step1">
+  <div class="step-head">
+    <h1>List Your Business on <em style="font-family:var(--se);color:var(--ac);font-style:italic">HairTattoo</em></h1>
+    <p>Enter your email address. We'll send you a link to verify your account.</p>
+  </div>
+  <div id="emailForm">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="authEmail" placeholder="you@yourbusiness.com">
+      <div class="err" id="emailErr"></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-p" id="sendOtpBtn" onclick="sendOtp()">Send Verification Link</button>
+    </div>
+  </div>
+  <div id="emailSent" style="display:none;text-align:center;padding:1rem 0">
+    <div class="sent-icon">✉️</div>
+    <h2 style="font-size:1.25rem;margin-bottom:.375rem">Check your inbox</h2>
+    <p style="color:var(--t2);font-size:.9375rem">We sent a verification link to <strong id="sentTo"></strong></p>
+    <p style="color:var(--t2);font-size:.8125rem;margin-top:.25rem">Click the link in the email to continue.</p>
+    <div class="resend">Didn't receive it? <a onclick="sendOtp()">Resend</a></div>
+  </div>
+</div>
+
+<!-- STEP 2: BASIC INFO -->
+<div class="step" id="step2">
+  <div class="step-head">
+    <h1>Business Details</h1>
+    <p>Tell us about your SMP practice</p>
+  </div>
+  <div class="field">
+    <label>Business Name *</label>
+    <input type="text" id="fName" placeholder="e.g. Elite SMP Studio">
+  </div>
+  <div class="field">
+    <label>Street Address</label>
+    <input type="text" id="fAddress" placeholder="123 Main St, Suite 100">
+  </div>
+  <div class="row">
+    <div class="field"><label>City</label><input type="text" id="fCity" placeholder="Miami"></div>
+    <div class="field"><label>State</label><input type="text" id="fState" placeholder="FL" maxlength="2" style="text-transform:uppercase"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Zip Code</label><input type="text" id="fZip" placeholder="33101" maxlength="10"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="fPhone" placeholder="(555) 123-4567"></div>
+  </div>
+  <div class="field">
+    <label>Services Offered</label>
+    <div class="checks" id="svcChecks">
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Hairline Restoration">Hairline Restoration</label>
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Density Fill">Density Fill</label>
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Scar Camouflage">Scar Camouflage</label>
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Female SMP">Female SMP</label>
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Beard SMP">Beard SMP</label>
+      <label class="check" onclick="this.classList.toggle('on')"><input type="checkbox" value="Alopecia Treatment">Alopecia Treatment</label>
+    </div>
+  </div>
+  <div class="field">
+    <label>Price Range</label>
+    <div class="radios" id="priceRadios">
+      <label class="radio on" onclick="pickRadio(this)"><input type="radio" name="price" value="$$" checked>$$ Standard</label>
+      <label class="radio" onclick="pickRadio(this)"><input type="radio" name="price" value="$$$">$$$ Premium</label>
+    </div>
+  </div>
+  <div class="field">
+    <label>About</label>
+    <textarea id="fAbout" placeholder="Tell potential clients about your experience, approach, and what makes your work unique..."></textarea>
+  </div>
+  <div class="actions">
+    <button class="btn btn-p" onclick="goStep(3)">Continue</button>
+    <button class="btn-back" onclick="goStep(1)">Back</button>
+  </div>
+</div>
+
+<!-- STEP 3: PHOTOS -->
+<div class="step" id="step3">
+  <div class="step-head">
+    <h1>Add Photos</h1>
+    <p>Show off your work with before & after photos</p>
+  </div>
+  <div class="field">
+    <label>Profile Photo / Logo</label>
+    <div class="avatar-wrap">
+      <div class="avatar-box" onclick="document.getElementById('avatarInput').click()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span style="font-size:.6875rem;color:var(--t3);margin-top:.25rem">Upload</span>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+    </div>
+  </div>
+  <div class="field">
+    <label>Gallery (up to 6 images)</label>
+    <div class="photo-grid" id="galleryGrid"></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-p" onclick="goStep(4)">Continue</button>
+    <a class="btn-skip" onclick="goStep(4)">Skip for now</a>
+    <button class="btn-back" onclick="goStep(2)">Back</button>
+  </div>
+</div>
+
+<!-- STEP 4: LINKS -->
+<div class="step" id="step4">
+  <div class="step-head">
+    <h1>Online Presence</h1>
+    <p>Help clients find you online</p>
+  </div>
+  <div class="field">
+    <label>Website</label>
+    <input type="url" id="fWebsite" placeholder="https://yourbusiness.com">
+  </div>
+  <div class="field">
+    <label>Instagram</label>
+    <input type="text" id="fInstagram" placeholder="@yourhandle">
+  </div>
+  <div class="field">
+    <label>Facebook</label>
+    <input type="text" id="fFacebook" placeholder="https://facebook.com/yourpage">
+  </div>
+  <div class="field">
+    <label>TikTok</label>
+    <input type="text" id="fTiktok" placeholder="@yourhandle">
+  </div>
+  <div class="actions">
+    <button class="btn btn-p" onclick="goStep(5)">Preview Listing</button>
+    <button class="btn-back" onclick="goStep(3)">Back</button>
+  </div>
+</div>
+
+<!-- STEP 5: PREVIEW & PUBLISH -->
+<div class="step" id="step5">
+  <div class="step-head">
+    <h1>Preview & Publish</h1>
+    <p>Here's how your listing will appear</p>
+  </div>
+  <div id="previewCard"></div>
+  <div class="actions">
+    <button class="btn btn-p" id="publishBtn" onclick="publish()">Publish Listing</button>
+    <button class="btn-back" onclick="goStep(4)">Back</button>
+  </div>
+
+  <div id="successView" style="display:none">
+    <div class="success">
+      <div class="success-icon">🎉</div>
+      <h2>Your listing is live!</h2>
+      <p>Clients can now find you on HairTattoo.com</p>
+      <a href="/" class="btn btn-p" id="viewListingBtn" style="width:auto;padding:.625rem 1.5rem">View Your Listing</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+
+let currentStep=1;
+let claimSlug=new URLSearchParams(location.search).get('claim');
+let claimData=null;
+let userEmail='';
+let avatarData=null;
+let galleryData=[];
+
+// --- GALLERY INIT ---
+function initGallery(){
+  const g=document.getElementById('galleryGrid');
+  g.innerHTML='';
+  for(let i=0;i<6;i++){
+    const box=document.createElement('div');
+    box.className='photo-box';
+    box.innerHTML=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add photo</span>`;
+    const inp=document.createElement('input');
+    inp.type='file';inp.accept='image/*';inp.style.display='none';
+    inp.onchange=function(){previewGallery(this,i);};
+    box.onclick=function(){inp.click();};
+    box.appendChild(inp);
+    g.appendChild(box);
+  }
+}
+
+function previewAvatar(inp){
+  if(!inp.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    avatarData=e.target.result;
+    inp.parentElement.innerHTML=`<img src="${avatarData}">`;
+  };
+  reader.readAsDataURL(inp.files[0]);
+}
+
+function previewGallery(inp,idx){
+  if(!inp.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    galleryData[idx]=e.target.result;
+    const box=inp.parentElement;
+    box.innerHTML=`<img src="${e.target.result}"><div class="remove" onclick="event.stopPropagation();removeGallery(${idx})">×</div>`;
+  };
+  reader.readAsDataURL(inp.files[0]);
+}
+
+function removeGallery(idx){
+  galleryData[idx]=null;
+  initGallery();
+  galleryData.forEach((d,i)=>{
+    if(d){
+      const box=document.getElementById('galleryGrid').children[i];
+      box.innerHTML=`<img src="${d}"><div class="remove" onclick="event.stopPropagation();removeGallery(${i})">×</div>`;
+    }
+  });
+}
+
+// --- NAVIGATION ---
+function goStep(n){
+  if(n===3 && !document.getElementById('fName').value.trim()){
+    alert('Please enter your business name.');return;
+  }
+  currentStep=n;
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  document.getElementById('progFill').style.width=(n*20)+'%';
+  document.getElementById('progLabel').textContent='Step '+n+' of 5';
+  window.scrollTo(0,0);
+  if(n===3)initGallery();
+  if(n===5)renderPreview();
+}
+
+function pickRadio(el){
+  el.closest('.radios').querySelectorAll('.radio').forEach(r=>r.classList.remove('on'));
+  el.classList.add('on');
+  el.querySelector('input').checked=true;
+}
+
+// --- AUTH ---
+async function sendOtp(){
+  const email=document.getElementById('authEmail').value.trim();
+  if(!email){document.getElementById('emailErr').textContent='Please enter your email.';return;}
+  document.getElementById('emailErr').textContent='';
+  const btn=document.getElementById('sendOtpBtn');
+  btn.disabled=true;btn.textContent='Sending...';
+  const redirectUrl=claimSlug?location.origin+'/signup.html?claim='+claimSlug:location.origin+'/signup.html';
+  const{error}=await SB.auth.signInWithOtp({email,options:{emailRedirectTo:redirectUrl}});
+  btn.disabled=false;btn.textContent='Send Verification Link';
+  if(error){document.getElementById('emailErr').textContent=error.message;return;}
+  userEmail=email;
+  document.getElementById('sentTo').textContent=email;
+  document.getElementById('emailForm').style.display='none';
+  document.getElementById('emailSent').style.display='block';
+}
+
+// --- CLAIM PREFILL ---
+async function prefillClaim(){
+  if(!claimSlug)return;
+  const{data}=await SB.from('listings').select('*').eq('slug',claimSlug).single();
+  if(!data)return;
+  claimData=data;
+  document.getElementById('fName').value=data.name||'';
+  document.getElementById('fAddress').value=data.address||'';
+  document.getElementById('fCity').value=data.city||'';
+  document.getElementById('fState').value=data.state||'';
+  document.getElementById('fZip').value=data.zip||'';
+  document.getElementById('fPhone').value=data.phone||'';
+  document.getElementById('fAbout').value=data.about||'';
+  document.getElementById('fWebsite').value=data.website||'';
+  document.getElementById('fInstagram').value=data.instagram?'@'+data.instagram:'';
+  document.getElementById('fFacebook').value=data.facebook||'';
+  document.getElementById('fTiktok').value=data.tiktok?'@'+data.tiktok:'';
+  // Services
+  (data.services||[]).forEach(svc=>{
+    const cb=document.querySelector('#svcChecks input[value="'+svc+'"]');
+    if(cb){cb.checked=true;cb.closest('.check').classList.add('on');}
+  });
+  // Price
+  const pr=data.price_range||'$$';
+  document.querySelectorAll('#priceRadios .radio').forEach(r=>{
+    const on=r.querySelector('input').value===pr;
+    r.classList.toggle('on',on);
+    r.querySelector('input').checked=on;
+  });
+}
+
+// --- PREVIEW ---
+function getFormData(){
+  const name=document.getElementById('fName').value.trim();
+  const svcs=[];document.querySelectorAll('#svcChecks input:checked').forEach(c=>svcs.push(c.value));
+  const priceEl=document.querySelector('#priceRadios input:checked');
+  const ig=document.getElementById('fInstagram').value.trim().replace(/^@/,'');
+  const tk=document.getElementById('fTiktok').value.trim().replace(/^@/,'');
+  return{
+    name,
+    slug:claimData?claimData.slug:name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
+    address:document.getElementById('fAddress').value.trim(),
+    city:document.getElementById('fCity').value.trim(),
+    state:document.getElementById('fState').value.trim().toUpperCase(),
+    zip:document.getElementById('fZip').value.trim(),
+    phone:document.getElementById('fPhone').value.trim(),
+    email:userEmail,
+    website:document.getElementById('fWebsite').value.trim(),
+    services:svcs,
+    price_range:priceEl?priceEl.value:'$$',
+    about:document.getElementById('fAbout').value.trim(),
+    instagram:ig,
+    facebook:document.getElementById('fFacebook').value.trim(),
+    tiktok:tk,
+    claimed:true
+  };
+}
+
+function renderPreview(){
+  const d=getFormData();
+  const ini=d.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  const av=avatarData?`<img src="${avatarData}">`:`${ini}`;
+  let links='';
+  if(d.website)links+=`<span>🌐 ${d.website.replace(/https?:\/\//,'')}</span>`;
+  if(d.instagram)links+=`<span>📷 @${d.instagram}</span>`;
+  if(d.facebook)links+=`<span>📘 Facebook</span>`;
+  if(d.tiktok)links+=`<span>🎵 @${d.tiktok}</span>`;
+
+  document.getElementById('previewCard').innerHTML=`<div class="preview">
+    <div class="pv-head">
+      <div class="pv-av">${av}</div>
+      <div class="pv-info">
+        <div class="pv-name">${esc(d.name)||'Your Business Name'}</div>
+        <div class="pv-loc">${esc(d.city?d.city+', '+d.state:'')}</div>
+        <div class="pv-price">${d.price_range}</div>
+      </div>
+    </div>
+    ${d.about?`<div class="pv-about">${esc(d.about)}</div>`:''}
+    ${d.services.length?`<div class="pv-tags">${d.services.map(s=>'<span class="pv-tag">'+esc(s)+'</span>').join('')}</div>`:''}
+    ${links?`<div class="pv-links">${links}</div>`:''}
+  </div>`;
+}
+
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+// --- PUBLISH ---
+async function publish(){
+  const d=getFormData();
+  if(!d.name){alert('Business name is required.');goStep(2);return;}
+  const btn=document.getElementById('publishBtn');
+  btn.disabled=true;btn.textContent='Publishing...';
+
+  const{data:{user}}=await SB.auth.getUser();
+  const row={...d,claimed_by:user?user.id:null};
+
+  let result;
+  if(claimData){
+    result=await SB.from('listings').update(row).eq('id',claimData.id).select();
+  }else{
+    result=await SB.from('listings').upsert(row,{onConflict:'slug'}).select();
+  }
+
+  if(result.error){
+    btn.disabled=false;btn.textContent='Publish Listing';
+    alert('Error publishing: '+result.error.message);
+    return;
+  }
+
+  document.getElementById('previewCard').style.display='none';
+  document.querySelector('#step5 .actions').style.display='none';
+  document.getElementById('successView').style.display='block';
+  document.getElementById('viewListingBtn').href='/#/'+d.slug;
+  document.getElementById('progFill').style.width='100%';
+  document.getElementById('progLabel').textContent='Complete';
+}
+
+// --- INIT ---
+async function init(){
+  const{data:{session}}=await SB.auth.getSession();
+  if(session){
+    userEmail=session.user.email;
+    await prefillClaim();
+    goStep(2);
+  }
+}
+init();
+</script>
+</body>
+</html>
