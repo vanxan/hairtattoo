@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin | HairTattoo</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--f:'DM Sans',system-ui,sans-serif}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.top{background:var(--text);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.top h1{font-size:1.125rem;font-weight:700}
+.top .meta{font-size:.75rem;color:#aaa}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);padding:0 1.5rem;background:var(--card)}
+.tab{padding:.75rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--al);color:var(--ac);font-size:.6875rem;font-weight:700;margin-left:.375rem}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.section{display:none}
+.section.active{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:.75rem}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
+.card-name{font-weight:700;font-size:.9375rem}
+.card-time{font-size:.75rem;color:var(--t3);white-space:nowrap}
+.card-listing{font-size:.8125rem;color:var(--ac);margin-bottom:.375rem}
+.card-row{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.8125rem;color:var(--t2);margin-bottom:.25rem}
+.card-row span{display:flex;align-items:center;gap:.25rem}
+.card-msg{font-size:.8125rem;color:var(--text);background:var(--bg);padding:.625rem .75rem;border-radius:8px;margin-top:.5rem}
+.empty{text-align:center;padding:3rem 1rem;color:var(--t3);font-size:.9375rem}
+.status{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;text-transform:uppercase}
+.status-pending{background:#FEF3C7;color:#92400E}
+.status-approved{background:#D1FAE5;color:#065F46}
+.refresh-bar{text-align:center;padding:.5rem;font-size:.75rem;color:var(--t3)}
+#gate{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg)}
+.gate-box{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;text-align:center;max-width:360px;width:100%}
+.gate-box h2{font-size:1.125rem;margin-bottom:.25rem}
+.gate-box p{font-size:.8125rem;color:var(--t2);margin-bottom:1rem}
+.gate-box input{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:8px;font-family:var(--f);font-size:.875rem;margin-bottom:.75rem}
+.gate-box input:focus{outline:none;border-color:var(--ac)}
+.gate-box button{width:100%;padding:.625rem;background:var(--ac);color:#fff;border:none;border-radius:8px;font-family:var(--f);font-size:.875rem;font-weight:500;cursor:pointer}
+.gate-box button:hover{background:var(--ac2)}
+.gate-err{color:#DC2626;font-size:.8125rem;margin-bottom:.75rem;display:none}
+#app{display:none}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <h2>Admin Access</h2>
+    <p>Enter the admin password to continue</p>
+    <div class="gate-err" id="gateErr">Incorrect password</div>
+    <input type="password" id="gatePw" placeholder="Password" onkeydown="if(event.key==='Enter')checkGate()">
+    <button onclick="checkGate()">Sign In</button>
+  </div>
+</div>
+
+<div id="app">
+  <div class="top">
+    <h1>HairTattoo Admin</h1>
+    <div class="meta">Auto-refreshes every 30s</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('leads')">Leads <span class="badge" id="leadsCount">0</span></div>
+    <div class="tab" onclick="showTab('signups')">Signups <span class="badge" id="signupsCount">0</span></div>
+  </div>
+  <div class="container">
+    <div class="section active" id="sec-leads"></div>
+    <div class="section" id="sec-signups"></div>
+  </div>
+  <div class="refresh-bar" id="refreshBar"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+
+const ADMIN_HASH='5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // sha256 of "password"
+
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkGate(){
+  const pw=document.getElementById('gatePw').value;
+  const hash=await sha256(pw);
+  if(hash===ADMIN_HASH){
+    localStorage.setItem('ht_admin','1');
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadAll();
+    setInterval(loadAll,30000);
+  } else {
+    document.getElementById('gateErr').style.display='block';
+  }
+}
+
+if(localStorage.getItem('ht_admin')==='1'){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  loadAll();
+  setInterval(loadAll,30000);
+}
+
+function showTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(name==='leads'?0:1)));
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===(name==='leads'?0:1)));
+}
+
+function timeAgo(d){
+  const s=Math.floor((Date.now()-new Date(d))/1000);
+  if(s<60)return 'just now';
+  if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+async function loadAll(){
+  const[leads,signups]=await Promise.all([loadLeads(),loadSignups()]);
+  document.getElementById('refreshBar').textContent='Last updated: '+new Date().toLocaleTimeString();
+}
+
+async function loadLeads(){
+  const{data,error}=await SB.from('leads').select('*,listings(name,slug)').order('created_at',{ascending:false});
+  const el=document.getElementById('sec-leads');
+  document.getElementById('leadsCount').textContent=data?data.length:0;
+  if(error){el.innerHTML='<div class="empty">Error loading leads: '+error.message+'</div>';return;}
+  if(!data||!data.length){el.innerHTML='<div class="empty">No leads yet</div>';return;}
+  el.innerHTML=data.map(l=>`<div class="card">
+    <div class="card-top">
+      <div class="card-name">${esc(l.sender_name)}</div>
+      <div class="card-time">${timeAgo(l.created_at)}</div>
+    </div>
+    ${l.listings?`<div class="card-listing">→ ${esc(l.listings.name)}</div>`:''}
+    <div class="card-row">
+      <span>📱 ${esc(l.sender_phone)}</span>
+    </div>
+    ${l.sender_message?`<div class="card-msg">${esc(l.sender_message)}</div>`:''}
+  </div>`).join('');
+  return data;
+}
+
+async function loadSignups(){
+  const{data,error}=await SB.from('signups').select('*').order('created_at',{ascending:false});
+  const el=document.getElementById('sec-signups');
+  document.getElementById('signupsCount').textContent=data?data.length:0;
+  if(error){el.innerHTML='<div class="empty">Error loading signups: '+error.message+'</div>';return;}
+  if(!data||!data.length){el.innerHTML='<div class="empty">No signups yet</div>';return;}
+  el.innerHTML=data.map(s=>`<div class="card">
+    <div class="card-top">
+      <div class="card-name">${esc(s.business_name)}</div>
+      <div class="card-time">${timeAgo(s.created_at)}</div>
+    </div>
+    <div class="card-row">
+      <span>✉️ ${esc(s.email)}</span>
+      ${s.phone?`<span>📱 ${esc(s.phone)}</span>`:''}
+      ${s.city_state?`<span>📍 ${esc(s.city_state)}</span>`:''}
+      ${s.instagram?`<span>@ ${esc(s.instagram)}</span>`:''}
+    </div>
+    <div style="margin-top:.5rem"><span class="status status-${s.status}">${s.status}</span></div>
+  </div>`).join('');
+  return data;
+}
+
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+</script>
+</body>
+</html>
