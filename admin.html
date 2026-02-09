@@ -6,44 +6,157 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin | HairTattoo</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--f:'DM Sans',system-ui,sans-serif}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
 body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
-.top{background:var(--text);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
-.top h1{font-size:1.125rem;font-weight:700}
-.top .meta{font-size:.75rem;color:#aaa}
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);padding:0 1.5rem;background:var(--card)}
-.tab{padding:.75rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
-.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
-.tab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--al);color:var(--ac);font-size:.6875rem;font-weight:700;margin-left:.375rem}
-.container{max-width:900px;margin:0 auto;padding:1.5rem}
-.section{display:none}
-.section.active{display:block}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:.75rem}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
-.card-name{font-weight:700;font-size:.9375rem}
-.card-time{font-size:.75rem;color:var(--t3);white-space:nowrap}
-.card-listing{font-size:.8125rem;color:var(--ac);margin-bottom:.375rem}
-.card-row{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.8125rem;color:var(--t2);margin-bottom:.25rem}
-.card-row span{display:flex;align-items:center;gap:.25rem}
-.card-msg{font-size:.8125rem;color:var(--text);background:var(--bg);padding:.625rem .75rem;border-radius:8px;margin-top:.5rem}
-.empty{text-align:center;padding:3rem 1rem;color:var(--t3);font-size:.9375rem}
-.status{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;text-transform:uppercase}
-.status-pending{background:#FEF3C7;color:#92400E}
-.status-approved{background:#D1FAE5;color:#065F46}
-.refresh-bar{text-align:center;padding:.5rem;font-size:.75rem;color:var(--t3)}
+a{color:var(--ac);text-decoration:none}
+
+/* GATE */
 #gate{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg)}
 .gate-box{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;text-align:center;max-width:360px;width:100%}
 .gate-box h2{font-size:1.125rem;margin-bottom:.25rem}
 .gate-box p{font-size:.8125rem;color:var(--t2);margin-bottom:1rem}
-.gate-box input{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:8px;font-family:var(--f);font-size:.875rem;margin-bottom:.75rem}
+.gate-box input{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem;margin-bottom:.75rem}
 .gate-box input:focus{outline:none;border-color:var(--ac)}
-.gate-box button{width:100%;padding:.625rem;background:var(--ac);color:#fff;border:none;border-radius:8px;font-family:var(--f);font-size:.875rem;font-weight:500;cursor:pointer}
+.gate-box button{width:100%;padding:.625rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.875rem;font-weight:500;cursor:pointer}
 .gate-box button:hover{background:var(--ac2)}
 .gate-err{color:#DC2626;font-size:.8125rem;margin-bottom:.75rem;display:none}
 #app{display:none}
+
+/* NAV */
+.nav{background:var(--text);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nav-logo{font-family:var(--se);font-size:1.25rem;color:#fff;letter-spacing:-.01em}
+.nav-logo span{opacity:.5}
+.nav-link{font-size:.8125rem;color:#aaa;transition:color .15s}
+.nav-link:hover{color:#fff}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:1.5rem;max-width:1200px;margin:0 auto}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;position:relative}
+.stat-icon{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:var(--rs);background:var(--al);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.stat-num{font-size:1.75rem;font-weight:700;line-height:1.2}
+.stat-label{font-size:.8125rem;color:var(--t2);margin-top:.125rem}
+.stat-sub{font-size:.6875rem;color:var(--t3);margin-top:.25rem}
+
+/* TABS */
+.tabs-bar{display:flex;gap:0;border-bottom:1px solid var(--bd);padding:0 1.5rem;background:var(--card);max-width:1200px;margin:0 auto}
+.tab{padding:.75rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;user-select:none}
+.tab:hover{color:var(--t2)}
+.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--al);color:var(--ac);font-size:.6875rem;font-weight:700;margin-left:.375rem}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:1.5rem}
+.section{display:none}
+.section.active{display:block}
+
+/* TOOLBAR */
+.toolbar{display:flex;gap:.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.search{flex:1;min-width:200px;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.8125rem;background:var(--card)}
+.search:focus{outline:none;border-color:var(--ac)}
+.filters{display:flex;gap:.375rem;flex-wrap:wrap}
+.chip{padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--t2);transition:all .15s;user-select:none}
+.chip:hover{border-color:var(--ac);color:var(--ac)}
+.chip.active{background:var(--ac);color:#fff;border-color:var(--ac)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:.8125rem}
+.tbl th{text-align:left;padding:.5rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);border-bottom:1px solid var(--bd);background:var(--card);position:sticky;top:0}
+.tbl td{padding:.625rem .75rem;border-bottom:1px solid var(--bd);vertical-align:middle}
+.tbl tr{background:var(--card);transition:background .1s}
+.tbl tr:hover{background:var(--bg)}
+.tbl tr.hidden-row{opacity:.5}
+.tbl-wrap{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+
+/* BADGES */
+.badge-s{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;text-transform:uppercase}
+.b-active{background:#D1FAE5;color:#065F46}
+.b-hidden{background:#FEF3C7;color:#92400E}
+.b-archived{background:#FEE2E2;color:#991B1B}
+.b-promoted{background:#EDE9FE;color:#6D28D9}
+.b-pending{background:#FEF3C7;color:#92400E}
+.b-approved{background:#D1FAE5;color:#065F46}
+.b-rejected{background:#FEE2E2;color:#991B1B}
+.b-read{background:var(--al);color:var(--ac)}
+.b-unread{background:#DBEAFE;color:#1D4ED8}
+
+/* ACTIONS */
+.act-wrap{position:relative}
+.act-btn{width:28px;height:28px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.875rem;color:var(--t2);transition:all .15s}
+.act-btn:hover{background:var(--bg);border-color:var(--ac);color:var(--ac)}
+.act-menu{position:absolute;right:0;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:50;min-width:140px;padding:.25rem 0;display:none}
+.act-menu.open{display:block}
+.act-item{display:block;width:100%;padding:.5rem .75rem;font-size:.8125rem;color:var(--text);cursor:pointer;border:none;background:none;text-align:left;font-family:var(--f);transition:background .1s}
+.act-item:hover{background:var(--bg)}
+.act-item.danger{color:#DC2626}
+.act-item.danger:hover{background:#FEF2F2}
+
+/* PAGINATION */
+.pag{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;font-size:.8125rem;color:var(--t2)}
+.pag-btns{display:flex;gap:.375rem}
+.pag-btn{padding:.375rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);background:var(--card);cursor:pointer;font-family:var(--f);font-size:.8125rem;color:var(--t2);transition:all .15s}
+.pag-btn:hover:not(:disabled){border-color:var(--ac);color:var(--ac)}
+.pag-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* SLIDE-OUT PANEL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100}
+.overlay.open{display:block}
+.panel{position:fixed;top:0;right:-480px;width:480px;max-width:100vw;height:100vh;background:var(--card);border-left:1px solid var(--bd);z-index:101;overflow-y:auto;transition:right .25s ease;box-shadow:-4px 0 20px rgba(0,0,0,.05)}
+.panel.open{right:0}
+.panel-head{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1}
+.panel-head h2{font-size:1rem;font-weight:700}
+.panel-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.125rem;color:var(--t2);transition:all .15s}
+.panel-close:hover{background:var(--bd);color:var(--text)}
+.panel-body{padding:1.5rem}
+.pf{margin-bottom:1rem}
+.pf label{display:block;font-size:.75rem;font-weight:600;color:var(--t2);margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.03em}
+.pf input,.pf textarea,.pf select{width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.8125rem;background:var(--bg);color:var(--text)}
+.pf input:focus,.pf textarea:focus,.pf select:focus{outline:none;border-color:var(--ac);background:var(--card)}
+.pf textarea{resize:vertical;min-height:80px}
+.pf-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.pf-checks{display:flex;flex-wrap:wrap;gap:.375rem}
+.pf-check{padding:.25rem .625rem;border:1px solid var(--bd);border-radius:4px;font-size:.75rem;cursor:pointer;transition:all .15s;background:var(--card);user-select:none}
+.pf-check.on{background:var(--al);border-color:var(--ac);color:var(--ac);font-weight:500}
+.panel-save{width:100%;padding:.625rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.875rem;font-weight:500;cursor:pointer;margin-top:.5rem}
+.panel-save:hover{background:var(--ac2)}
+.panel-save:disabled{opacity:.5;cursor:not-allowed}
+.panel-msg{text-align:center;padding:.5rem;font-size:.8125rem;margin-top:.5rem}
+
+/* LEADS TABLE */
+.lead-expand{display:none;padding:.75rem;background:var(--bg);border-radius:var(--rs);margin-top:.5rem;font-size:.8125rem;color:var(--text);line-height:1.6}
+.lead-row{cursor:pointer}
+.lead-row:hover{background:#F5F5F3}
+.mark-read{padding:.25rem .5rem;border:1px solid var(--bd);border-radius:4px;background:var(--card);font-size:.6875rem;font-family:var(--f);cursor:pointer;color:var(--t2);transition:all .15s}
+.mark-read:hover{border-color:var(--ac);color:var(--ac)}
+
+/* CONFIRM DIALOG */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.confirm-overlay.open{display:flex}
+.confirm-box{background:var(--card);border-radius:var(--r);padding:1.5rem;max-width:380px;width:100%;text-align:center}
+.confirm-box h3{font-size:1rem;margin-bottom:.5rem}
+.confirm-box p{font-size:.8125rem;color:var(--t2);margin-bottom:1.25rem}
+.confirm-btns{display:flex;gap:.5rem;justify-content:center}
+.confirm-btns button{padding:.5rem 1.25rem;border-radius:var(--rs);font-family:var(--f);font-size:.8125rem;font-weight:500;cursor:pointer;border:1px solid var(--bd)}
+.cbtn-cancel{background:var(--card);color:var(--t2)}
+.cbtn-cancel:hover{background:var(--bg)}
+.cbtn-danger{background:#DC2626;color:#fff;border-color:#DC2626}
+.cbtn-danger:hover{background:#B91C1C}
+
+.empty{text-align:center;padding:3rem 1rem;color:var(--t3);font-size:.9375rem}
+
+@media(max-width:768px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .panel{width:100vw}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .search{min-width:auto}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr 1fr}
+  .tbl{font-size:.75rem}
+  .tbl th,.tbl td{padding:.5rem}
+}
 </style>
 </head>
 <body>
@@ -59,114 +172,477 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5
 </div>
 
 <div id="app">
-  <div class="top">
-    <h1>HairTattoo Admin</h1>
-    <div class="meta">Auto-refreshes every 30s</div>
+  <nav class="nav">
+    <div class="nav-logo">HairTattoo <span>Admin</span></div>
+    <a href="/" target="_blank" class="nav-link">View Site &rarr;</a>
+  </nav>
+
+  <div class="stats" id="statsRow">
+    <div class="stat"><div class="stat-icon">📋</div><div class="stat-num" id="sTotal">-</div><div class="stat-label">Total Listings</div></div>
+    <div class="stat"><div class="stat-icon">👁</div><div class="stat-num" id="sViews">-</div><div class="stat-label">Page Views</div></div>
+    <div class="stat"><div class="stat-icon">💬</div><div class="stat-num" id="sLeads">-</div><div class="stat-label">Total Leads</div></div>
+    <div class="stat"><div class="stat-icon">💰</div><div class="stat-num" id="sRev">$0</div><div class="stat-label">Revenue</div><div class="stat-sub">Coming soon</div></div>
   </div>
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('leads')">Leads <span class="badge" id="leadsCount">0</span></div>
-    <div class="tab" onclick="showTab('signups')">Signups <span class="badge" id="signupsCount">0</span></div>
+
+  <div class="tabs-bar">
+    <div class="tab active" data-tab="listings" onclick="showTab('listings')">Listings <span class="badge" id="cntListings">0</span></div>
+    <div class="tab" data-tab="leads" onclick="showTab('leads')">Leads <span class="badge" id="cntLeads">0</span></div>
+    <div class="tab" data-tab="signups" onclick="showTab('signups')">Signups <span class="badge" id="cntSignups">0</span></div>
   </div>
+
   <div class="container">
-    <div class="section active" id="sec-leads"></div>
-    <div class="section" id="sec-signups"></div>
+    <!-- LISTINGS -->
+    <div class="section active" id="sec-listings">
+      <div class="toolbar">
+        <input class="search" id="listSearch" placeholder="Search by name or city..." oninput="renderListings()">
+        <div class="filters" id="listFilters">
+          <span class="chip active" data-filter="all" onclick="setFilter(this)">All</span>
+          <span class="chip" data-filter="active" onclick="setFilter(this)">Active</span>
+          <span class="chip" data-filter="hidden" onclick="setFilter(this)">Hidden</span>
+          <span class="chip" data-filter="promoted" onclick="setFilter(this)">Promoted</span>
+          <span class="chip" data-filter="claimed" onclick="setFilter(this)">Claimed</span>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>City / State</th><th>Status</th><th>Promo</th><th>Views</th><th>Leads</th><th style="width:48px"></th></tr></thead>
+          <tbody id="listBody"></tbody>
+        </table>
+      </div>
+      <div class="pag" id="listPag"></div>
+    </div>
+
+    <!-- LEADS -->
+    <div class="section" id="sec-leads">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Message</th><th>Listing</th><th>Status</th><th style="width:60px"></th></tr></thead>
+          <tbody id="leadBody"></tbody>
+        </table>
+      </div>
+      <div id="leadEmpty"></div>
+    </div>
+
+    <!-- SIGNUPS -->
+    <div class="section" id="sec-signups">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Date</th><th>Business</th><th>Email</th><th>Phone</th><th>City</th><th>Instagram</th><th>Status</th></tr></thead>
+          <tbody id="signupBody"></tbody>
+        </table>
+      </div>
+      <div id="signupEmpty"></div>
+    </div>
   </div>
-  <div class="refresh-bar" id="refreshBar"></div>
+</div>
+
+<!-- EDIT PANEL -->
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+<div class="panel" id="panel">
+  <div class="panel-head"><h2 id="panelTitle">Edit Listing</h2><button class="panel-close" onclick="closePanel()">&times;</button></div>
+  <div class="panel-body">
+    <input type="hidden" id="editId">
+    <div class="pf"><label>Name</label><input id="eName"></div>
+    <div class="pf"><label>Address</label><input id="eAddress"></div>
+    <div class="pf-row">
+      <div class="pf"><label>City</label><input id="eCity"></div>
+      <div class="pf"><label>State</label><input id="eState" maxlength="2" style="text-transform:uppercase"></div>
+    </div>
+    <div class="pf-row">
+      <div class="pf"><label>Zip</label><input id="eZip"></div>
+      <div class="pf"><label>Phone</label><input id="ePhone"></div>
+    </div>
+    <div class="pf"><label>Email</label><input id="eEmail" type="email"></div>
+    <div class="pf"><label>Website</label><input id="eWebsite"></div>
+    <div class="pf">
+      <label>Services</label>
+      <div class="pf-checks" id="eSvcChecks"></div>
+    </div>
+    <div class="pf"><label>Price Range</label>
+      <select id="ePriceRange"><option value="$">$</option><option value="$$">$$</option><option value="$$$">$$$</option></select>
+    </div>
+    <div class="pf"><label>About</label><textarea id="eAbout"></textarea></div>
+    <div class="pf-row">
+      <div class="pf"><label>Instagram</label><input id="eInstagram"></div>
+      <div class="pf"><label>Facebook</label><input id="eFacebook"></div>
+    </div>
+    <div class="pf"><label>TikTok</label><input id="eTiktok"></div>
+    <div class="pf"><label>Status</label>
+      <select id="eStatus"><option value="active">Active</option><option value="hidden">Hidden</option><option value="archived">Archived</option></select>
+    </div>
+    <button class="panel-save" id="saveBtn" onclick="saveListing()">Save Changes</button>
+    <div class="panel-msg" id="panelMsg"></div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3 id="confirmTitle">Delete listing?</h3>
+    <p id="confirmText">This will archive the listing. It can be restored later.</p>
+    <div class="confirm-btns">
+      <button class="cbtn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="cbtn-danger" id="confirmAction">Delete</button>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
 
-const ADMIN_HASH='bce546bf728da1796394c4d59f18e9b61b534992627772a033261e4f94e71ab8'; // sha256 of admin password
+const ADMIN_HASH='bce546bf728da1796394c4d59f18e9b61b534992627772a033261e4f94e71ab8';
+const PAGE_SIZE=50;
+const ALL_SERVICES=['Hairline Restoration','Density Fill','Scar Camouflage','Female SMP','Beard SMP','Alopecia Treatment'];
 
+let allListings=[];
+let allLeads=[];
+let allSignups=[];
+let listPage=0;
+let listFilter='all';
+let openMenuId=null;
+
+// ── PASSWORD GATE ──
 async function sha256(str){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
 async function checkGate(){
   const pw=document.getElementById('gatePw').value;
-  const hash=await sha256(pw);
-  if(hash===ADMIN_HASH){
+  if(await sha256(pw)===ADMIN_HASH){
     localStorage.setItem('ht_admin','1');
     document.getElementById('gate').style.display='none';
     document.getElementById('app').style.display='block';
     loadAll();
-    setInterval(loadAll,30000);
   } else {
     document.getElementById('gateErr').style.display='block';
   }
 }
-
 if(localStorage.getItem('ht_admin')==='1'){
   document.getElementById('gate').style.display='none';
   document.getElementById('app').style.display='block';
   loadAll();
-  setInterval(loadAll,30000);
 }
 
+// ── TABS ──
 function showTab(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(name==='leads'?0:1)));
-  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===(name==='leads'?0:1)));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='sec-'+name));
 }
 
-function timeAgo(d){
-  const s=Math.floor((Date.now()-new Date(d))/1000);
-  if(s<60)return 'just now';
-  if(s<3600)return Math.floor(s/60)+'m ago';
-  if(s<86400)return Math.floor(s/3600)+'h ago';
-  return Math.floor(s/86400)+'d ago';
-}
-
+// ── LOAD ALL DATA ──
 async function loadAll(){
-  const[leads,signups]=await Promise.all([loadLeads(),loadSignups()]);
-  document.getElementById('refreshBar').textContent='Last updated: '+new Date().toLocaleTimeString();
+  const[listings,views,leads,signups]=await Promise.all([
+    SB.from('listings').select('*').neq('status','archived').order('name'),
+    SB.from('page_views').select('id,listing_id',{count:'exact',head:true}),
+    SB.from('leads').select('*,listings(name,slug)').order('created_at',{ascending:false}),
+    SB.from('signups').select('*').order('created_at',{ascending:false})
+  ]);
+
+  allListings=listings.data||[];
+  allLeads=leads.data||[];
+  allSignups=signups.data||[];
+
+  // Count views per listing
+  const viewData=await SB.from('page_views').select('listing_id');
+  const viewMap={};
+  (viewData.data||[]).forEach(v=>{viewMap[v.listing_id]=(viewMap[v.listing_id]||0)+1;});
+  allListings.forEach(l=>{l._views=viewMap[l.id]||0;});
+
+  // Count leads per listing
+  const leadMap={};
+  allLeads.forEach(l=>{if(l.listing_id)leadMap[l.listing_id]=(leadMap[l.listing_id]||0)+1;});
+  allListings.forEach(l=>{l._leads=leadMap[l.id]||0;});
+
+  // Stats
+  document.getElementById('sTotal').textContent=allListings.length;
+  document.getElementById('sViews').textContent=(viewData.data||[]).length.toLocaleString();
+  document.getElementById('sLeads').textContent=allLeads.length;
+  document.getElementById('cntListings').textContent=allListings.length;
+  document.getElementById('cntLeads').textContent=allLeads.length;
+  document.getElementById('cntSignups').textContent=allSignups.length;
+
+  renderListings();
+  renderLeads();
+  renderSignups();
 }
 
-async function loadLeads(){
-  const{data,error}=await SB.from('leads').select('*,listings(name,slug)').order('created_at',{ascending:false});
-  const el=document.getElementById('sec-leads');
-  document.getElementById('leadsCount').textContent=data?data.length:0;
-  if(error){el.innerHTML='<div class="empty">Error loading leads: '+error.message+'</div>';return;}
-  if(!data||!data.length){el.innerHTML='<div class="empty">No leads yet</div>';return;}
-  el.innerHTML=data.map(l=>`<div class="card">
-    <div class="card-top">
-      <div class="card-name">${esc(l.sender_name)}</div>
-      <div class="card-time">${timeAgo(l.created_at)}</div>
-    </div>
-    ${l.listings?`<div class="card-listing">→ ${esc(l.listings.name)}</div>`:''}
-    <div class="card-row">
-      <span>📱 ${esc(l.sender_phone)}</span>
-    </div>
-    ${l.sender_message?`<div class="card-msg">${esc(l.sender_message)}</div>`:''}
-  </div>`).join('');
-  return data;
+// ── LISTINGS ──
+function getFiltered(){
+  let list=allListings;
+  const q=document.getElementById('listSearch').value.toLowerCase().trim();
+  if(q) list=list.filter(l=>(l.name||'').toLowerCase().includes(q)||(l.city||'').toLowerCase().includes(q));
+  if(listFilter==='active') list=list.filter(l=>l.status==='active'||!l.status);
+  else if(listFilter==='hidden') list=list.filter(l=>l.status==='hidden');
+  else if(listFilter==='promoted') list=list.filter(l=>l.promoted);
+  else if(listFilter==='claimed') list=list.filter(l=>l.claimed);
+  return list;
 }
 
-async function loadSignups(){
-  const{data,error}=await SB.from('signups').select('*').order('created_at',{ascending:false});
-  const el=document.getElementById('sec-signups');
-  document.getElementById('signupsCount').textContent=data?data.length:0;
-  if(error){el.innerHTML='<div class="empty">Error loading signups: '+error.message+'</div>';return;}
-  if(!data||!data.length){el.innerHTML='<div class="empty">No signups yet</div>';return;}
-  el.innerHTML=data.map(s=>`<div class="card">
-    <div class="card-top">
-      <div class="card-name">${esc(s.business_name)}</div>
-      <div class="card-time">${timeAgo(s.created_at)}</div>
-    </div>
-    <div class="card-row">
-      <span>✉️ ${esc(s.email)}</span>
-      ${s.phone?`<span>📱 ${esc(s.phone)}</span>`:''}
-      ${s.city_state?`<span>📍 ${esc(s.city_state)}</span>`:''}
-      ${s.instagram?`<span>@ ${esc(s.instagram)}</span>`:''}
-    </div>
-    <div style="margin-top:.5rem"><span class="status status-${s.status}">${s.status}</span></div>
-  </div>`).join('');
-  return data;
+function setFilter(el){
+  document.querySelectorAll('#listFilters .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  listFilter=el.dataset.filter;
+  listPage=0;
+  renderListings();
 }
 
+function renderListings(){
+  const filtered=getFiltered();
+  const total=filtered.length;
+  const pages=Math.ceil(total/PAGE_SIZE);
+  if(listPage>=pages) listPage=Math.max(0,pages-1);
+  const start=listPage*PAGE_SIZE;
+  const slice=filtered.slice(start,start+PAGE_SIZE);
+
+  const body=document.getElementById('listBody');
+  if(!slice.length){
+    body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--t3)">No listings found</td></tr>';
+  } else {
+    body.innerHTML=slice.map(l=>{
+      const st=l.status||'active';
+      const cls=st==='hidden'?' hidden-row':'';
+      return `<tr class="${cls}" data-id="${l.id}">
+        <td style="font-weight:600">${esc(l.name)}</td>
+        <td>${esc(l.city)}, ${esc(l.state)}</td>
+        <td><span class="badge-s b-${st}">${st}</span></td>
+        <td>${l.promoted?'<span class="badge-s b-promoted">Promoted</span>':'-'}</td>
+        <td>${l._views||0}</td>
+        <td>${l._leads||0}</td>
+        <td><div class="act-wrap">
+          <button class="act-btn" onclick="event.stopPropagation();toggleMenu(${l.id})">&#8943;</button>
+          <div class="act-menu" id="menu-${l.id}">
+            <button class="act-item" onclick="openEdit(${l.id})">Edit</button>
+            <button class="act-item" onclick="toggleHide(${l.id})">${st==='hidden'?'Unhide':'Hide'}</button>
+            <button class="act-item" onclick="togglePromote(${l.id})">${l.promoted?'Unpromote':'Promote'}</button>
+            <button class="act-item danger" onclick="confirmDelete(${l.id})">Delete</button>
+          </div>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Pagination
+  const pagEl=document.getElementById('listPag');
+  if(pages<=1){pagEl.innerHTML='';return;}
+  pagEl.innerHTML=`
+    <div style="font-size:.8125rem;color:var(--t3)">Showing ${start+1}-${Math.min(start+PAGE_SIZE,total)} of ${total}</div>
+    <div class="pag-btns">
+      <button class="pag-btn" onclick="listPage--;renderListings()" ${listPage===0?'disabled':''}>Prev</button>
+      <button class="pag-btn" onclick="listPage++;renderListings()" ${listPage>=pages-1?'disabled':''}>Next</button>
+    </div>`;
+}
+
+// ── ACTIONS MENU ──
+function toggleMenu(id){
+  if(openMenuId===id){closeMenus();return;}
+  closeMenus();
+  const m=document.getElementById('menu-'+id);
+  if(m){m.classList.add('open');openMenuId=id;}
+}
+function closeMenus(){
+  if(openMenuId!==null){
+    const m=document.getElementById('menu-'+openMenuId);
+    if(m)m.classList.remove('open');
+    openMenuId=null;
+  }
+}
+document.addEventListener('click',closeMenus);
+
+// ── HIDE / PROMOTE ──
+async function toggleHide(id){
+  closeMenus();
+  const l=allListings.find(x=>x.id===id);if(!l)return;
+  const newStatus=(l.status==='hidden')?'active':'hidden';
+  await SB.from('listings').update({status:newStatus}).eq('id',id);
+  l.status=newStatus;
+  renderListings();
+}
+async function togglePromote(id){
+  closeMenus();
+  const l=allListings.find(x=>x.id===id);if(!l)return;
+  await SB.from('listings').update({promoted:!l.promoted}).eq('id',id);
+  l.promoted=!l.promoted;
+  renderListings();
+}
+
+// ── DELETE (ARCHIVE) ──
+let deleteId=null;
+function confirmDelete(id){
+  closeMenus();
+  const l=allListings.find(x=>x.id===id);if(!l)return;
+  deleteId=id;
+  document.getElementById('confirmTitle').textContent='Delete "'+l.name+'"?';
+  document.getElementById('confirmOverlay').classList.add('open');
+  document.getElementById('confirmAction').onclick=async function(){
+    await SB.from('listings').update({status:'archived'}).eq('id',id);
+    allListings=allListings.filter(x=>x.id!==id);
+    document.getElementById('sTotal').textContent=allListings.length;
+    document.getElementById('cntListings').textContent=allListings.length;
+    renderListings();
+    closeConfirm();
+  };
+}
+function closeConfirm(){
+  document.getElementById('confirmOverlay').classList.remove('open');
+  deleteId=null;
+}
+
+// ── EDIT PANEL ──
+function openEdit(id){
+  closeMenus();
+  const l=allListings.find(x=>x.id===id);if(!l)return;
+  document.getElementById('editId').value=id;
+  document.getElementById('panelTitle').textContent='Edit: '+l.name;
+  document.getElementById('eName').value=l.name||'';
+  document.getElementById('eAddress').value=l.address||'';
+  document.getElementById('eCity').value=l.city||'';
+  document.getElementById('eState').value=l.state||'';
+  document.getElementById('eZip').value=l.zip||'';
+  document.getElementById('ePhone').value=l.phone||'';
+  document.getElementById('eEmail').value=l.email||'';
+  document.getElementById('eWebsite').value=l.website||'';
+  document.getElementById('eAbout').value=l.about||'';
+  document.getElementById('eInstagram').value=l.instagram||'';
+  document.getElementById('eFacebook').value=l.facebook||'';
+  document.getElementById('eTiktok').value=l.tiktok||'';
+  document.getElementById('ePriceRange').value=l.price_range||'$$';
+  document.getElementById('eStatus').value=l.status||'active';
+
+  // Services
+  const svcs=l.services||[];
+  document.getElementById('eSvcChecks').innerHTML=ALL_SERVICES.map(s=>{
+    const on=svcs.includes(s)?'on':'';
+    return `<span class="pf-check ${on}" onclick="this.classList.toggle('on')">${esc(s)}</span>`;
+  }).join('');
+
+  document.getElementById('panelMsg').textContent='';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+}
+function closePanel(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+}
+
+async function saveListing(){
+  const id=parseInt(document.getElementById('editId').value);
+  const btn=document.getElementById('saveBtn');
+  btn.disabled=true;btn.textContent='Saving...';
+
+  const svcs=[];
+  document.querySelectorAll('#eSvcChecks .pf-check.on').forEach(el=>svcs.push(el.textContent));
+
+  const row={
+    name:document.getElementById('eName').value.trim(),
+    address:document.getElementById('eAddress').value.trim()||null,
+    city:document.getElementById('eCity').value.trim(),
+    state:document.getElementById('eState').value.trim().toUpperCase(),
+    zip:document.getElementById('eZip').value.trim()||null,
+    phone:document.getElementById('ePhone').value.trim()||null,
+    email:document.getElementById('eEmail').value.trim()||null,
+    website:document.getElementById('eWebsite').value.trim()||null,
+    about:document.getElementById('eAbout').value.trim()||null,
+    instagram:document.getElementById('eInstagram').value.trim()||null,
+    facebook:document.getElementById('eFacebook').value.trim()||null,
+    tiktok:document.getElementById('eTiktok').value.trim()||null,
+    price_range:document.getElementById('ePriceRange').value,
+    status:document.getElementById('eStatus').value,
+    services:svcs
+  };
+
+  const{error}=await SB.from('listings').update(row).eq('id',id);
+  btn.disabled=false;btn.textContent='Save Changes';
+  if(error){
+    document.getElementById('panelMsg').innerHTML='<span style="color:#DC2626">Error: '+esc(error.message)+'</span>';
+    return;
+  }
+  document.getElementById('panelMsg').innerHTML='<span style="color:var(--ac)">Saved successfully</span>';
+  // Update local data
+  const l=allListings.find(x=>x.id===id);
+  if(l) Object.assign(l,row);
+  renderListings();
+}
+
+// ── LEADS ──
+function renderLeads(){
+  const body=document.getElementById('leadBody');
+  if(!allLeads.length){
+    body.innerHTML='';
+    document.getElementById('leadEmpty').innerHTML='<div class="empty">No leads yet</div>';
+    return;
+  }
+  document.getElementById('leadEmpty').innerHTML='';
+  body.innerHTML=allLeads.map((l,i)=>{
+    const dt=new Date(l.created_at);
+    const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const listing=l.listings?esc(l.listings.name):'—';
+    const isRead=l.read;
+    const msgPreview=l.sender_message?(esc(l.sender_message).substring(0,40)+(l.sender_message.length>40?'...':'')):'-';
+    return `<tr class="lead-row" onclick="toggleLead(${i})">
+      <td>${dateStr}</td>
+      <td style="font-weight:600">${esc(l.sender_name)}</td>
+      <td>${esc(l.sender_phone)}</td>
+      <td>${msgPreview}</td>
+      <td style="color:var(--ac)">${listing}</td>
+      <td><span class="badge-s ${isRead?'b-read':'b-unread'}">${isRead?'Read':'New'}</span></td>
+      <td>${!isRead?`<button class="mark-read" onclick="event.stopPropagation();markRead(${l.id},${i})">Mark read</button>`:''}</td>
+    </tr>
+    <tr id="lead-detail-${i}" style="display:none"><td colspan="7">
+      <div class="lead-expand" style="display:block">
+        <strong>Full message:</strong><br>${l.sender_message?esc(l.sender_message):'<em style="color:var(--t3)">No message</em>'}
+        <br><br><strong>Phone:</strong> ${esc(l.sender_phone)}
+        ${l.listings?'<br><strong>Listing:</strong> '+esc(l.listings.name)+' ('+esc(l.listings.slug)+')':''}
+        <br><strong>Date:</strong> ${dt.toLocaleString()}
+      </div>
+    </td></tr>`;
+  }).join('');
+}
+
+function toggleLead(i){
+  const row=document.getElementById('lead-detail-'+i);
+  if(row) row.style.display=row.style.display==='none'?'table-row':'none';
+}
+
+async function markRead(id,i){
+  await SB.from('leads').update({read:true}).eq('id',id);
+  if(allLeads[i]) allLeads[i].read=true;
+  renderLeads();
+}
+
+// ── SIGNUPS ──
+function renderSignups(){
+  const body=document.getElementById('signupBody');
+  if(!allSignups.length){
+    body.innerHTML='';
+    document.getElementById('signupEmpty').innerHTML='<div class="empty">No signups yet</div>';
+    return;
+  }
+  document.getElementById('signupEmpty').innerHTML='';
+  body.innerHTML=allSignups.map(s=>{
+    const dt=new Date(s.created_at);
+    const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const st=s.status||'pending';
+    return `<tr>
+      <td>${dateStr}</td>
+      <td style="font-weight:600">${esc(s.business_name)}</td>
+      <td>${esc(s.email)}</td>
+      <td>${esc(s.phone||'-')}</td>
+      <td>${esc(s.city_state||'-')}</td>
+      <td>${s.instagram?esc(s.instagram):'-'}</td>
+      <td><span class="badge-s b-${st}">${st}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── UTILS ──
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function timeAgo(d){const s=Math.floor((Date.now()-new Date(d))/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
+
+// Close panel on Escape
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closePanel();closeConfirm();}
+});
 </script>
 </body>
 </html>

@@ -277,6 +277,13 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
 let L=[];
+const _viewedAt={};
+function trackView(listing){
+  const now=Date.now();
+  if(_viewedAt[listing.id]&&now-_viewedAt[listing.id]<30000)return;
+  _viewedAt[listing.id]=now;
+  SB.from('page_views').insert({listing_id:listing.id,path:'/#/'+listing.slug}).then(()=>{});
+}
 
 let filtered=[],currentFilter='all',page=1,currentTab='directory';
 const PER=24;
@@ -378,6 +385,7 @@ function showDetail(l){
   dp.style.display='block';
   window.scrollTo(0,0);
   document.title=l.name+' — Hair Tattoo & SMP | HairTattoo.com';
+  trackView(l);
 
   const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
   const pr=l.pr||'$$';
