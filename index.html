@@ -81,6 +81,9 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .c-about{font-size:.8125rem;color:var(--t2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .c-tags{padding:0 1.25rem .75rem;display:flex;flex-wrap:wrap;gap:.25rem}
 .c-tag{font-size:.6875rem;padding:.125rem .5rem;background:var(--al);color:var(--ac);border-radius:4px}
+.c-img{position:relative;width:100%;height:180px;overflow:hidden;background:var(--al)}
+.c-img img{width:100%;height:100%;object-fit:cover;display:block}
+.c-pill{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.85);backdrop-filter:blur(4px);padding:2px 8px;border-radius:12px;font-size:.625rem;color:var(--t2);pointer-events:none}
 .c-foot{padding:.5rem 1.25rem;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:.8125rem}
 .c-views{color:var(--t3);display:flex;align-items:center;gap:.25rem;font-size:.75rem}
 .c-msg{color:var(--ac);font-weight:500;display:flex;align-items:center;gap:.25rem;cursor:pointer;transition:color .15s}
@@ -111,10 +114,12 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .masonry{columns:4;column-gap:6px;max-width:1200px;margin:0 auto;padding:0 1rem 3rem}
 .m-item{break-inside:avoid;margin-bottom:6px;border-radius:8px;overflow:hidden;position:relative;cursor:pointer}
 .m-item:hover .m-ov{opacity:1}
-.m-img{width:100%;display:block;background:linear-gradient(135deg,var(--al),#c8dbd0);min-height:160px}
+.m-img{width:100%;display:block;background:linear-gradient(135deg,var(--al),#c8dbd0);min-height:160px;object-fit:cover}
 .m-ov{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.65));opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:.75rem}
 .m-ov-name{color:#fff;font-weight:700;font-size:.8125rem;line-height:1.3}
 .m-ov-loc{color:rgba(255,255,255,.75);font-size:.6875rem}
+.m-dots{position:absolute;bottom:.5rem;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:1}
+.m-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5)}.m-dot.on{background:#fff}
 
 /* DETAIL PAGE */
 .detail-page{display:none;max-width:720px;margin:0 auto;padding:1rem 1rem 3rem}
@@ -309,6 +314,8 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+const MEDIA_BASE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/media/';
+function mediaUrl(p){return MEDIA_BASE+p;}
 let L=[];
 const _viewedAt={};
 function trackView(listing){
@@ -392,7 +399,9 @@ function render(){
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
     const pr=l.pr||'$$';
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
+    const thumb=l._media&&l._media[0]?`<div class="c-img"><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">📷 Sample photo</span>':''}</div>`:'';
     return `<article class="card" onclick="location.hash='/${l.slug}'" itemscope itemtype="https://schema.org/LocalBusiness">
+      ${thumb}
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div><div class="c-pr">${pr}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
       <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
@@ -431,13 +440,17 @@ function showDetail(l){
   if(soc.tiktok) socHTML+=`<a href="https://tiktok.com/@${soc.tiktok}" target="_blank" rel="noopener" class="dp-social">TikTok</a>`;
   if(l.website) socHTML+=`<a href="${l.website}" target="_blank" rel="noopener" class="dp-social"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>`;
 
-  // Generate varied placeholder gallery images
-  const colors=['#c8dbd0','#b8d0c2','#a8c5b4','#d4e4d9','#e0ebe5','#bcd4c6','#96b8a5','#aecabb'];
-  const heights=[180,220,260,200,240,190,210,250];
-  const glabels=['Before & After','Hairline Closeup','Density Session','Side Profile','Top View','Final Result'];
+  // Gallery images from media table
+  const gMedia=l._media||[];
   let gallery='';
-  for(let i=0;i<6;i++){
-    gallery+=`<div onclick="openLb(${l.id},${i})" style="background:${colors[i%8]};border-radius:8px;height:${heights[i%8]}px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--ac);cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><span style="font-family:var(--se);font-size:1.5rem;opacity:.5">${ini}</span><span style="font-size:.6rem;opacity:.35;margin-top:.25rem">${glabels[i]}</span></div>`;
+  if(gMedia.length){
+    gallery=gMedia.map((m,i)=>`<div onclick="openLb(${l.id},${i})" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><img src="${mediaUrl(m.storage_path)}" loading="lazy" width="240" height="200" alt="${l.name}" style="width:100%;height:200px;object-fit:cover;display:block">${m.is_placeholder?'<span class="c-pill">📷 Sample photo</span>':''}</div>`).join('');
+  } else {
+    const colors=['#c8dbd0','#b8d0c2','#a8c5b4','#d4e4d9','#e0ebe5','#bcd4c6'];
+    const glabels=['Before & After','Hairline Closeup','Density Session','Side Profile','Top View','Final Result'];
+    for(let i=0;i<6;i++){
+      gallery+=`<div style="background:${colors[i]};border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--ac)"><span style="font-family:var(--se);font-size:1.5rem;opacity:.5">${ini}</span><span style="font-size:.6rem;opacity:.35;margin-top:.25rem">${glabels[i]}</span></div>`;
+    }
   }
 
   dp.innerHTML=`
@@ -532,10 +545,14 @@ async function submitMsgPanel(){
 let lbItems=[],lbIdx=0;
 function openLb(listingId,idx){
   const l=L.find(x=>x.id===listingId);if(!l)return;
-  const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-  const colors=['#c8dbd0','#b8d0c2','#a8c5b4','#d4e4d9','#e0ebe5','#bcd4c6'];
-  const glabels=['Before & After','Hairline Closeup','Density Session','Side Profile','Top View','Final Result'];
-  lbItems=colors.map((c,i)=>({color:c,label:glabels[i]||'Photo',ini,listing:l}));
+  const media=l._media||[];
+  if(media.length){
+    lbItems=media.map(m=>({url:mediaUrl(m.storage_path),isPlaceholder:m.is_placeholder,listing:l}));
+  } else {
+    const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+    const colors=['#c8dbd0','#b8d0c2','#a8c5b4','#d4e4d9','#e0ebe5','#bcd4c6'];
+    lbItems=colors.map((c,i)=>({color:c,ini,listing:l}));
+  }
   lbIdx=idx||0;
   renderLb();
   document.getElementById('lightbox').classList.add('open');
@@ -546,9 +563,16 @@ function openLbFeed(listingId){
 }
 function renderLb(){
   const item=lbItems[lbIdx];if(!item)return;
-  document.getElementById('lbImg').style.background=`linear-gradient(135deg,${item.color},#c8dbd0)`;
-  document.getElementById('lbImg').innerHTML=`<span style="font-family:var(--se);font-size:3rem;color:var(--ac);opacity:.4">${item.ini}</span><span style="font-size:.75rem;color:var(--ac);opacity:.3;margin-top:.5rem">${item.label}</span>`;
-  document.getElementById('lbInfo').innerHTML=`<h4>${item.listing.name}</h4><p>${item.listing.city}, ${item.listing.state} · ${item.label}</p><button class="btn" onclick="closeLb();location.hash='/${item.listing.slug}'">View Business →</button>`;
+  const imgEl=document.getElementById('lbImg');
+  if(item.url){
+    imgEl.style.background='#111';
+    imgEl.innerHTML=`<img src="${item.url}" alt="${item.listing.name}" style="max-width:90vw;max-height:70vh;object-fit:contain;border-radius:8px">${item.isPlaceholder?'<span class="c-pill" style="bottom:1rem;left:1rem">📷 Sample photo</span>':''}`;
+  } else {
+    imgEl.style.background=`linear-gradient(135deg,${item.color},#c8dbd0)`;
+    imgEl.innerHTML=`<span style="font-family:var(--se);font-size:3rem;color:var(--ac);opacity:.4">${item.ini}</span>`;
+  }
+  const dots=lbItems.length>1?`<div style="display:flex;gap:4px;justify-content:center;margin-top:.5rem">${lbItems.map((_,i)=>`<span style="width:6px;height:6px;border-radius:50%;background:${i===lbIdx?'#fff':'rgba(255,255,255,.4)'}"></span>`).join('')}</div>`:'';
+  document.getElementById('lbInfo').innerHTML=`<h4>${item.listing.name}</h4><p>${item.listing.city}, ${item.listing.state}</p>${dots}<button class="btn" onclick="closeLb();location.hash='/${item.listing.slug}'" style="margin-top:.5rem">View Business →</button>`;
 }
 function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
 function lbNav(dir){lbIdx=(lbIdx+dir+lbItems.length)%lbItems.length;renderLb();}
@@ -574,12 +598,14 @@ function renderMasonry(){
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
     const h=heights[i%heights.length]+(i%3)*20;
     const c=colors[i%colors.length];
-    const lbl=labels[i%labels.length];
+    const mg=l._media&&l._media[0];
+    const hasMulti=l._media&&l._media.length>1;
+    const dots=hasMulti?`<div class="m-dots">${l._media.slice(0,6).map((_,j)=>'<span class="m-dot'+(j===0?' on':'')+'"></span>').join('')}</div>`:'';
+    const imgHTML=mg?`<img class="m-img" src="${mediaUrl(mg.storage_path)}" loading="lazy" width="300" height="${h}" alt="${l.name}" style="height:100%;width:100%;object-fit:cover">`:`<div class="m-img" style="height:100%;background:linear-gradient(${135+i*15}deg,${c},${colors[(i+3)%colors.length]});display:flex;align-items:center;justify-content:center;flex-direction:column"><span style="font-family:var(--se);font-size:2rem;color:var(--ac);opacity:.4">${ini}</span></div>`;
     return `<div class="m-item" onclick="openLbFeed(${l.id})" style="height:${h}px">
-      <div class="m-img" style="height:100%;background:linear-gradient(${135+i*15}deg,${c},${colors[(i+3)%colors.length]});display:flex;align-items:center;justify-content:center;flex-direction:column">
-        <span style="font-family:var(--se);font-size:2rem;color:var(--ac);opacity:.4">${ini}</span>
-        <span style="font-size:.65rem;color:var(--ac);opacity:.3;margin-top:.25rem">${lbl}</span>
-      </div>
+      ${imgHTML}
+      ${mg&&mg.is_placeholder?'<span class="c-pill" style="position:absolute;bottom:2.5rem;left:.5rem">📷 Sample photo</span>':''}
+      ${dots}
       <div class="m-ov">
         <div class="m-ov-name">${l.name}</div>
         <div class="m-ov-loc">${l.city}, ${l.state}</div>
@@ -607,6 +633,9 @@ async function initApp(){
   // Fetch view counts
   const{data:viewStats,error:vsErr}=await SB.from('listing_stats').select('id,view_count');
   if(!vsErr&&viewStats){const vc={};viewStats.forEach(s=>vc[s.id]=s.view_count||0);L.forEach(l=>l._views=vc[l.id]||0);}
+  // Fetch media for all listings
+  const{data:mediaData}=await SB.from('media').select('*').order('sort_order',{ascending:true});
+  if(mediaData){const mm={};mediaData.forEach(m=>{if(!mm[m.listing_id])mm[m.listing_id]=[];mm[m.listing_id].push(m);});L.forEach(l=>l._media=mm[l.id]||[]);}
   filtered=[...L];
   doSearch();
   geoSort();
