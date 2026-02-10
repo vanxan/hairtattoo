@@ -314,8 +314,8 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
-const MEDIA_BASE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/media/';
-function mediaUrl(p){return MEDIA_BASE+p;}
+const MEDIA_BASE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/';
+function mediaUrl(p){return MEDIA_BASE+encodeURIComponent(p);}
 let L=[];
 const _viewedAt={};
 function trackView(listing){
