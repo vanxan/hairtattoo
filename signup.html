@@ -372,7 +372,8 @@ async function sendOtp(){
   document.getElementById('emailErr').textContent='';
   const btn=document.getElementById('sendOtpBtn');
   btn.disabled=true;btn.textContent='Sending...';
-  const redirectUrl=claimSlug?location.origin+'/signup.html?claim='+claimSlug:location.origin+'/signup.html';
+  const fromParam=new URLSearchParams(location.search).get('from');
+  const redirectUrl=claimSlug?location.origin+'/signup.html?claim='+claimSlug:fromParam==='dashboard'?location.origin+'/dashboard.html':location.origin+'/signup.html';
   const{error}=await SB.auth.signInWithOtp({email,options:{emailRedirectTo:redirectUrl}});
   btn.disabled=false;btn.textContent='Send Verification Link';
   if(error){document.getElementById('emailErr').textContent=error.message;return;}
