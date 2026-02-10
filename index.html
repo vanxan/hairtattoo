@@ -316,25 +316,26 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
 const MEDIA_BASE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/';
 function mediaUrl(p){return MEDIA_BASE+encodeURIComponent(p);}
+function listingUrl(l){return '/near-me/'+l.city.toLowerCase().replace(/\s+/g,'-')+'-'+l.state.toLowerCase()+'/'+l.slug;}
 let L=[];
 const _viewedAt={};
 function trackView(listing){
   const now=Date.now();
   if(_viewedAt[listing.id]&&now-_viewedAt[listing.id]<30000)return;
   _viewedAt[listing.id]=now;
-  SB.from('page_views').insert({listing_id:listing.id,path:'/#/'+listing.slug}).then(()=>{});
+  SB.from('page_views').insert({listing_id:listing.id,path:listingUrl(listing)}).then(()=>{});
 }
 
 let filtered=[],currentFilter='all',page=1,currentTab='directory';
 const PER=24;
 
-// === HASH ROUTER ===
+// === HASH ROUTER (fallback — redirects to clean URLs) ===
 function route(){
   const hash=location.hash.slice(1);
   if(hash && hash!=='/'){
     const slug=hash.startsWith('/')?hash.slice(1):hash;
     const listing=L.find(l=>l.slug===slug);
-    if(listing){showDetail(listing);return;}
+    if(listing){location.replace(listingUrl(listing));return;}
   }
   showHome();
 }
@@ -400,7 +401,7 @@ function render(){
     const pr=l.pr||'$$';
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
     const thumb=l._media&&l._media[0]?`<div class="c-img"><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">📷 Sample photo</span>':''}</div>`:'';
-    return `<article class="card" onclick="location.hash='/${l.slug}'" itemscope itemtype="https://schema.org/LocalBusiness">
+    return `<article class="card" onclick="location.href='${listingUrl(l)}'" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div><div class="c-pr">${pr}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
@@ -572,7 +573,7 @@ function renderLb(){
     imgEl.innerHTML=`<span style="font-family:var(--se);font-size:3rem;color:var(--ac);opacity:.4">${item.ini}</span>`;
   }
   const dots=lbItems.length>1?`<div style="display:flex;gap:4px;justify-content:center;margin-top:.5rem">${lbItems.map((_,i)=>`<span style="width:6px;height:6px;border-radius:50%;background:${i===lbIdx?'#fff':'rgba(255,255,255,.4)'}"></span>`).join('')}</div>`:'';
-  document.getElementById('lbInfo').innerHTML=`<h4>${item.listing.name}</h4><p>${item.listing.city}, ${item.listing.state}</p>${dots}<button class="btn" onclick="closeLb();location.hash='/${item.listing.slug}'" style="margin-top:.5rem">View Business →</button>`;
+  document.getElementById('lbInfo').innerHTML=`<h4>${item.listing.name}</h4><p>${item.listing.city}, ${item.listing.state}</p>${dots}<button class="btn" onclick="closeLb();location.href=listingUrl(item.listing)" style="margin-top:.5rem">View Business →</button>`;
 }
 function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
 function lbNav(dir){lbIdx=(lbIdx+dir+lbItems.length)%lbItems.length;renderLb();}
