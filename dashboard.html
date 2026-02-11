@@ -528,25 +528,59 @@ function ago(d){const s=Math.floor((Date.now()-new Date(d))/1e3);if(s<60)return'
 function stars(n){return '<span style="color:#F59E0B">'+'&#9733;'.repeat(n)+'</span>'+'<span style="color:var(--bd)">'+'&#9733;'.repeat(5-n)+'</span>';}
 
 // ══════════════════════ AUTH ══════════════════════
-SB.auth.onAuthStateChange(async(event,session)=>{
-  console.log('[DASH] onAuthStateChange event=',event,'session=',!!session,'user=',session?.user?.id);
-  if(!session||!session.user){
-    if(loggingOut)return;
-    console.log('[DASH] No session, redirecting to signup');
+// Global error handler — catch anything that slips through
+window.onerror=function(msg,src,line,col,err){
+  console.error('[DASH] Global error:',msg,'at',src,line,col,err);
+  const el=document.getElementById('dashLoading');
+  if(el&&el.style.display!=='none') el.innerHTML='<div style="color:#DC2626;text-align:center;padding:2rem"><strong>Something went wrong</strong><br><span style="font-size:.75rem">'+msg+'</span><br><br><button class="btn btn-o" onclick="location.reload()">Reload</button></div>';
+};
+window.onunhandledrejection=function(e){
+  console.error('[DASH] Unhandled rejection:',e.reason);
+};
+
+// Timeout fallback — if still loading after 12s, show error
+setTimeout(function(){
+  const el=document.getElementById('dashLoading');
+  if(el&&el.style.display!=='none'){
+    console.error('[DASH] Timeout: dashboard still loading after 12s');
+    el.innerHTML='<div style="color:#DC2626;text-align:center;padding:2rem"><strong>Dashboard timed out</strong><br><span style="font-size:.75rem">Could not load your data. Check console (F12) for details.</span><br><br><button class="btn btn-o" onclick="location.reload()">Reload</button></div>';
+  }
+},12000);
+
+// Use getSession() directly — more reliable than onAuthStateChange alone
+(async function init(){
+  console.log('[DASH] init() starting...');
+
+  // Wait for Supabase to recover session from storage
+  const{data:sessionData,error:sessionError}=await SB.auth.getSession();
+  console.log('[DASH] getSession result: session=',!!sessionData.session,'error=',sessionError);
+
+  if(!sessionData.session){
+    console.log('[DASH] No session found, redirecting to signup');
     window.location.href='/signup.html?from=dashboard';
     return;
   }
-  if(event==='INITIAL_SESSION'||event==='SIGNED_IN'){
-    currentUser=session.user;
-    document.getElementById('logoutBtn').style.display='';
-    try{
-      await loadDashboard(session.user);
-    }catch(err){
-      console.error('[DASH] loadDashboard crashed:',err);
-      document.getElementById('dashLoading').innerHTML='<div style="color:#DC2626;text-align:center"><strong>Dashboard error</strong><br><span style="font-size:.75rem">'+esc(err.message)+'</span><br><br><button class="btn btn-o" onclick="location.reload()">Reload</button></div>';
+
+  const user=sessionData.session.user;
+  currentUser=user;
+  document.getElementById('logoutBtn').style.display='';
+  console.log('[DASH] Authenticated user:',user.id,user.email);
+
+  // Listen for future auth changes (logout, token refresh)
+  SB.auth.onAuthStateChange((event,session)=>{
+    console.log('[DASH] onAuthStateChange:',event);
+    if(event==='SIGNED_OUT'&&!loggingOut){
+      window.location.href='/signup.html?from=dashboard';
     }
+  });
+
+  try{
+    await loadDashboard(user);
+  }catch(err){
+    console.error('[DASH] loadDashboard crashed:',err);
+    document.getElementById('dashLoading').innerHTML='<div style="color:#DC2626;text-align:center;padding:2rem"><strong>Dashboard error</strong><br><span style="font-size:.75rem">'+esc(err.message)+'</span><br><br><button class="btn btn-o" onclick="location.reload()">Reload</button></div>';
   }
-});
+})();
 
 async function doLogout(){
   loggingOut=true;
@@ -556,7 +590,7 @@ async function doLogout(){
 
 // ══════════════════════ LOAD DASHBOARD ══════════════════════
 async function loadDashboard(user){
-  console.log('[DASH] loadDashboard called, user.id=',user.id,'user.email=',user.email);
+  console.log('[DASH] loadDashboard() user.id=',user.id,'email=',user.email);
   const email=user.email||'';
   const ini=email.split('@')[0].slice(0,2).toUpperCase();
   document.getElementById('sbAvatar').textContent=ini;
@@ -564,25 +598,31 @@ async function loadDashboard(user){
   document.getElementById('accountEmail').textContent=email;
 
   // Find listing: claimed_by first, then email fallback
+  // Use .select() returning array — avoids maybeSingle() edge cases
   let listing=null;
-  console.log('[DASH] Querying listings by claimed_by=',user.id);
-  const{data:d1,error:e1}=await SB.from('listings').select('*').eq('claimed_by',user.id).limit(1).maybeSingle();
-  console.log('[DASH] claimed_by result: data=',d1,'error=',e1);
-  if(d1) listing=d1;
-  if(!listing){
-    console.log('[DASH] No claimed_by match, trying email=',email);
-    const{data:d2,error:e2}=await SB.from('listings').select('*').ilike('email',email).limit(1).maybeSingle();
-    console.log('[DASH] email result: data=',d2,'error=',e2);
-    if(d2){
-      listing=d2;
-      // Auto-fix: set claimed_by
-      await SB.from('listings').update({claimed_by:user.id,claimed:true}).eq('id',d2.id);
+
+  console.log('[DASH] Query 1: listings where claimed_by =',user.id);
+  const{data:arr1,error:e1}=await SB.from('listings').select('*').eq('claimed_by',user.id).limit(1);
+  console.log('[DASH] Query 1 result: rows=',arr1?arr1.length:null,'error=',e1);
+  if(arr1&&arr1.length>0) listing=arr1[0];
+
+  if(!listing&&email){
+    console.log('[DASH] Query 2: listings where email ilike',email);
+    const{data:arr2,error:e2}=await SB.from('listings').select('*').ilike('email',email).limit(1);
+    console.log('[DASH] Query 2 result: rows=',arr2?arr2.length:null,'error=',e2);
+    if(arr2&&arr2.length>0){
+      listing=arr2[0];
+      // Auto-fix: set claimed_by so future loads are faster
+      await SB.from('listings').update({claimed_by:user.id,claimed:true}).eq('id',listing.id);
+      console.log('[DASH] Auto-claimed listing',listing.id);
     }
   }
 
+  // Hide loading spinner
   document.getElementById('dashLoading').style.display='none';
+
   if(!listing){
-    console.log('[DASH] No listing found, showing empty state');
+    console.log('[DASH] No listing found — showing empty state');
     document.getElementById('dashEmpty').style.display='';
     return;
   }
@@ -605,11 +645,14 @@ async function loadDashboard(user){
     SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
     SB.from('review_requests').select('*').eq('listing_id',listing.id).order('sent_at',{ascending:false})
   ]);
-  console.log('[DASH] Parallel fetch done. views=',viewsRes.data?.length,'err=',viewsRes.error,
-    'leads=',leadsRes.data?.length,'err=',leadsRes.error,
-    'media=',mediaRes.data?.length,'err=',mediaRes.error,
-    'reviews=',reviewsRes.data?.length,'err=',reviewsRes.error,
-    'rr=',rrRes.data?.length,'err=',rrRes.error);
+  console.log('[DASH] Parallel data loaded — views:',viewsRes.data?.length,
+    'leads:',leadsRes.data?.length,'media:',mediaRes.data?.length,
+    'reviews:',reviewsRes.data?.length,'rr:',rrRes.data?.length);
+  if(viewsRes.error)console.warn('[DASH] views error:',viewsRes.error);
+  if(leadsRes.error)console.warn('[DASH] leads error:',leadsRes.error);
+  if(mediaRes.error)console.warn('[DASH] media error:',mediaRes.error);
+  if(reviewsRes.error)console.warn('[DASH] reviews error:',reviewsRes.error);
+  if(rrRes.error)console.warn('[DASH] review_requests error:',rrRes.error);
 
   myViews=viewsRes.data||[];
   myLeads=leadsRes.data||[];
@@ -621,11 +664,10 @@ async function loadDashboard(user){
   const newLeads=myLeads.filter(l=>!l.status||l.status==='new').length;
   if(newLeads){
     const b=document.getElementById('leadsBadge');
-    b.textContent=newLeads;
-    b.style.display='';
+    if(b){b.textContent=newLeads;b.style.display='';}
   }
 
-  console.log('[DASH] Populating form and rendering tabs...');
+  console.log('[DASH] Rendering tabs...');
   populateForm(listing);
   renderOverview();
   renderLeads();
