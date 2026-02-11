@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terms of Service | HairTattoo</title>
+<meta name="description" content="Terms of Service for HairTattoo.com, the #1 directory for scalp micropigmentation and hair tattoo professionals.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--ac);text-decoration:none}
+a:hover{color:var(--ac2)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
+.logo span{color:var(--ac)}
+.nav-r{display:flex;align-items:center;gap:.5rem}
+.hm{font-size:.875rem;font-weight:500;color:var(--t2);padding:.5rem .75rem;border-radius:var(--rs);transition:all .15s}
+.hm:hover{color:var(--ac);background:var(--al)}
+
+/* NAV DROPDOWN */
+.nav-dd{position:relative}
+.nav-dd-btn{display:flex;align-items:center;gap:.25rem;font-size:.875rem;font-weight:500;color:var(--t2);padding:.5rem .75rem;border-radius:var(--rs);border:none;background:none;cursor:pointer;font-family:var(--f);transition:all .15s}
+.nav-dd-btn:hover{color:var(--ac);background:var(--al)}
+.nav-dd-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);padding:.375rem;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;font-size:.8125rem;font-weight:500;color:var(--text);border-radius:6px;transition:background .15s}
+.nav-menu a:hover{background:var(--al);color:var(--ac)}
+.nav-menu a.primary{background:var(--ac);color:#fff;text-align:center;font-weight:600}
+.nav-menu a.primary:hover{background:var(--ac2)}
+.nm-sep{height:1px;background:var(--bd);margin:.375rem 0}
+
+/* HAMBURGER & MOBILE MENU */
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--text)}
+.hamburger svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:flex;justify-content:flex-end}
+.mob-drawer{width:280px;background:var(--card);height:100%;padding:1.5rem;position:relative}
+.mob-close{position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;color:var(--t3);line-height:1}
+.mob-drawer nav{display:flex;flex-direction:column;gap:.25rem;margin-top:2.5rem}
+.mob-drawer nav a{padding:.75rem;font-size:.9375rem;font-weight:500;border-radius:var(--rs);transition:background .15s}
+.mob-drawer nav a:hover{background:var(--al)}
+
+@media(max-width:640px){
+  .hm,.nav-dd{display:none}
+  .hamburger{display:block}
+}
+
+/* CONTENT */
+.content{max-width:720px;margin:0 auto;padding:3rem 1.5rem 4rem}
+.content h1{font-family:var(--se);font-size:clamp(2rem,5vw,2.75rem);font-weight:400;line-height:1.15;margin-bottom:.5rem}
+.content .subtitle{color:var(--t3);font-size:.9375rem;margin-bottom:2.5rem}
+.content h2{font-family:var(--se);font-size:1.5rem;font-weight:400;margin-top:2.5rem;margin-bottom:.75rem;color:var(--text)}
+.content h3{font-size:.9375rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem}
+.content p{color:var(--t2);font-size:.9375rem;margin-bottom:1rem;line-height:1.7}
+.content ul,.content ol{color:var(--t2);font-size:.9375rem;margin-bottom:1rem;padding-left:1.5rem;line-height:1.7}
+.content li{margin-bottom:.375rem}
+.content strong{color:var(--text);font-weight:600}
+
+/* FOOTER */
+footer{background:var(--text);color:rgba(255,255,255,.6);text-align:center;padding:3rem 1.5rem;font-size:.8125rem;line-height:1.6}
+footer h4{font-family:var(--se);font-size:1.5rem;color:#fff;font-weight:400;margin-bottom:.5rem}
+footer p{max-width:480px;margin:0 auto}
+.f-links{margin-top:1.5rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+.f-links a{color:rgba(255,255,255,.45);font-size:.75rem;transition:color .15s}
+.f-links a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <div class="nav-r">
+    <a href="/near-me/" class="hm">Near Me</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/signup.html" class="primary">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
+<script>document.addEventListener('click',function(e){var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')})</script>
+
+<div class="content">
+  <h1>Terms of Service</h1>
+  <p class="subtitle">Effective date: February 1, 2025</p>
+
+  <p>Welcome to HairTattoo.com ("HairTattoo," "we," "us," or "our"). These Terms of Service ("Terms") govern your access to and use of the HairTattoo website, directory, and related services (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Service.</p>
+
+  <h2>1. Use of the Directory Service</h2>
+  <p>HairTattoo operates an online directory that connects consumers with scalp micropigmentation (SMP) professionals and hair tattoo artists across the United States. The Service is provided for informational purposes only.</p>
+  <p>You may use the Service to browse business listings, submit inquiries to listed professionals, and access publicly available information about SMP providers. You agree to use the Service only for lawful purposes and in accordance with these Terms.</p>
+  <p>You must be at least 18 years of age to create an account or submit content through the Service. By using the Service, you represent and warrant that you meet this age requirement.</p>
+
+  <h2>2. Business Listing Accuracy</h2>
+  <p>Business owners and authorized representatives who create or claim listings on HairTattoo ("Listing Owners") are solely responsible for the accuracy, completeness, and timeliness of the information displayed in their listings. This includes but is not limited to:</p>
+  <ul>
+    <li>Business name, address, and contact information</li>
+    <li>Descriptions of services offered and pricing</li>
+    <li>Business hours and availability</li>
+    <li>Photographs and media representing their work</li>
+    <li>Licenses, certifications, and professional credentials</li>
+  </ul>
+  <p>HairTattoo does not independently verify the information provided by Listing Owners. We reserve the right, but are not obligated, to review, edit, or remove any listing that we believe contains inaccurate, misleading, or incomplete information.</p>
+  <p>Listing Owners agree to promptly update their listings to reflect any material changes to their business information.</p>
+
+  <h2>3. User-Submitted Content</h2>
+  <p>Users of the Service may submit content including reviews, ratings, photographs, and other materials ("User Content"). By submitting User Content, you grant HairTattoo a non-exclusive, royalty-free, worldwide, perpetual, and irrevocable license to use, reproduce, modify, display, and distribute such content in connection with the Service.</p>
+  <p>You represent and warrant that you own or have the necessary rights to submit all User Content and that your submissions do not violate the rights of any third party.</p>
+  <p>HairTattoo reserves the right to moderate, edit, or remove any User Content at our sole discretion, for any reason, including but not limited to content that violates these Terms or that we deem inappropriate, misleading, or harmful. We are not obligated to publish, store, or maintain any User Content.</p>
+
+  <h2>4. Prohibited Content and Conduct</h2>
+  <p>You agree not to use the Service to submit, post, or transmit any content or engage in any conduct that:</p>
+  <ul>
+    <li><strong>Fake reviews:</strong> Fabricated, purchased, or incentivized reviews designed to artificially inflate or deflate a business's reputation</li>
+    <li><strong>Misleading information:</strong> False claims about credentials, experience, services, pricing, or results</li>
+    <li><strong>Inappropriate images:</strong> Photographs or media that are obscene, offensive, unrelated to SMP services, or that violate the privacy of others</li>
+    <li><strong>Impersonation:</strong> Misrepresenting your identity or your affiliation with a business or individual</li>
+    <li><strong>Spam or solicitation:</strong> Unsolicited advertising, bulk messaging, or promotional materials</li>
+    <li><strong>Harassment:</strong> Threats, intimidation, hate speech, or content intended to harass, abuse, or harm others</li>
+    <li><strong>Malicious activity:</strong> Viruses, malware, or any code designed to disrupt, damage, or gain unauthorized access to the Service</li>
+    <li><strong>Scraping or data harvesting:</strong> Automated collection of data from the Service without our prior written consent</li>
+  </ul>
+  <p>We reserve the right to investigate and take appropriate action against anyone who violates these prohibitions, including removing content, suspending or terminating accounts, and reporting violations to law enforcement.</p>
+
+  <h2>5. Intellectual Property</h2>
+  <p>All content, features, and functionality of the Service -- including but not limited to text, graphics, logos, icons, design elements, software, and the overall look and feel of HairTattoo.com -- are the exclusive property of HairTattoo or its licensors and are protected by United States and international copyright, trademark, and other intellectual property laws.</p>
+  <p>The HairTattoo name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of HairTattoo. You may not use these marks without our prior written permission.</p>
+  <p>You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any material from the Service, except as incidental to normal web browsing or as expressly permitted by these Terms.</p>
+
+  <h2>6. Limitation of Liability</h2>
+  <p><strong>HairTattoo is a directory service, not a service provider.</strong> We do not perform, endorse, or guarantee any scalp micropigmentation procedures, hair tattoo services, or related treatments offered by businesses listed on our platform.</p>
+  <p>To the fullest extent permitted by law:</p>
+  <ul>
+    <li>HairTattoo makes no warranties, express or implied, regarding the quality, safety, legality, or results of any services provided by listed businesses.</li>
+    <li>We do not guarantee the accuracy, completeness, or reliability of any information contained in business listings, reviews, or other content on the Service.</li>
+    <li>We are not responsible for any interactions, transactions, disputes, or outcomes between users and listed businesses.</li>
+    <li>HairTattoo shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the Service.</li>
+  </ul>
+  <p>You acknowledge that any reliance on information provided through the Service is at your own risk. We strongly encourage you to conduct your own research, verify credentials, and consult with professionals before undergoing any SMP procedure.</p>
+  <p>In no event shall HairTattoo's total liability to you for all claims arising out of or related to these Terms or the Service exceed the amount you paid to us, if any, during the twelve (12) months preceding the claim.</p>
+
+  <h2>7. Account Termination</h2>
+  <p>We reserve the right to suspend or terminate your account and access to the Service at any time, with or without cause and with or without notice, including but not limited to situations where:</p>
+  <ul>
+    <li>You violate any provision of these Terms</li>
+    <li>Your conduct may cause harm to other users, listed businesses, or HairTattoo</li>
+    <li>Your account has been inactive for an extended period</li>
+    <li>We are required to do so by law</li>
+  </ul>
+  <p>Upon termination, your right to use the Service will immediately cease. Any provisions of these Terms that by their nature should survive termination shall remain in effect, including but not limited to intellectual property provisions, limitations of liability, and dispute resolution.</p>
+  <p>You may delete your account at any time by contacting us at <a href="mailto:legal@hairtattoo.com">legal@hairtattoo.com</a>.</p>
+
+  <h2>8. Dispute Resolution</h2>
+  <p>Any dispute, controversy, or claim arising out of or relating to these Terms or the Service shall first be resolved through good-faith negotiation between the parties. If a dispute cannot be resolved through negotiation within thirty (30) days, either party may pursue binding arbitration.</p>
+  <p>Arbitration shall be conducted in accordance with the rules of the American Arbitration Association (AAA) and shall take place in the state of California. The arbitrator's decision shall be final and binding.</p>
+  <p>You agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated, or representative action. You waive any right to participate in a class action lawsuit or class-wide arbitration against HairTattoo.</p>
+  <p>Nothing in this section shall prevent either party from seeking injunctive or equitable relief in a court of competent jurisdiction for matters relating to intellectual property or unauthorized access to the Service.</p>
+
+  <h2>9. Changes to Terms</h2>
+  <p>We reserve the right to modify or replace these Terms at any time at our sole discretion. If we make material changes, we will provide notice by updating the "Effective date" at the top of this page and, where appropriate, notifying you by email or through a prominent notice on the Service.</p>
+  <p>Your continued use of the Service after any changes to these Terms constitutes your acceptance of the revised Terms. If you do not agree to the updated Terms, you must stop using the Service.</p>
+  <p>We encourage you to review these Terms periodically to stay informed about our requirements and any changes.</p>
+
+  <h2>10. General Provisions</h2>
+  <p><strong>Governing Law.</strong> These Terms shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law principles.</p>
+  <p><strong>Severability.</strong> If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+  <p><strong>Entire Agreement.</strong> These Terms, together with our <a href="/privacy">Privacy Policy</a>, constitute the entire agreement between you and HairTattoo regarding the Service and supersede all prior agreements and understandings.</p>
+  <p><strong>Waiver.</strong> Our failure to enforce any right or provision of these Terms shall not constitute a waiver of that right or provision.</p>
+
+  <h2>Contact Us</h2>
+  <p>If you have any questions about these Terms of Service, please contact us at:</p>
+  <p><strong>Email:</strong> <a href="mailto:legal@hairtattoo.com">legal@hairtattoo.com</a></p>
+  <p>HairTattoo.com<br>United States</p>
+</div>
+
+<footer>
+  <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
+  <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 HairTattoo.com. All rights reserved.</p>
+  <div class="f-links">
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

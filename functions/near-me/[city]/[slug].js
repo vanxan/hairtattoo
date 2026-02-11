@@ -54,7 +54,7 @@ export async function onRequestGet(context) {
   return new Response(html, {
     headers: {
       'Content-Type': 'text/html;charset=UTF-8',
-      'Cache-Control': 'public, max-age=300, s-maxage=600'
+      'Cache-Control': 'public, max-age=300, s-maxage=3600'
     }
   });
 }
@@ -71,7 +71,7 @@ function renderDetailPage(l, media, reviews) {
   const canonical = `https://hairtattoo.com/near-me/${cs}/${l.slug}`;
   const title = `${l.name} — Hair Tattoo & SMP | HairTattoo.com`;
   const desc = l.about ? l.about.substring(0, 160) : `${l.name} — scalp micropigmentation artist in ${l.city}, ${l.state}. View services, pricing, and contact information.`;
-  const ogImage = media.length ? mediaUrl(media[0].storage_path) : null;
+  const ogImage = media.length ? mediaUrl(media[0]) : null;
 
   // Social links
   let socHTML = '';

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>Contact Us | HairTattoo</title>
+<meta name="description" content="Get in touch with HairTattoo.com. Questions, suggestions, partnership inquiries — we'd love to hear from you.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hairtattoo.com/contact">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--ac);text-decoration:none}
+button{font-family:var(--f);cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:var(--f);font-size:1rem}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em;cursor:pointer}
+.logo span{color:var(--ac)}
+.nav-r{display:flex;gap:.75rem;align-items:center}
+.nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-r a:hover{color:var(--ac)}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}
+.nav-dd-btn:hover{background:var(--ac2)}
+.nav-dd-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;padding:.375rem;z-index:110}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;border-radius:6px;font-size:.875rem;color:var(--text);font-weight:400;transition:background .1s}
+.nav-menu a:hover{background:var(--al)}
+.nav-menu a.primary{font-weight:600;color:var(--ac)}
+.nav-menu .nm-sep{height:1px;background:var(--bd);margin:.25rem .5rem}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--rs);transition:background .15s}
+.hamburger:hover{background:var(--al)}
+.hamburger svg{width:20px;height:20px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:block}
+.mob-drawer{position:fixed;top:0;right:-300px;width:280px;max-width:85vw;height:100vh;background:var(--card);z-index:151;box-shadow:-4px 0 20px rgba(0,0,0,.1);transition:right .3s ease;padding:1.25rem}
+.mob-menu.open .mob-drawer{right:0}
+.mob-drawer .mob-close{float:right;font-size:1.25rem;color:var(--t3);cursor:pointer;line-height:1}
+.mob-drawer nav{clear:both;padding-top:1rem}
+.mob-drawer nav a{display:block;padding:.75rem 0;font-size:1rem;color:var(--text);border-bottom:1px solid var(--bd)}
+.mob-drawer nav a:last-child{border-bottom:none}
+
+/* CONTENT */
+.page-wrap{flex:1;max-width:560px;margin:0 auto;padding:2.5rem 1rem 3rem;width:100%}
+.page-head{text-align:center;margin-bottom:2rem}
+.page-head h1{font-family:var(--se);font-size:clamp(1.75rem,4vw,2.5rem);font-weight:400;line-height:1.2;margin-bottom:.5rem}
+.page-head p{color:var(--t2);font-size:.9375rem;max-width:440px;margin:0 auto}
+
+/* FORM CARD */
+.cf{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem}
+.field{margin-bottom:1rem}
+.field:last-of-type{margin-bottom:0}
+.field label{display:block;font-size:.8125rem;font-weight:500;margin-bottom:.375rem;color:var(--text)}
+.field input,.field textarea,.field select{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem;background:var(--card);color:var(--text);transition:border-color .15s;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--ac)}
+.field textarea{resize:vertical;min-height:120px}
+.field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2rem;cursor:pointer}
+.submit-btn{width:100%;padding:.75rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s;margin-top:1.25rem}
+.submit-btn:hover{background:var(--ac2)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* SUCCESS STATE */
+.success-msg{text-align:center;padding:2rem 1rem}
+.success-icon{width:56px;height:56px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.success-icon svg{width:28px;height:28px;stroke:var(--ac);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.success-msg h3{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.5rem;color:var(--ac)}
+.success-msg p{color:var(--t2);font-size:.875rem}
+
+/* ERROR */
+.form-error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:.8125rem;padding:.5rem .75rem;border-radius:var(--rs);margin-top:.75rem;display:none}
+
+/* NOTE BELOW FORM */
+.form-note{text-align:center;font-size:.875rem;color:var(--t2)}
+.form-note a{font-weight:500}
+
+/* FOOTER */
+footer{background:var(--text);color:#ccc;text-align:center;padding:2.5rem 1rem}
+footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
+footer p{font-size:.8125rem;max-width:500px;margin:0 auto;line-height:1.6}
+.f-links{margin-top:1rem;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.f-links a{color:#999;font-size:.75rem;transition:color .15s}
+.f-links a:hover{color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .hm{display:none}
+  .nav-dd{display:none}
+  .hamburger{display:flex}
+  .cf{padding:1.25rem}
+}
+@media(min-width:601px){
+  .hamburger{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <div class="nav-r">
+    <a href="/near-me/" class="hm">Near Me</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/signup.html" class="primary">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
+<script>document.addEventListener('click',function(e){var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')})</script>
+
+<div class="page-wrap">
+  <div class="page-head">
+    <h1>Contact Us</h1>
+    <p>Have a question, suggestion, or partnership inquiry? We'd love to hear from you.</p>
+  </div>
+
+  <div class="cf" id="contactCard">
+    <form id="contactForm" onsubmit="return submitContact(event)">
+      <div class="field">
+        <label for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" required placeholder="Your name">
+      </div>
+      <div class="field">
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" required placeholder="you@email.com">
+      </div>
+      <div class="field">
+        <label for="cf-subject">Subject</label>
+        <select id="cf-subject" name="subject" required>
+          <option value="" disabled selected>Select a subject</option>
+          <option value="General Inquiry">General Inquiry</option>
+          <option value="Business Listing Issue">Business Listing Issue</option>
+          <option value="Partnership">Partnership</option>
+          <option value="Bug Report">Bug Report</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required placeholder="How can we help?"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+      <div class="form-error" id="formError"></div>
+    </form>
+
+    <div class="success-msg" id="successMsg" style="display:none">
+      <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3>Message Sent</h3>
+      <p>Thanks! We'll get back to you within 24 hours.</p>
+    </div>
+  </div>
+
+  <p class="form-note">For business listing inquiries, visit our <a href="/for-professionals">For Pros</a> page.</p>
+</div>
+
+<footer>
+  <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
+  <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 HairTattoo.com. All rights reserved.</p>
+  <div class="f-links">
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var sb = window.supabase.createClient(
+  'https://ingorrzmoudvoknhwjjb.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc'
+);
+
+async function submitContact(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submitBtn');
+  var errEl = document.getElementById('formError');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  var name = document.getElementById('cf-name').value.trim();
+  var email = document.getElementById('cf-email').value.trim();
+  var subject = document.getElementById('cf-subject').value;
+  var message = document.getElementById('cf-message').value.trim();
+
+  try {
+    var { error } = await sb.from('contact_submissions').insert([
+      { name: name, email: email, subject: subject, message: message }
+    ]);
+    if (error) throw error;
+
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  } catch (err) {
+    errEl.textContent = 'Something went wrong. Please try again or email us directly.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+  }
+  return false;
+}
+</script>
+</body>
+</html>

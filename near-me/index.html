@@ -17,6 +17,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ingorrzmoudvoknhwjjb.supabase.co">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -34,6 +35,28 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .nav-r{display:flex;gap:.75rem;align-items:center}
 .nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
 .nav-r a:hover{color:var(--ac)}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}
+.nav-dd-btn:hover{background:var(--ac2)}
+.nav-dd-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;padding:.375rem;z-index:110}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;border-radius:6px;font-size:.875rem;color:var(--text);font-weight:400;transition:background .1s}
+.nav-menu a:hover{background:var(--al)}
+.nav-menu a.primary{font-weight:600;color:var(--ac)}
+.nav-menu .nm-sep{height:1px;background:var(--bd);margin:.25rem .5rem}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--rs);transition:background .15s}
+.hamburger:hover{background:var(--al)}
+.hamburger svg{width:20px;height:20px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:block}
+.mob-drawer{position:fixed;top:0;right:-300px;width:280px;max-width:85vw;height:100vh;background:var(--card);z-index:151;box-shadow:-4px 0 20px rgba(0,0,0,.1);transition:right .3s ease;padding:1.25rem}
+.mob-menu.open .mob-drawer{right:0}
+.mob-drawer .mob-close{float:right;font-size:1.25rem;color:var(--t3);cursor:pointer;line-height:1}
+.mob-drawer nav{clear:both;padding-top:1rem}
+.mob-drawer nav a{display:block;padding:.75rem 0;font-size:1rem;color:var(--text);border-bottom:1px solid var(--bd)}
+.mob-drawer nav a:last-child{border-bottom:none}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;transition:all .15s}
 .btn-p{background:var(--ac);color:#fff}.btn-p:hover{background:var(--ac2)}
 .btn-o{border:1px solid var(--bd);color:var(--text)}.btn-o:hover{border-color:var(--ac);color:var(--ac)}
@@ -187,7 +210,8 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 }
 @media(max-width:600px){
   .grid{grid-template-columns:1fr}
-  .nav-r .hm{display:none}
+  .nav-r .hm,.nav-dd{display:none}
+  .hamburger{display:flex}
   .hero h1{font-size:1.75rem}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
   .dp-grid{grid-template-columns:1fr}
@@ -200,11 +224,29 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <nav class="nav"><div class="nav-in">
   <a href="/" class="logo">Hair<span>Tattoo</span></a>
   <div class="nav-r">
-    <a href="/" class="hm">Directory</a>
-    <a href="/" class="hm">Explore</a>
-    <a href="/signup.html" class="btn btn-p">List Your Business</a>
+    <a href="/near-me/" class="hm">Near Me</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/signup.html" class="primary">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
 </div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
+<script>document.addEventListener('click',function(e){var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')})</script>
 <div class="breadcrumb"><a href="/">HairTattoo</a> › Near Me</div>
 <section class="hero">
   <h1>Find <em>Hair Tattoo</em> Artists Near You</h1>
@@ -270,7 +312,7 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   </div>
   <p style="font-size:.75rem;margin-top:1rem">© 2025 HairTattoo.com. All rights reserved.</p>
   <div class="f-links">
-    <a href="/">About</a><a href="/signup.html">For Professionals</a><a href="#">Privacy</a><a href="#">Terms</a><a href="mailto:hello@hairtattoo.com">Contact</a>
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
   </div>
 </footer>
 </body>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>Privacy Policy | HairTattoo</title>
+<meta name="description" content="Privacy Policy for HairTattoo.com — learn how we collect, use, and protect your personal information.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2D5A3D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100vh}
+a{color:var(--ac);text-decoration:none}
+button{font-family:var(--f);cursor:pointer;border:none;background:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
+.logo span{color:var(--ac)}
+.nav-r{display:flex;gap:.75rem;align-items:center}
+.nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-r a:hover{color:var(--ac)}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}
+.nav-dd-btn:hover{background:var(--ac2)}
+.nav-dd-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;padding:.375rem;z-index:110}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;border-radius:6px;font-size:.875rem;color:var(--text);font-weight:400;transition:background .1s}
+.nav-menu a:hover{background:var(--al)}
+.nav-menu a.primary{font-weight:600;color:var(--ac)}
+.nav-menu .nm-sep{height:1px;background:var(--bd);margin:.25rem .5rem}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--rs);transition:background .15s}
+.hamburger:hover{background:var(--al)}
+.hamburger svg{width:20px;height:20px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:block}
+.mob-drawer{position:fixed;top:0;right:-300px;width:280px;max-width:85vw;height:100vh;background:var(--card);z-index:151;box-shadow:-4px 0 20px rgba(0,0,0,.1);transition:right .3s ease;padding:1.25rem}
+.mob-menu.open .mob-drawer{right:0}
+.mob-drawer .mob-close{float:right;font-size:1.25rem;color:var(--t3);cursor:pointer;line-height:1}
+.mob-drawer nav{clear:both;padding-top:1rem}
+.mob-drawer nav a{display:block;padding:.75rem 0;font-size:1rem;color:var(--text);border-bottom:1px solid var(--bd)}
+.mob-drawer nav a:last-child{border-bottom:none}
+
+/* FOOTER */
+footer{background:var(--text);color:#ccc;padding:3rem 1rem;text-align:center;font-size:.8125rem;margin-top:auto}
+footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
+footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
+.f-links{display:flex;gap:1.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+.f-links a{color:#aaa;font-size:.8125rem}.f-links a:hover{color:#fff}
+
+/* CONTENT */
+.policy{max-width:720px;margin:0 auto;padding:2.5rem 1rem 3rem}
+.policy h1{font-family:var(--se);font-size:clamp(1.75rem,4vw,2.5rem);font-weight:400;line-height:1.2;margin-bottom:.25rem;letter-spacing:-.02em}
+.policy .subtitle{color:var(--t2);font-size:.9375rem;margin-bottom:2rem}
+.policy h2{font-family:var(--se);font-size:1.375rem;font-weight:400;margin-top:2rem;margin-bottom:.75rem;color:var(--text);letter-spacing:-.01em}
+.policy p{color:var(--t2);font-size:.9375rem;line-height:1.75;margin-bottom:1rem}
+.policy ul{color:var(--t2);font-size:.9375rem;line-height:1.75;margin-bottom:1rem;padding-left:1.5rem}
+.policy ul li{margin-bottom:.375rem}
+.policy a{color:var(--ac);text-decoration:underline;text-underline-offset:2px}
+.policy a:hover{color:var(--ac2)}
+.policy strong{color:var(--text);font-weight:600}
+
+@media(max-width:600px){
+  .nav-r .hm,.nav-dd{display:none}
+  .hamburger{display:flex}
+  .policy h1{font-size:1.75rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <div class="nav-r">
+    <a href="/near-me/" class="hm">Near Me</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/signup.html" class="primary">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
+<script>document.addEventListener('click',function(e){var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')})</script>
+
+<div class="policy">
+  <h1>Privacy Policy</h1>
+  <p class="subtitle">Effective date: February 1, 2025</p>
+
+  <p>HairTattoo.com ("HairTattoo," "we," "us," or "our") operates a directory platform that connects consumers with scalp micropigmentation (SMP) professionals across the United States. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website at <strong>hairtattoo.com</strong> (the "Site"). Please read this policy carefully. If you do not agree with the terms of this Privacy Policy, please do not access the Site.</p>
+
+  <h2>1. Information We Collect</h2>
+
+  <p>We collect information in the following ways:</p>
+
+  <p><strong>Business Owner Information</strong></p>
+  <p>When a scalp micropigmentation professional signs up to create a listing on HairTattoo, we collect:</p>
+  <ul>
+    <li>Full name and business name</li>
+    <li>Email address</li>
+    <li>Phone number</li>
+    <li>Business street address, city, state, and ZIP code</li>
+    <li>Services offered and pricing information</li>
+    <li>Business description and biographical details</li>
+    <li>Photos (profile photo, portfolio images, and business photos)</li>
+    <li>Website URL and social media links</li>
+  </ul>
+
+  <p><strong>User Contact Form Submissions</strong></p>
+  <p>When a visitor submits a contact form to reach a listed business, we collect:</p>
+  <ul>
+    <li>Full name</li>
+    <li>Phone number</li>
+    <li>Message content</li>
+    <li>The listing to which the inquiry was directed</li>
+  </ul>
+
+  <p><strong>Automatically Collected Information</strong></p>
+  <p>When you visit the Site, we may automatically collect certain information, including:</p>
+  <ul>
+    <li>IP address and approximate geographic location</li>
+    <li>Browser type and version</li>
+    <li>Operating system</li>
+    <li>Referring URL and pages visited</li>
+    <li>Date, time, and duration of your visit</li>
+    <li>Device type and screen resolution</li>
+  </ul>
+
+  <p><strong>Location Data</strong></p>
+  <p>With your explicit consent (via your browser's location permission prompt), we may collect your precise geographic location to show you SMP professionals near you. You can revoke location access at any time through your browser settings. The Site remains fully functional without location access.</p>
+
+  <h2>2. How We Use Your Information</h2>
+
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li>Operate and maintain the HairTattoo business directory</li>
+    <li>Display business listings publicly so consumers can find SMP professionals</li>
+    <li>Deliver contact form submissions (leads) from consumers to the appropriate business owner</li>
+    <li>Authenticate business owners and manage their accounts</li>
+    <li>Send transactional emails related to account activity, such as new lead notifications and account verification</li>
+    <li>Improve the Site's functionality, performance, and user experience</li>
+    <li>Monitor and analyze usage trends and aggregate site traffic</li>
+    <li>Detect, prevent, and address technical issues, fraud, or abuse</li>
+    <li>Comply with legal obligations</li>
+  </ul>
+
+  <h2>3. Third-Party Services</h2>
+
+  <p>We rely on a limited number of trusted third-party services to operate the Site. We do not sell, rent, or trade your personal information to any third party.</p>
+
+  <ul>
+    <li><strong>Supabase</strong> &mdash; We use Supabase (hosted on Amazon Web Services) as our database and authentication provider. Business listings, lead submissions, and account credentials are stored in Supabase's PostgreSQL database. Supabase's privacy policy is available at <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a>.</li>
+    <li><strong>Cloudflare</strong> &mdash; Our Site is hosted on Cloudflare Pages and uses Cloudflare's content delivery network (CDN) for performance and security. Cloudflare may process your IP address and request metadata as part of its services. Cloudflare's privacy policy is available at <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a>.</li>
+    <li><strong>Resend</strong> &mdash; We use Resend to deliver transactional emails, including account verification links and lead notification emails. Resend processes recipient email addresses and email content on our behalf. Resend's privacy policy is available at <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">resend.com/legal/privacy-policy</a>.</li>
+  </ul>
+
+  <h2>4. Advertising and Data Sales</h2>
+
+  <p>HairTattoo does <strong>not</strong> display third-party advertisements on the Site. We do <strong>not</strong> sell, rent, lease, or otherwise share your personal information with third parties for their marketing or advertising purposes. We will never monetize your data by selling it to data brokers or advertising networks.</p>
+
+  <h2>5. Cookies and Tracking Technologies</h2>
+
+  <p>We use a minimal number of cookies, strictly for functionality:</p>
+  <ul>
+    <li><strong>Authentication cookies</strong> &mdash; When a business owner signs in, Supabase sets session cookies to maintain the authenticated state. These cookies are essential for the sign-in functionality to work and cannot be disabled while using authenticated features.</li>
+    <li><strong>No advertising or tracking cookies</strong> &mdash; We do not use cookies for advertising, retargeting, or cross-site tracking. We do not use Google Analytics, Facebook Pixel, or similar third-party tracking scripts.</li>
+  </ul>
+
+  <p>You can configure your browser to refuse all cookies or to indicate when a cookie is being sent. However, disabling cookies may prevent you from using certain authenticated features of the Site.</p>
+
+  <h2>6. Data Retention</h2>
+
+  <p>We retain your information for as long as it is necessary to fulfill the purposes outlined in this Privacy Policy:</p>
+  <ul>
+    <li><strong>Business listings</strong> remain active until the business owner requests removal or we determine the listing is no longer accurate.</li>
+    <li><strong>Lead submissions</strong> are retained to provide business owners with a record of inquiries.</li>
+    <li><strong>Account data</strong> is retained as long as the account remains active. Upon account deletion, we will remove your personal information from our active databases within 30 days, though some data may persist in encrypted backups for up to 90 days.</li>
+  </ul>
+
+  <h2>7. Data Security</h2>
+
+  <p>We take reasonable administrative, technical, and physical measures to protect your personal information. These include:</p>
+  <ul>
+    <li>All data transmitted between your browser and the Site is encrypted via HTTPS/TLS</li>
+    <li>Database access is restricted through Supabase Row Level Security (RLS) policies, ensuring users can only access data they are authorized to view or modify</li>
+    <li>Authentication tokens are securely managed by Supabase Auth</li>
+    <li>Our hosting provider, Cloudflare, provides DDoS protection and web application firewall capabilities</li>
+  </ul>
+
+  <p>While we strive to protect your personal information, no method of transmission over the Internet or electronic storage is completely secure. We cannot guarantee absolute security.</p>
+
+  <h2>8. Your Privacy Rights</h2>
+
+  <p><strong>All Users</strong></p>
+  <p>Regardless of where you are located, you may:</p>
+  <ul>
+    <li>Request access to the personal information we hold about you</li>
+    <li>Request correction of inaccurate or incomplete information</li>
+    <li>Request deletion of your personal information</li>
+    <li>Withdraw consent for location data collection at any time through your browser settings</li>
+  </ul>
+
+  <p>To exercise any of these rights, please contact us at <a href="mailto:privacy@hairtattoo.com">privacy@hairtattoo.com</a>. We will respond to your request within 30 days.</p>
+
+  <p><strong>California Residents (CCPA)</strong></p>
+  <p>If you are a California resident, the California Consumer Privacy Act (CCPA) provides you with additional rights regarding your personal information:</p>
+  <ul>
+    <li><strong>Right to Know:</strong> You have the right to request that we disclose the categories and specific pieces of personal information we have collected about you, the categories of sources from which we collected the information, the business purpose for collecting the information, and the categories of third parties with whom we share the information.</li>
+    <li><strong>Right to Delete:</strong> You have the right to request that we delete any personal information we have collected from you, subject to certain exceptions.</li>
+    <li><strong>Right to Opt-Out of Sale:</strong> We do not sell personal information. Therefore, we do not offer an opt-out of the sale of personal information.</li>
+    <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising any of your CCPA rights.</li>
+  </ul>
+  <p>To submit a CCPA request, email <a href="mailto:privacy@hairtattoo.com">privacy@hairtattoo.com</a> with the subject line "CCPA Request."</p>
+
+  <p><strong>European Residents (GDPR)</strong></p>
+  <p>If you are located in the European Economic Area (EEA) or the United Kingdom, you may have additional rights under the General Data Protection Regulation (GDPR), including:</p>
+  <ul>
+    <li><strong>Legal Basis for Processing:</strong> We process your personal data based on (a) your consent, (b) the performance of a contract (e.g., providing your business listing), or (c) our legitimate interests in operating and improving the Site.</li>
+    <li><strong>Right to Access:</strong> You may request a copy of the personal data we hold about you.</li>
+    <li><strong>Right to Rectification:</strong> You may request that we correct inaccurate data.</li>
+    <li><strong>Right to Erasure:</strong> You may request that we delete your personal data.</li>
+    <li><strong>Right to Restrict Processing:</strong> You may request that we limit how we use your data.</li>
+    <li><strong>Right to Data Portability:</strong> You may request your data in a structured, machine-readable format.</li>
+    <li><strong>Right to Object:</strong> You may object to our processing of your data based on legitimate interests.</li>
+    <li><strong>Right to Lodge a Complaint:</strong> You have the right to lodge a complaint with a supervisory authority in your jurisdiction.</li>
+  </ul>
+  <p>To exercise any GDPR right, contact <a href="mailto:privacy@hairtattoo.com">privacy@hairtattoo.com</a>.</p>
+
+  <h2>9. Children's Privacy</h2>
+
+  <p>The Site is not intended for individuals under the age of 18. We do not knowingly collect personal information from children. If we learn that we have collected personal information from a child under 18, we will take steps to delete that information promptly. If you believe a child has provided us with personal information, please contact us at <a href="mailto:privacy@hairtattoo.com">privacy@hairtattoo.com</a>.</p>
+
+  <h2>10. Links to Other Websites</h2>
+
+  <p>Business listings on HairTattoo may contain links to external websites, including the business owner's own website and social media profiles. We are not responsible for the privacy practices or content of those third-party websites. We encourage you to review the privacy policy of every site you visit.</p>
+
+  <h2>11. Changes to This Privacy Policy</h2>
+
+  <p>We may update this Privacy Policy from time to time. When we do, we will revise the "Effective date" at the top of this page. We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information. Your continued use of the Site after any changes constitutes your acceptance of the updated Privacy Policy.</p>
+
+  <h2>12. Contact Us</h2>
+
+  <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at:</p>
+  <p>
+    <strong>HairTattoo.com</strong><br>
+    Email: <a href="mailto:privacy@hairtattoo.com">privacy@hairtattoo.com</a>
+  </p>
+</div>
+
+<footer>
+  <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
+  <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 HairTattoo.com. All rights reserved.</p>
+  <div class="f-links">
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
