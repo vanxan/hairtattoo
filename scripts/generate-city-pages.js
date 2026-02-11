@@ -25,10 +25,10 @@ function dist(lat1, lng1, lat2, lng2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function renderCard(l, media) {
+function renderCard(l, media, viewCount) {
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
   const pr = l.price_range || '$$';
-  const svcs = (l.services || []).slice(0, 4).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
+  const svcs = (l.services || []).slice(0, 3).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
   const url = listingUrl(l);
   let thumb = '';
   if (media && media.length) {
@@ -36,18 +36,17 @@ function renderCard(l, media) {
     const src = mediaUrl(m);
     thumb = `<div class="c-img"><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
-  const ratingHTML = l.review_count && l.review_count > 0
-    ? `<div class="c-rating"><span class="c-stars">${'\u2605'.repeat(Math.round(l.avg_rating || 0))}</span> ${l.avg_rating || 0} (${l.review_count})</div>`
-    : '';
+  const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
   return `<a class="card" href="${url}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div>${ratingHTML}</div><div class="c-pr">${esc(pr)}</div></div>
+      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div><div class="c-pr">${esc(pr)}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
+      <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
     </a>`;
 }
 
-function renderPage(city, state, listings, allCities, mediaMap) {
+function renderPage(city, state, listings, allCities, mediaMap, viewMap) {
   const cs = citySlug(city, state);
   const sn = stateName(state);
   const count = listings.length;
@@ -56,7 +55,7 @@ function renderPage(city, state, listings, allCities, mediaMap) {
   const desc = `Find ${count} verified scalp micropigmentation and hair tattoo ${plural} in ${city}, ${sn}. Compare services, pricing, and contact SMP professionals near you.`;
   const canonical = `https://hairtattoo.com/near-me/${cs}/`;
 
-  const cards = listings.map(l => renderCard(l, mediaMap[l.id])).join('\n');
+  const cards = listings.map(l => renderCard(l, mediaMap[l.id], viewMap[l.id])).join('\n');
 
   // Nearby cities sorted by distance
   const refLat = listings[0].lat, refLng = listings[0].lng;
@@ -129,6 +128,12 @@ async function main() {
   if (media) { media.forEach(m => { if (!mediaMap[m.listing_id]) mediaMap[m.listing_id] = []; mediaMap[m.listing_id].push(m); }); }
   console.log(`Got ${media ? media.length : 0} media items`);
 
+  console.log('Fetching page views...');
+  const { data: views } = await SB.from('page_views').select('listing_id');
+  const viewMap = {};
+  if (views) { views.forEach(v => { viewMap[v.listing_id] = (viewMap[v.listing_id] || 0) + 1; }); }
+  console.log(`Got ${views ? views.length : 0} page views`);
+
   // Group by city+state
   const groups = {};
   listings.forEach(l => {
@@ -157,7 +162,7 @@ async function main() {
 
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    const html = renderPage(city, state, items, allCities, mediaMap);
+    const html = renderPage(city, state, items, allCities, mediaMap, viewMap);
     fs.writeFileSync(path.join(dir, 'index.html'), html, 'utf8');
     generated++;
   });

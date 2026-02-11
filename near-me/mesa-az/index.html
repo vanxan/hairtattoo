@@ -42,7 +42,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 
 .card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:box-shadow .15s,transform .1s;cursor:pointer}
 .card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
-.c-img{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--al);border-radius:var(--r) var(--r) 0 0}
+.c-img{position:relative;width:100%;height:180px;overflow:hidden;background:var(--al)}
 .c-img img{width:100%;height:100%;object-fit:cover;display:block}
 .c-pill{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.85);backdrop-filter:blur(4px);padding:2px 8px;border-radius:12px;font-size:.625rem;color:var(--t2);pointer-events:none}
 .c-head{padding:1.25rem 1.25rem .5rem;display:flex;gap:.75rem;align-items:flex-start}
@@ -59,6 +59,8 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .c-stars{letter-spacing:1px}
 .c-foot{padding:.5rem 1.25rem;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:.8125rem}
 .c-foot .btn{font-size:.8125rem;padding:.375rem .75rem}
+.c-views{color:var(--t3);display:flex;align-items:center;gap:.25rem;font-size:.75rem}
+.c-msg{color:var(--ac);font-weight:500;display:flex;align-items:center;gap:.25rem}
 
 .detail-page{max-width:720px;margin:0 auto;padding:1rem 1rem 3rem}
 .dp-back{font-size:.875rem;color:var(--t2);display:inline-flex;align-items:center;gap:.375rem;margin-bottom:1.25rem;padding:.375rem 0}
@@ -191,15 +193,17 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 </section>
 <div class="main"><div class="grid"><a class="card" href="/near-me/mesa-az/mesa-smp-studio" itemscope itemtype="https://schema.org/LocalBusiness">
       <div class="c-img"><img src="https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/Beard-Enhancement-1.webp" loading="lazy" width="400" height="180" alt="Mesa SMP Studio SMP"><span class="c-pill">📷 Sample photo</span></div>
-      <div class="c-head"><div class="c-av">MS</div><div class="c-info"><div class="c-name" itemprop="name">Mesa SMP Studio</div><div class="c-loc"><span itemprop="address">Mesa, AZ</span></div></div><div class="c-pr">$$</div></div>
+      <div class="c-head"><div class="c-av">MS</div><div class="c-info"><div class="c-name" itemprop="name">Mesa SMP Studio</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">Mesa, AZ</span></div></div><div class="c-pr">$$</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">Mesa's professional scalp micropigmentation specialist. Natural results for all hair loss types. Free consultations.</p></div>
-      <div class="c-tags"><span class="c-tag">Hairline Restoration</span><span class="c-tag">Density Fill</span><span class="c-tag">Scar Camouflage</span><span class="c-tag">Beard SMP</span></div>
+      <div class="c-tags"><span class="c-tag">Hairline Restoration</span><span class="c-tag">Density Fill</span><span class="c-tag">Scar Camouflage</span></div>
+      <div class="c-foot"><span class="c-views">New</span><span class="c-msg"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
     </a>
 <a class="card" href="/near-me/mesa-az/mesa-smp-lab" itemscope itemtype="https://schema.org/LocalBusiness">
       <div class="c-img"><img src="https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/images (1).jpeg" loading="lazy" width="400" height="180" alt="Mesa SMP Lab SMP"><span class="c-pill">📷 Sample photo</span></div>
-      <div class="c-head"><div class="c-av">MS</div><div class="c-info"><div class="c-name" itemprop="name">Mesa SMP Lab</div><div class="c-loc"><span itemprop="address">Mesa, AZ</span></div></div><div class="c-pr">$$$</div></div>
+      <div class="c-head"><div class="c-av">MS</div><div class="c-info"><div class="c-name" itemprop="name">Mesa SMP Lab</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">Mesa, AZ</span></div></div><div class="c-pr">$$$</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">Mesa's professional scalp micropigmentation specialist. Natural, undetectable results for all hair loss types. Free consultations available.</p></div>
-      <div class="c-tags"><span class="c-tag">Hairline Restoration</span><span class="c-tag">Density Fill</span><span class="c-tag">Scar Camouflage</span><span class="c-tag">Female SMP</span></div>
+      <div class="c-tags"><span class="c-tag">Hairline Restoration</span><span class="c-tag">Density Fill</span><span class="c-tag">Scar Camouflage</span></div>
+      <div class="c-foot"><span class="c-views">New</span><span class="c-msg"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
     </a></div></div>
 <div class="nearby">
     <h3>SMP Artists in Nearby Cities</h3>
