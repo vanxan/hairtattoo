@@ -99,7 +99,9 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .c-info{flex:1;min-width:0}
 .c-name{font-weight:700;font-size:.9375rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-loc{font-size:.8125rem;color:var(--t2);margin-top:1px}
-.c-pr{font-size:.8125rem;font-weight:600;color:var(--ac);white-space:nowrap}
+.c-badge{font-size:.6875rem;font-weight:600;padding:.125rem .5rem;border-radius:4px;white-space:nowrap}
+.c-badge-verified{color:var(--ac);background:var(--al)}
+.c-badge-claimed{color:var(--t3);background:#f0eeeb}
 .c-body{padding:0 1.25rem .5rem}
 .c-about{font-size:.8125rem;color:var(--t2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .c-tags{padding:0 1.25rem .75rem;display:flex;flex-wrap:wrap;gap:.25rem}
@@ -153,7 +155,15 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .dp-info{flex:1;min-width:0}
 .dp-name{font-size:1.5rem;font-weight:700;line-height:1.2;margin-bottom:.25rem}
 .dp-loc{color:var(--t2);font-size:.9375rem;margin-bottom:.25rem}
-.dp-price{color:var(--ac);font-weight:600;font-size:.875rem}
+.dp-badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:600;margin-top:.25rem}
+.dp-badge-verified{color:var(--ac)}
+.dp-badge-featured{color:#D4A853}
+.featured-section{max-width:1200px;margin:0 auto;padding:0 1rem 1.5rem}
+.featured-section h2{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.75rem}
+.featured-row{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:.5rem}
+.featured-row::-webkit-scrollbar{display:none}
+.featured-row .card{min-width:320px;max-width:360px;flex-shrink:0;border-top:3px solid #D4A853}
+.c-featured-pill{position:absolute;top:8px;left:8px;background:rgba(212,168,83,.9);backdrop-filter:blur(4px);padding:2px 8px;border-radius:12px;font-size:.625rem;color:#fff;font-weight:600;pointer-events:none;z-index:1}
 .dp-socials{display:flex;gap:.5rem;margin-top:.5rem}
 .dp-social{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .625rem;background:var(--al);border-radius:20px;font-size:.75rem;font-weight:500;color:var(--ac);transition:all .15s}
 .dp-social:hover{background:var(--ac);color:#fff}
@@ -292,6 +302,10 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
       <button class="s-btn" onclick="doSearch()">Search</button>
     </div>
   </div>
+  <div class="featured-section" id="featuredSection" style="display:none">
+    <h2>Featured Artists</h2>
+    <div class="featured-row" id="featuredRow"></div>
+  </div>
   <div class="tabs">
     <button class="tab on" onclick="showTab('directory')" id="tabDir">Directory</button>
     <button class="tab" onclick="showTab('feed')" id="tabFeed">Explore</button>
@@ -305,8 +319,6 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
       <button class="chip" onclick="setFilter('Female SMP')">Female SMP</button>
       <button class="chip" onclick="setFilter('Beard SMP')">Beard SMP</button>
       <button class="chip" onclick="setFilter('Alopecia Treatment')">Alopecia</button>
-      <button class="chip" onclick="setFilter('$$$')">Premium $$$</button>
-      <button class="chip" onclick="setFilter('$$')">Standard $$</button>
       <span class="fcount" id="resultCount"></span>
     </div>
     <div class="main"><div class="grid" id="listGrid"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div>
@@ -409,8 +421,7 @@ function doSearch(){
     if(q) m=l.name.toLowerCase().includes(q)||l.about.toLowerCase().includes(q);
     if(loc&&m) m=l.city.toLowerCase().includes(loc)||l.state.toLowerCase()===loc||(l.city+', '+l.state).toLowerCase().includes(loc);
     if(currentFilter!=='all'&&m){
-      if(currentFilter==='$$$'||currentFilter==='$$') m=(l.pr)===currentFilter;
-      else m=l.services.includes(currentFilter);
+      m=l.services.includes(currentFilter);
     }
     return m;
   });
@@ -452,6 +463,16 @@ function toggleGeo(){
   },()=>{if(b)b.innerHTML='<svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Find Near Me';});
 }
 
+// === BADGES ===
+function getBadge(l){
+  if(!l.claimed)return'';
+  const hasReal=l._media&&l._media.some(m=>!m.is_placeholder);
+  const ok=hasReal&&l.phone&&l.email&&l.services.length>=2&&l.about;
+  if(ok)return'<span class="c-badge c-badge-verified">\u2713 Verified</span>';
+  return'<span class="c-badge c-badge-claimed">Claimed</span>';
+}
+function isPromotedNow(l){return l.promoted&&l.promoted_until&&new Date(l.promoted_until)>new Date();}
+
 // === RENDER DIRECTORY ===
 function render(){
   const g=document.getElementById('listGrid'),s=(page-1)*PER,items=filtered.slice(s,s+PER);
@@ -459,12 +480,12 @@ function render(){
   if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>No artists found</h3><p>Try adjusting your search or filters</p></div>';document.getElementById('pager').innerHTML='';return;}
   g.innerHTML=items.map(l=>{
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-    const pr=l.pr||'$$';
+    const badge=getBadge(l);
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
     const thumb=l._media&&l._media[0]?`<div class="c-img"><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">📷 Sample photo</span>':''}</div>`:'';
     return `<article class="card" onclick="location.href='${listingUrl(l)}'" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div><div class="c-pr">${pr}</div></div>
+      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
       <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
       <div class="c-foot"><span class="c-views">${l._views?'👁 '+l._views+' view'+(l._views!==1?'s':''):'New'}</span><span class="c-msg" onclick="event.stopPropagation();openMsgPanel(${l.id})"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
@@ -492,8 +513,15 @@ function showDetail(l){
   trackView(l);
 
   const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-  const pr=l.pr||'$$';
   const soc=l.socials||{};
+  // Badges
+  let badgeHTML='';
+  if(l.claimed){
+    const hasReal=l._media&&l._media.some(m=>!m.is_placeholder);
+    const ok=hasReal&&l.phone&&l.email&&l.services.length>=2&&l.about;
+    if(ok)badgeHTML+='<span class="dp-badge dp-badge-verified">\u2713 Verified Business</span>';
+  }
+  if(isPromotedNow(l))badgeHTML+=(badgeHTML?' \u00b7 ':'')+'<span class="dp-badge dp-badge-featured">\u2B50 Featured Artist</span>';
 
   // Build social links
   let socHTML='';
@@ -522,7 +550,7 @@ function showDetail(l){
       <div class="dp-info">
         <h1 class="dp-name">${l.name}</h1>
         <div class="dp-loc">${l.address}, ${l.city}, ${l.state} ${l.zip}</div>
-        <div class="dp-price">${pr} · Scalp Micropigmentation</div>
+        ${badgeHTML?'<div style="margin-top:.25rem">'+badgeHTML+'</div>':''}
         <div class="dp-socials">${socHTML}</div>
       </div>
     </div>
@@ -541,7 +569,7 @@ function showDetail(l){
       <div class="cf-row"><textarea placeholder="Hi, I'm interested in learning more about your SMP services..." id="cfm-${l.id}"></textarea></div>
       <button class="cf-sub" onclick="sendMsg(${l.id})">Send Message →</button>
     </div>
-    ${!l.claimed?`<div class="dp-claim"><span style="flex:1">Is this your business? Claim it to manage your listing.</span><button onclick="location.href='/signup.html?claim=${l.slug}'">Claim Page</button></div>`:''}
+    ${!l.claimed?`<div class="dp-claim"><span style="flex:1">Claim this page to get verified and manage your listing.</span><button onclick="location.href='/signup.html?claim=${l.slug}'">Claim Page</button></div>`:''}
   `;
 
   // Inject structured data for this listing
@@ -689,7 +717,8 @@ async function initApp(){
     id:r.id,name:r.name,slug:r.slug,city:r.city,state:r.state,
     address:r.address||'',zip:r.zip||'',phone:r.phone||'',email:r.email||'',
     website:r.website||'',lat:r.lat,lng:r.lng,about:r.about||'',
-    services:r.services||[],pr:r.price_range||'$$',claimed:r.claimed||false,
+    services:r.services||[],claimed:r.claimed||false,
+    promoted:r.promoted||false,promoted_until:r.promoted_until||null,
     socials:{instagram:r.instagram||'',facebook:r.facebook||'',tiktok:r.tiktok||''}
   }));
   // Fetch view counts
@@ -698,6 +727,22 @@ async function initApp(){
   // Fetch media for all listings
   const{data:mediaData}=await SB.from('media').select('*').order('sort_order',{ascending:true});
   if(mediaData){const mm={};mediaData.forEach(m=>{if(!mm[m.listing_id])mm[m.listing_id]=[];mm[m.listing_id].push(m);});L.forEach(l=>l._media=mm[l.id]||[]);}
+  // Featured Artists
+  const promoted=L.filter(l=>isPromotedNow(l));
+  if(promoted.length){
+    document.getElementById('featuredSection').style.display='';
+    document.getElementById('featuredRow').innerHTML=promoted.map(l=>{
+      const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+      const badge=getBadge(l);
+      const thumb=l._media&&l._media[0]?`<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">\uD83D\uDCF7 Sample photo</span>':''}</div>`:'';
+      return `<article class="card" onclick="location.href='${listingUrl(l)}'">
+        ${thumb}
+        <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>
+        <div class="c-body"><p class="c-about">${l.about}</p></div>
+        <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
+      </article>`;
+    }).join('');
+  }
   filtered=[...L];
   doSearch();
   // Schema for top listings

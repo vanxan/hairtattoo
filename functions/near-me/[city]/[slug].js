@@ -66,7 +66,22 @@ function starsHtml(n) {
 
 function renderDetailPage(l, media, reviews) {
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
-  const pr = l.price_range || '$$';
+
+  // Badges
+  let badgeHTML = '';
+  if (l.claimed) {
+    const hasReal = media && media.some(m => !m.is_placeholder);
+    const hasPhone = !!(l.phone && l.phone.trim());
+    const hasEmail = !!(l.email && l.email.trim());
+    const hasServices = l.services && l.services.length >= 2;
+    const hasAbout = !!(l.about && l.about.trim());
+    if (hasReal && hasPhone && hasEmail && hasServices && hasAbout) {
+      badgeHTML += '<span class="dp-badge dp-badge-verified">\u2713 Verified Business</span>';
+    }
+  }
+  const isPromoted = l.promoted && l.promoted_until && new Date(l.promoted_until) > new Date();
+  if (isPromoted) badgeHTML += (badgeHTML ? ' \u00b7 ' : '') + '<span class="dp-badge dp-badge-featured">\u2B50 Featured Artist</span>';
+
   const cs = citySlug(l.city, l.state);
   const canonical = `https://hairtattoo.com/near-me/${cs}/${l.slug}`;
   const title = `${l.name} — Hair Tattoo & SMP | HairTattoo.com`;
@@ -186,7 +201,7 @@ function renderDetailPage(l, media, reviews) {
 <html lang="en">
 <head>
 ${getHead(title, desc, canonical, ogImage)}
-<style>.dp-booking{display:inline-block;padding:.625rem 1.25rem;background:var(--ac);color:#fff;border-radius:var(--rs);font-size:.875rem;font-weight:500;margin-top:.75rem;transition:background .15s}.dp-booking:hover{background:var(--ac2);color:#fff}.dp-rating{margin-top:.375rem}</style>
+<style>.dp-booking{display:inline-block;padding:.625rem 1.25rem;background:var(--ac);color:#fff;border-radius:var(--rs);font-size:.875rem;font-weight:500;margin-top:.75rem;transition:background .15s}.dp-booking:hover{background:var(--ac2);color:#fff}.dp-rating{margin-top:.375rem}.dp-badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:600}.dp-badge-verified{color:var(--ac)}.dp-badge-featured{color:#D4A853}</style>
 </head>
 <body>
 ${getNav()}
@@ -199,7 +214,7 @@ ${getNav()}
     <div class="dp-info">
       <h1 class="dp-name">${esc(l.name)}</h1>
       <div class="dp-loc">${esc(l.address || '')}, ${esc(l.city)}, ${esc(l.state)} ${esc(l.zip || '')}</div>
-      <div class="dp-price">${esc(pr)} \u00b7 Scalp Micropigmentation</div>
+      ${badgeHTML ? '<div style="margin-top:.25rem">' + badgeHTML + '</div>' : ''}
       ${ratingHTML}
       <div class="dp-socials">${socHTML}</div>
       ${bookingHTML}
@@ -228,7 +243,7 @@ ${getNav()}
     <button class="cf-sub" onclick="sendMessage()">Send Message \u2192</button>
   </div>
 
-  ${!l.claimed ? `<div class="dp-claim"><span style="flex:1">Is this your business? Claim it to manage your listing.</span><button onclick="location.href='/signup.html?claim=${esc(l.slug)}'">Claim Page</button></div>` : ''}
+  ${!l.claimed ? `<div class="dp-claim"><span style="flex:1">Claim this page to get verified and manage your listing.</span><button onclick="location.href='/signup.html?claim=${esc(l.slug)}'">Claim Page</button></div>` : ''}
 </div>
 
 <!-- LIGHTBOX -->

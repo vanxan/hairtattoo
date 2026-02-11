@@ -1,7 +1,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
-const { getHead, getNav, getFooter, esc, citySlug, listingUrl } = require('../templates/shared');
+const { getHead, getNav, getFooter, esc, citySlug, listingUrl, getBadge } = require('../templates/shared');
 
 const SB = createClient(
   'https://ingorrzmoudvoknhwjjb.supabase.co',
@@ -25,21 +25,23 @@ function dist(lat1, lng1, lat2, lng2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function renderCard(l, media, viewCount) {
+function renderCard(l, media, viewCount, opts) {
+  opts = opts || {};
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
-  const pr = l.price_range || '$$';
+  const badge = getBadge(l, media);
   const svcs = (l.services || []).slice(0, 3).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
   const url = listingUrl(l);
   let thumb = '';
   if (media && media.length) {
     const m = media.find(x => x.type !== 'video') || media[0];
     const src = mediaUrl(m);
-    thumb = `<div class="c-img"><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
+    const featuredPill = opts.featured ? '<span class="c-featured-pill">\u2B50 Featured</span>' : '';
+    thumb = `<div class="c-img">${featuredPill}<img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
   const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
   return `<a class="card" href="${url}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div><div class="c-pr">${esc(pr)}</div></div>
+      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
       <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg" onclick="event.preventDefault();event.stopPropagation();openMsgPanel(${l.id})"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
@@ -54,6 +56,13 @@ function renderPage(city, state, listings, allCities, mediaMap, viewMap) {
   const title = `Hair Tattoo & SMP Artists in ${city}, ${state} | HairTattoo.com`;
   const desc = `Find ${count} verified scalp micropigmentation and hair tattoo ${plural} in ${city}, ${sn}. Compare services, pricing, and contact SMP professionals near you.`;
   const canonical = `https://hairtattoo.com/near-me/${cs}/`;
+
+  const now = new Date().toISOString();
+  const promoted = listings.filter(l => l.promoted && l.promoted_until && l.promoted_until > now);
+  const featuredHTML = promoted.length ? `<div class="featured-section">
+  <h2>Featured in ${esc(city)}</h2>
+  <div class="featured-row">${promoted.map(l => renderCard(l, mediaMap[l.id], viewMap[l.id], { featured: true })).join('\n')}</div>
+</div>` : '';
 
   const cards = listings.map(l => renderCard(l, mediaMap[l.id], viewMap[l.id])).join('\n');
 
@@ -101,6 +110,7 @@ ${getNav()}
   <p>Browse verified scalp micropigmentation professionals in ${esc(city)}, ${esc(sn)}. Compare services, view pricing, and connect with SMP artists near you.</p>
   <div class="count">${count} SMP ${plural} found</div>
 </section>
+${featuredHTML}
 <div class="main"><div class="grid">${cards}</div></div>
 ${nearbyHTML ? `<div class="nearby">
     <h3>SMP Artists in Nearby Cities</h3>

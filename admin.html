@@ -571,8 +571,11 @@ async function toggleHide(id){
 async function togglePromote(id){
   closeMenus();
   const l=allListings.find(x=>x.id===id);if(!l)return;
-  await SB.from('listings').update({promoted:!l.promoted}).eq('id',id);
-  l.promoted=!l.promoted;
+  const newPromoted=!l.promoted;
+  const until=newPromoted?new Date(Date.now()+30*24*60*60*1000).toISOString():null;
+  await SB.from('listings').update({promoted:newPromoted,promoted_until:until}).eq('id',id);
+  l.promoted=newPromoted;
+  l.promoted_until=until;
   renderListings();
 }
 
