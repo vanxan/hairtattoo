@@ -159,14 +159,26 @@ async function main() {
 }
 
 function generateNearMeIndex(nearMeDir, allCities, totalListings) {
-  const sorted = [...allCities].sort((a, b) => b.count - a.count);
   const title = 'Find SMP & Hair Tattoo Artists Near You | HairTattoo.com';
   const desc = `Browse ${totalListings} scalp micropigmentation professionals across ${allCities.length} cities in the United States.`;
   const canonical = 'https://hairtattoo.com/near-me/';
 
-  const cityLinks = sorted.map(c =>
-    `<a href="/near-me/${citySlug(c.city, c.state)}/" class="city-card"><span class="city-name">${esc(c.city)}, ${esc(c.state)}</span><span class="city-count">${c.count} artist${c.count !== 1 ? 's' : ''}</span></a>`
-  ).join('\n');
+  // Group cities by state, sort states alphabetically, cities alphabetically within each state
+  const byState = {};
+  allCities.forEach(c => {
+    const sn = stateName(c.state);
+    if (!byState[sn]) byState[sn] = [];
+    byState[sn].push(c);
+  });
+  const stateNames = Object.keys(byState).sort();
+  stateNames.forEach(s => byState[s].sort((a, b) => a.city.localeCompare(b.city)));
+
+  const stateGroups = stateNames.map(s => {
+    const pills = byState[s].map(c =>
+      `<a href="/near-me/${citySlug(c.city, c.state)}/">${esc(c.city)} <span>(${c.count})</span></a>`
+    ).join('');
+    return `<div class="state-group"><h2>${esc(s)}</h2><div class="city-links">${pills}</div></div>`;
+  }).join('\n');
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -180,9 +192,9 @@ ${getNav()}
   <h1>Find <em>Hair Tattoo</em> Artists Near You</h1>
   <p>Browse ${totalListings} verified scalp micropigmentation professionals across ${allCities.length} cities in the United States.</p>
 </section>
-<div class="main"><div class="city-grid">
-    ${cityLinks}
-</div></div>
+<div class="states">
+${stateGroups}
+</div>
 ${getFooter()}
 </body>
 </html>`;

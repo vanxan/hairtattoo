@@ -129,11 +129,13 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .cta-box .btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
 .cta-box .btn:hover{background:rgba(255,255,255,.3)}
 
-.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
-.city-card{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.25rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);font-size:.9375rem;color:var(--text);transition:all .15s;text-decoration:none}
-.city-card:hover{border-color:var(--ac);box-shadow:0 2px 8px rgba(0,0,0,.06);transform:translateY(-1px)}
-.city-card .city-name{font-weight:500}
-.city-card .city-count{color:var(--ac);font-weight:600;font-size:.8125rem;white-space:nowrap}
+.states{max-width:1000px;margin:0 auto;padding:0 1rem 3rem}
+.state-group{margin-bottom:2rem}
+.state-group h2{font-size:1rem;font-weight:700;padding-bottom:.5rem;border-bottom:1px solid var(--bd);margin-bottom:.75rem}
+.city-links{display:flex;flex-wrap:wrap;gap:.375rem}
+.city-links a{font-size:.8125rem;padding:.375rem .75rem;border:1px solid var(--bd);border-radius:20px;color:var(--t2);background:var(--card);transition:all .15s}
+.city-links a:hover{border-color:var(--ac);color:var(--ac);background:var(--al)}
+.city-links a span{color:var(--t3);font-size:.75rem}
 
 a.card{display:block;color:var(--text);text-decoration:none}
 
@@ -152,11 +154,9 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
   .dp-grid{grid-template-columns:1fr}
   .dp-socials{justify-content:center}
-  .city-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
   .grid{grid-template-columns:1fr}
-  .city-grid{grid-template-columns:1fr}
   .nav-r .hm{display:none}
   .hero h1{font-size:1.75rem}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
@@ -180,299 +180,57 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   <h1>Find <em>Hair Tattoo</em> Artists Near You</h1>
   <p>Browse 343 verified scalp micropigmentation professionals across 291 cities in the United States.</p>
 </section>
-<div class="main"><div class="city-grid">
-    <a href="/near-me/new-york-ny/" class="city-card"><span class="city-name">New York, NY</span><span class="city-count">8 artists</span></a>
-<a href="/near-me/los-angeles-ca/" class="city-card"><span class="city-name">Los Angeles, CA</span><span class="city-count">4 artists</span></a>
-<a href="/near-me/chicago-il/" class="city-card"><span class="city-name">Chicago, IL</span><span class="city-count">3 artists</span></a>
-<a href="/near-me/phoenix-az/" class="city-card"><span class="city-name">Phoenix, AZ</span><span class="city-count">3 artists</span></a>
-<a href="/near-me/bethesda-md/" class="city-card"><span class="city-name">Bethesda, MD</span><span class="city-count">3 artists</span></a>
-<a href="/near-me/fort-worth-tx/" class="city-card"><span class="city-name">Fort Worth, TX</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/boca-raton-fl/" class="city-card"><span class="city-name">Boca Raton, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/tampa-fl/" class="city-card"><span class="city-name">Tampa, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/atlanta-ga/" class="city-card"><span class="city-name">Atlanta, GA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/scottsdale-az/" class="city-card"><span class="city-name">Scottsdale, AZ</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/bellevue-wa/" class="city-card"><span class="city-name">Bellevue, WA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/boulder-co/" class="city-card"><span class="city-name">Boulder, CO</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/pasadena-ca/" class="city-card"><span class="city-name">Pasadena, CA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/santa-monica-ca/" class="city-card"><span class="city-name">Santa Monica, CA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/glendale-ca/" class="city-card"><span class="city-name">Glendale, CA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/long-beach-ca/" class="city-card"><span class="city-name">Long Beach, CA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/santa-ana-ca/" class="city-card"><span class="city-name">Santa Ana, CA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/clearwater-fl/" class="city-card"><span class="city-name">Clearwater, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/arlington-tx/" class="city-card"><span class="city-name">Arlington, TX</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/sugar-land-tx/" class="city-card"><span class="city-name">Sugar Land, TX</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/alpharetta-ga/" class="city-card"><span class="city-name">Alpharetta, GA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/mesa-az/" class="city-card"><span class="city-name">Mesa, AZ</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/peoria-az/" class="city-card"><span class="city-name">Peoria, AZ</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/coral-springs-fl/" class="city-card"><span class="city-name">Coral Springs, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/pompano-beach-fl/" class="city-card"><span class="city-name">Pompano Beach, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/hollywood-fl/" class="city-card"><span class="city-name">Hollywood, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/doral-fl/" class="city-card"><span class="city-name">Doral, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/aventura-fl/" class="city-card"><span class="city-name">Aventura, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/roswell-ga/" class="city-card"><span class="city-name">Roswell, GA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/decatur-ga/" class="city-card"><span class="city-name">Decatur, GA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/morristown-nj/" class="city-card"><span class="city-name">Morristown, NJ</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/paramus-nj/" class="city-card"><span class="city-name">Paramus, NJ</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/westport-ct/" class="city-card"><span class="city-name">Westport, CT</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/greenwich-ct/" class="city-card"><span class="city-name">Greenwich, CT</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/huntington-ny/" class="city-card"><span class="city-name">Huntington, NY</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/great-neck-ny/" class="city-card"><span class="city-name">Great Neck, NY</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/delray-beach-fl/" class="city-card"><span class="city-name">Delray Beach, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/weston-fl/" class="city-card"><span class="city-name">Weston, FL</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/silver-spring-md/" class="city-card"><span class="city-name">Silver Spring, MD</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/towson-md/" class="city-card"><span class="city-name">Towson, MD</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/duluth-ga/" class="city-card"><span class="city-name">Duluth, GA</span><span class="city-count">2 artists</span></a>
-<a href="/near-me/sherman-oaks-ca/" class="city-card"><span class="city-name">Sherman Oaks, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/beverly-hills-ca/" class="city-card"><span class="city-name">Beverly Hills, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/downey-ca/" class="city-card"><span class="city-name">Downey, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/houston-tx/" class="city-card"><span class="city-name">Houston, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fort-lauderdale-fl/" class="city-card"><span class="city-name">Fort Lauderdale, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/kensington-md/" class="city-card"><span class="city-name">Kensington, MD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/colorado-springs-co/" class="city-card"><span class="city-name">Colorado Springs, CO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/san-diego-ca/" class="city-card"><span class="city-name">San Diego, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/san-francisco-ca/" class="city-card"><span class="city-name">San Francisco, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/sacramento-ca/" class="city-card"><span class="city-name">Sacramento, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/san-jose-ca/" class="city-card"><span class="city-name">San Jose, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/oakland-ca/" class="city-card"><span class="city-name">Oakland, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/irvine-ca/" class="city-card"><span class="city-name">Irvine, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/dallas-tx/" class="city-card"><span class="city-name">Dallas, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/austin-tx/" class="city-card"><span class="city-name">Austin, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/san-antonio-tx/" class="city-card"><span class="city-name">San Antonio, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/plano-tx/" class="city-card"><span class="city-name">Plano, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/miami-beach-fl/" class="city-card"><span class="city-name">Miami Beach, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/orlando-fl/" class="city-card"><span class="city-name">Orlando, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/jacksonville-fl/" class="city-card"><span class="city-name">Jacksonville, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/sarasota-fl/" class="city-card"><span class="city-name">Sarasota, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/west-palm-beach-fl/" class="city-card"><span class="city-name">West Palm Beach, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/coral-gables-fl/" class="city-card"><span class="city-name">Coral Gables, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/naperville-il/" class="city-card"><span class="city-name">Naperville, IL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/philadelphia-pa/" class="city-card"><span class="city-name">Philadelphia, PA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/pittsburgh-pa/" class="city-card"><span class="city-name">Pittsburgh, PA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/boston-ma/" class="city-card"><span class="city-name">Boston, MA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cambridge-ma/" class="city-card"><span class="city-name">Cambridge, MA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/seattle-wa/" class="city-card"><span class="city-name">Seattle, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/portland-me/" class="city-card"><span class="city-name">Portland, ME</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/las-vegas-nv/" class="city-card"><span class="city-name">Las Vegas, NV</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/denver-co/" class="city-card"><span class="city-name">Denver, CO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/minneapolis-mn/" class="city-card"><span class="city-name">Minneapolis, MN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/st.-louis-mo/" class="city-card"><span class="city-name">St. Louis, MO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/kansas-city-mo/" class="city-card"><span class="city-name">Kansas City, MO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/indianapolis-in/" class="city-card"><span class="city-name">Indianapolis, IN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/columbus-oh/" class="city-card"><span class="city-name">Columbus, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cleveland-oh/" class="city-card"><span class="city-name">Cleveland, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cincinnati-oh/" class="city-card"><span class="city-name">Cincinnati, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/charlotte-nc/" class="city-card"><span class="city-name">Charlotte, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/raleigh-nc/" class="city-card"><span class="city-name">Raleigh, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/nashville-tn/" class="city-card"><span class="city-name">Nashville, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/milwaukee-wi/" class="city-card"><span class="city-name">Milwaukee, WI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/charleston-sc/" class="city-card"><span class="city-name">Charleston, SC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/richmond-va/" class="city-card"><span class="city-name">Richmond, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/baltimore-md/" class="city-card"><span class="city-name">Baltimore, MD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/washington-dc/" class="city-card"><span class="city-name">Washington, DC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/hartford-ct/" class="city-card"><span class="city-name">Hartford, CT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/stamford-ct/" class="city-card"><span class="city-name">Stamford, CT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/salt-lake-city-ut/" class="city-card"><span class="city-name">Salt Lake City, UT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/louisville-ky/" class="city-card"><span class="city-name">Louisville, KY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/new-orleans-la/" class="city-card"><span class="city-name">New Orleans, LA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/birmingham-al/" class="city-card"><span class="city-name">Birmingham, AL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/oklahoma-city-ok/" class="city-card"><span class="city-name">Oklahoma City, OK</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/omaha-ne/" class="city-card"><span class="city-name">Omaha, NE</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/albuquerque-nm/" class="city-card"><span class="city-name">Albuquerque, NM</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/des-moines-ia/" class="city-card"><span class="city-name">Des Moines, IA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wichita-ks/" class="city-card"><span class="city-name">Wichita, KS</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/honolulu-hi/" class="city-card"><span class="city-name">Honolulu, HI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/boise-id/" class="city-card"><span class="city-name">Boise, ID</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/providence-ri/" class="city-card"><span class="city-name">Providence, RI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/long-island-ny/" class="city-card"><span class="city-name">Long Island, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/buffalo-ny/" class="city-card"><span class="city-name">Buffalo, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/rochester-ny/" class="city-card"><span class="city-name">Rochester, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/newark-nj/" class="city-card"><span class="city-name">Newark, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/jersey-city-nj/" class="city-card"><span class="city-name">Jersey City, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/princeton-nj/" class="city-card"><span class="city-name">Princeton, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/detroit-mi/" class="city-card"><span class="city-name">Detroit, MI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/grand-rapids-mi/" class="city-card"><span class="city-name">Grand Rapids, MI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/ann-arbor-mi/" class="city-card"><span class="city-name">Ann Arbor, MI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/memphis-tn/" class="city-card"><span class="city-name">Memphis, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/knoxville-tn/" class="city-card"><span class="city-name">Knoxville, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tucson-az/" class="city-card"><span class="city-name">Tucson, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/henderson-nv/" class="city-card"><span class="city-name">Henderson, NV</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/reno-nv/" class="city-card"><span class="city-name">Reno, NV</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tacoma-wa/" class="city-card"><span class="city-name">Tacoma, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/greenville-sc/" class="city-card"><span class="city-name">Greenville, SC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/norfolk-va/" class="city-card"><span class="city-name">Norfolk, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/virginia-beach-va/" class="city-card"><span class="city-name">Virginia Beach, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fargo-nd/" class="city-card"><span class="city-name">Fargo, ND</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/sioux-falls-sd/" class="city-card"><span class="city-name">Sioux Falls, SD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/billings-mt/" class="city-card"><span class="city-name">Billings, MT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cheyenne-wy/" class="city-card"><span class="city-name">Cheyenne, WY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/anchorage-ak/" class="city-card"><span class="city-name">Anchorage, AK</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/greensboro-nc/" class="city-card"><span class="city-name">Greensboro, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/durham-nc/" class="city-card"><span class="city-name">Durham, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/akron-oh/" class="city-card"><span class="city-name">Akron, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/dayton-oh/" class="city-card"><span class="city-name">Dayton, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lexington-ky/" class="city-card"><span class="city-name">Lexington, KY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/baton-rouge-la/" class="city-card"><span class="city-name">Baton Rouge, LA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/mobile-al/" class="city-card"><span class="city-name">Mobile, AL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tulsa-ok/" class="city-card"><span class="city-name">Tulsa, OK</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/spokane-wa/" class="city-card"><span class="city-name">Spokane, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/eugene-or/" class="city-card"><span class="city-name">Eugene, OR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fort-wayne-in/" class="city-card"><span class="city-name">Fort Wayne, IN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/madison-wi/" class="city-card"><span class="city-name">Madison, WI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/columbia-sc/" class="city-card"><span class="city-name">Columbia, SC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/augusta-ga/" class="city-card"><span class="city-name">Augusta, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/savannah-ga/" class="city-card"><span class="city-name">Savannah, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/asheville-nc/" class="city-card"><span class="city-name">Asheville, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/el-paso-tx/" class="city-card"><span class="city-name">El Paso, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/waco-tx/" class="city-card"><span class="city-name">Waco, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fort-myers-fl/" class="city-card"><span class="city-name">Fort Myers, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/pensacola-fl/" class="city-card"><span class="city-name">Pensacola, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tallahassee-fl/" class="city-card"><span class="city-name">Tallahassee, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/little-rock-ar/" class="city-card"><span class="city-name">Little Rock, AR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/jackson-ms/" class="city-card"><span class="city-name">Jackson, MS</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/manchester-nh/" class="city-card"><span class="city-name">Manchester, NH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wilmington-de/" class="city-card"><span class="city-name">Wilmington, DE</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/bakersfield-ca/" class="city-card"><span class="city-name">Bakersfield, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fresno-ca/" class="city-card"><span class="city-name">Fresno, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/riverside-ca/" class="city-card"><span class="city-name">Riverside, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/anaheim-ca/" class="city-card"><span class="city-name">Anaheim, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/st.-petersburg-fl/" class="city-card"><span class="city-name">St. Petersburg, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/gainesville-fl/" class="city-card"><span class="city-name">Gainesville, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/the-woodlands-tx/" class="city-card"><span class="city-name">The Woodlands, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/katy-tx/" class="city-card"><span class="city-name">Katy, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/frisco-tx/" class="city-card"><span class="city-name">Frisco, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/marietta-ga/" class="city-card"><span class="city-name">Marietta, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/sandy-springs-ga/" class="city-card"><span class="city-name">Sandy Springs, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/chandler-az/" class="city-card"><span class="city-name">Chandler, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/gilbert-az/" class="city-card"><span class="city-name">Gilbert, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tempe-az/" class="city-card"><span class="city-name">Tempe, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/schaumburg-il/" class="city-card"><span class="city-name">Schaumburg, IL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/oak-brook-il/" class="city-card"><span class="city-name">Oak Brook, IL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/evanston-il/" class="city-card"><span class="city-name">Evanston, IL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/playa-vista-ca/" class="city-card"><span class="city-name">Playa Vista, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/venice-fl/" class="city-card"><span class="city-name">Venice, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/burbank-ca/" class="city-card"><span class="city-name">Burbank, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/studio-city-ca/" class="city-card"><span class="city-name">Studio City, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/encino-ca/" class="city-card"><span class="city-name">Encino, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/brickell-fl/" class="city-card"><span class="city-name">Brickell, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wynwood-fl/" class="city-card"><span class="city-name">Wynwood, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/buckhead-ga/" class="city-card"><span class="city-name">Buckhead, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/midtown-atl-ga/" class="city-card"><span class="city-name">Midtown ATL, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/scottsdale-north-az/" class="city-card"><span class="city-name">Scottsdale North, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/paradise-valley-az/" class="city-card"><span class="city-name">Paradise Valley, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/hoboken-nj/" class="city-card"><span class="city-name">Hoboken, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/edgewater-nj/" class="city-card"><span class="city-name">Edgewater, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/white-plains-ny/" class="city-card"><span class="city-name">White Plains, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/manhasset-ny/" class="city-card"><span class="city-name">Manhasset, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/coconut-creek-fl/" class="city-card"><span class="city-name">Coconut Creek, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/plantation-fl/" class="city-card"><span class="city-name">Plantation, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lake-worth-fl/" class="city-card"><span class="city-name">Lake Worth, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/alpharetta-north-ga/" class="city-card"><span class="city-name">Alpharetta North, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/columbia-md/" class="city-card"><span class="city-name">Columbia, MD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/suwanee-ga/" class="city-card"><span class="city-name">Suwanee, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/kissimmee-fl/" class="city-card"><span class="city-name">Kissimmee, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/daytona-beach-fl/" class="city-card"><span class="city-name">Daytona Beach, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/torrance-ca/" class="city-card"><span class="city-name">Torrance, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/thousand-oaks-ca/" class="city-card"><span class="city-name">Thousand Oaks, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/temecula-ca/" class="city-card"><span class="city-name">Temecula, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/carlsbad-ca/" class="city-card"><span class="city-name">Carlsbad, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/round-rock-tx/" class="city-card"><span class="city-name">Round Rock, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/mckinney-tx/" class="city-card"><span class="city-name">McKinney, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/corpus-christi-tx/" class="city-card"><span class="city-name">Corpus Christi, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lubbock-tx/" class="city-card"><span class="city-name">Lubbock, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/amarillo-tx/" class="city-card"><span class="city-name">Amarillo, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/beaumont-tx/" class="city-card"><span class="city-name">Beaumont, TX</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/johns-creek-ga/" class="city-card"><span class="city-name">Johns Creek, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lawrenceville-ga/" class="city-card"><span class="city-name">Lawrenceville, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/peachtree-city-ga/" class="city-card"><span class="city-name">Peachtree City, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/macon-ga/" class="city-card"><span class="city-name">Macon, GA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/glendale-az/" class="city-card"><span class="city-name">Glendale, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/surprise-az/" class="city-card"><span class="city-name">Surprise, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/goodyear-az/" class="city-card"><span class="city-name">Goodyear, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/flagstaff-az/" class="city-card"><span class="city-name">Flagstaff, AZ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/edison-nj/" class="city-card"><span class="city-name">Edison, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cherry-hill-nj/" class="city-card"><span class="city-name">Cherry Hill, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/red-bank-nj/" class="city-card"><span class="city-name">Red Bank, NJ</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/new-haven-ct/" class="city-card"><span class="city-name">New Haven, CT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/bridgeport-ct/" class="city-card"><span class="city-name">Bridgeport, CT</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/scarsdale-ny/" class="city-card"><span class="city-name">Scarsdale, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/garden-city-ny/" class="city-card"><span class="city-name">Garden City, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/yonkers-ny/" class="city-card"><span class="city-name">Yonkers, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/new-rochelle-ny/" class="city-card"><span class="city-name">New Rochelle, NY</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/annapolis-md/" class="city-card"><span class="city-name">Annapolis, MD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/frederick-md/" class="city-card"><span class="city-name">Frederick, MD</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/kirkland-wa/" class="city-card"><span class="city-name">Kirkland, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/redmond-wa/" class="city-card"><span class="city-name">Redmond, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/olympia-wa/" class="city-card"><span class="city-name">Olympia, WA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lake-oswego-or/" class="city-card"><span class="city-name">Lake Oswego, OR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/beaverton-or/" class="city-card"><span class="city-name">Beaverton, OR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/salem-or/" class="city-card"><span class="city-name">Salem, OR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/bend-or/" class="city-card"><span class="city-name">Bend, OR</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fort-collins-co/" class="city-card"><span class="city-name">Fort Collins, CO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cary-nc/" class="city-card"><span class="city-name">Cary, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lakewood-co/" class="city-card"><span class="city-name">Lakewood, CO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/aurora-co/" class="city-card"><span class="city-name">Aurora, CO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/edina-mn/" class="city-card"><span class="city-name">Edina, MN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/plymouth-mn/" class="city-card"><span class="city-name">Plymouth, MN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wayzata-mn/" class="city-card"><span class="city-name">Wayzata, MN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/rochester-mn/" class="city-card"><span class="city-name">Rochester, MN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/overland-park-ks/" class="city-card"><span class="city-name">Overland Park, KS</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/leawood-ks/" class="city-card"><span class="city-name">Leawood, KS</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/clayton-mo/" class="city-card"><span class="city-name">Clayton, MO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/chesterfield-mo/" class="city-card"><span class="city-name">Chesterfield, MO</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/carmel-in/" class="city-card"><span class="city-name">Carmel, IN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/fishers-in/" class="city-card"><span class="city-name">Fishers, IN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/beachwood-oh/" class="city-card"><span class="city-name">Beachwood, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/upper-arlington-oh/" class="city-card"><span class="city-name">Upper Arlington, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/solon-oh/" class="city-card"><span class="city-name">Solon, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/westlake-oh/" class="city-card"><span class="city-name">Westlake, OH</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/huntersville-nc/" class="city-card"><span class="city-name">Huntersville, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/southpark-nc/" class="city-card"><span class="city-name">Southpark, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wilmington-nc/" class="city-card"><span class="city-name">Wilmington, NC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/brentwood-tn/" class="city-card"><span class="city-name">Brentwood, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/franklin-tn/" class="city-card"><span class="city-name">Franklin, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/germantown-tn/" class="city-card"><span class="city-name">Germantown, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/chattanooga-tn/" class="city-card"><span class="city-name">Chattanooga, TN</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/brookfield-wi/" class="city-card"><span class="city-name">Brookfield, WI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wauwatosa-wi/" class="city-card"><span class="city-name">Wauwatosa, WI</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/mount-pleasant-sc/" class="city-card"><span class="city-name">Mount Pleasant, SC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/hilton-head-sc/" class="city-card"><span class="city-name">Hilton Head, SC</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/mclean-va/" class="city-card"><span class="city-name">McLean, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/alexandria-va/" class="city-card"><span class="city-name">Alexandria, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/arlington-va/" class="city-card"><span class="city-name">Arlington, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/tysons-va/" class="city-card"><span class="city-name">Tysons, VA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wellington-fl/" class="city-card"><span class="city-name">Wellington, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/jupiter-fl/" class="city-card"><span class="city-name">Jupiter, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/naples-fl/" class="city-card"><span class="city-name">Naples, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/bonita-springs-fl/" class="city-card"><span class="city-name">Bonita Springs, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/cape-coral-fl/" class="city-card"><span class="city-name">Cape Coral, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/ocala-fl/" class="city-card"><span class="city-name">Ocala, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/palm-beach-gardens-fl/" class="city-card"><span class="city-name">Palm Beach Gardens, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/winter-park-fl/" class="city-card"><span class="city-name">Winter Park, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lake-mary-fl/" class="city-card"><span class="city-name">Lake Mary, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/oviedo-fl/" class="city-card"><span class="city-name">Oviedo, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/windermere-fl/" class="city-card"><span class="city-name">Windermere, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/celebration-fl/" class="city-card"><span class="city-name">Celebration, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/clermont-fl/" class="city-card"><span class="city-name">Clermont, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/wesley-chapel-fl/" class="city-card"><span class="city-name">Wesley Chapel, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/brandon-fl/" class="city-card"><span class="city-name">Brandon, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/lakewood-ranch-fl/" class="city-card"><span class="city-name">Lakewood Ranch, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/spring-hill-fl/" class="city-card"><span class="city-name">Spring Hill, FL</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/roseville-ca/" class="city-card"><span class="city-name">Roseville, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/folsom-ca/" class="city-card"><span class="city-name">Folsom, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/walnut-creek-ca/" class="city-card"><span class="city-name">Walnut Creek, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/pleasanton-ca/" class="city-card"><span class="city-name">Pleasanton, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/santa-barbara-ca/" class="city-card"><span class="city-name">Santa Barbara, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/ventura-ca/" class="city-card"><span class="city-name">Ventura, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/palm-desert-ca/" class="city-card"><span class="city-name">Palm Desert, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/laguna-beach-ca/" class="city-card"><span class="city-name">Laguna Beach, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/manhattan-beach-ca/" class="city-card"><span class="city-name">Manhattan Beach, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/redondo-beach-ca/" class="city-card"><span class="city-name">Redondo Beach, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/newport-beach-ca/" class="city-card"><span class="city-name">Newport Beach, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/huntington-beach-ca/" class="city-card"><span class="city-name">Huntington Beach, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/calabasas-ca/" class="city-card"><span class="city-name">Calabasas, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/westlake-village-ca/" class="city-card"><span class="city-name">Westlake Village, CA</span><span class="city-count">1 artist</span></a>
-<a href="/near-me/miami-fl/" class="city-card"><span class="city-name">miami, FL</span><span class="city-count">1 artist</span></a>
-</div></div>
+<div class="states">
+<div class="state-group"><h2>Alabama</h2><div class="city-links"><a href="/near-me/birmingham-al/">Birmingham <span>(1)</span></a><a href="/near-me/mobile-al/">Mobile <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Alaska</h2><div class="city-links"><a href="/near-me/anchorage-ak/">Anchorage <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Arizona</h2><div class="city-links"><a href="/near-me/chandler-az/">Chandler <span>(1)</span></a><a href="/near-me/flagstaff-az/">Flagstaff <span>(1)</span></a><a href="/near-me/gilbert-az/">Gilbert <span>(1)</span></a><a href="/near-me/glendale-az/">Glendale <span>(1)</span></a><a href="/near-me/goodyear-az/">Goodyear <span>(1)</span></a><a href="/near-me/mesa-az/">Mesa <span>(2)</span></a><a href="/near-me/paradise-valley-az/">Paradise Valley <span>(1)</span></a><a href="/near-me/peoria-az/">Peoria <span>(2)</span></a><a href="/near-me/phoenix-az/">Phoenix <span>(3)</span></a><a href="/near-me/scottsdale-az/">Scottsdale <span>(2)</span></a><a href="/near-me/scottsdale-north-az/">Scottsdale North <span>(1)</span></a><a href="/near-me/surprise-az/">Surprise <span>(1)</span></a><a href="/near-me/tempe-az/">Tempe <span>(1)</span></a><a href="/near-me/tucson-az/">Tucson <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Arkansas</h2><div class="city-links"><a href="/near-me/little-rock-ar/">Little Rock <span>(1)</span></a></div></div>
+<div class="state-group"><h2>California</h2><div class="city-links"><a href="/near-me/anaheim-ca/">Anaheim <span>(1)</span></a><a href="/near-me/bakersfield-ca/">Bakersfield <span>(1)</span></a><a href="/near-me/beverly-hills-ca/">Beverly Hills <span>(1)</span></a><a href="/near-me/burbank-ca/">Burbank <span>(1)</span></a><a href="/near-me/calabasas-ca/">Calabasas <span>(1)</span></a><a href="/near-me/carlsbad-ca/">Carlsbad <span>(1)</span></a><a href="/near-me/downey-ca/">Downey <span>(1)</span></a><a href="/near-me/encino-ca/">Encino <span>(1)</span></a><a href="/near-me/folsom-ca/">Folsom <span>(1)</span></a><a href="/near-me/fresno-ca/">Fresno <span>(1)</span></a><a href="/near-me/glendale-ca/">Glendale <span>(2)</span></a><a href="/near-me/huntington-beach-ca/">Huntington Beach <span>(1)</span></a><a href="/near-me/irvine-ca/">Irvine <span>(1)</span></a><a href="/near-me/laguna-beach-ca/">Laguna Beach <span>(1)</span></a><a href="/near-me/long-beach-ca/">Long Beach <span>(2)</span></a><a href="/near-me/los-angeles-ca/">Los Angeles <span>(4)</span></a><a href="/near-me/manhattan-beach-ca/">Manhattan Beach <span>(1)</span></a><a href="/near-me/newport-beach-ca/">Newport Beach <span>(1)</span></a><a href="/near-me/oakland-ca/">Oakland <span>(1)</span></a><a href="/near-me/palm-desert-ca/">Palm Desert <span>(1)</span></a><a href="/near-me/pasadena-ca/">Pasadena <span>(2)</span></a><a href="/near-me/playa-vista-ca/">Playa Vista <span>(1)</span></a><a href="/near-me/pleasanton-ca/">Pleasanton <span>(1)</span></a><a href="/near-me/redondo-beach-ca/">Redondo Beach <span>(1)</span></a><a href="/near-me/riverside-ca/">Riverside <span>(1)</span></a><a href="/near-me/roseville-ca/">Roseville <span>(1)</span></a><a href="/near-me/sacramento-ca/">Sacramento <span>(1)</span></a><a href="/near-me/san-diego-ca/">San Diego <span>(1)</span></a><a href="/near-me/san-francisco-ca/">San Francisco <span>(1)</span></a><a href="/near-me/san-jose-ca/">San Jose <span>(1)</span></a><a href="/near-me/santa-ana-ca/">Santa Ana <span>(2)</span></a><a href="/near-me/santa-barbara-ca/">Santa Barbara <span>(1)</span></a><a href="/near-me/santa-monica-ca/">Santa Monica <span>(2)</span></a><a href="/near-me/sherman-oaks-ca/">Sherman Oaks <span>(1)</span></a><a href="/near-me/studio-city-ca/">Studio City <span>(1)</span></a><a href="/near-me/temecula-ca/">Temecula <span>(1)</span></a><a href="/near-me/thousand-oaks-ca/">Thousand Oaks <span>(1)</span></a><a href="/near-me/torrance-ca/">Torrance <span>(1)</span></a><a href="/near-me/ventura-ca/">Ventura <span>(1)</span></a><a href="/near-me/walnut-creek-ca/">Walnut Creek <span>(1)</span></a><a href="/near-me/westlake-village-ca/">Westlake Village <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Colorado</h2><div class="city-links"><a href="/near-me/aurora-co/">Aurora <span>(1)</span></a><a href="/near-me/boulder-co/">Boulder <span>(2)</span></a><a href="/near-me/colorado-springs-co/">Colorado Springs <span>(1)</span></a><a href="/near-me/denver-co/">Denver <span>(1)</span></a><a href="/near-me/fort-collins-co/">Fort Collins <span>(1)</span></a><a href="/near-me/lakewood-co/">Lakewood <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Connecticut</h2><div class="city-links"><a href="/near-me/bridgeport-ct/">Bridgeport <span>(1)</span></a><a href="/near-me/greenwich-ct/">Greenwich <span>(2)</span></a><a href="/near-me/hartford-ct/">Hartford <span>(1)</span></a><a href="/near-me/new-haven-ct/">New Haven <span>(1)</span></a><a href="/near-me/stamford-ct/">Stamford <span>(1)</span></a><a href="/near-me/westport-ct/">Westport <span>(2)</span></a></div></div>
+<div class="state-group"><h2>Delaware</h2><div class="city-links"><a href="/near-me/wilmington-de/">Wilmington <span>(1)</span></a></div></div>
+<div class="state-group"><h2>District of Columbia</h2><div class="city-links"><a href="/near-me/washington-dc/">Washington <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Florida</h2><div class="city-links"><a href="/near-me/aventura-fl/">Aventura <span>(2)</span></a><a href="/near-me/boca-raton-fl/">Boca Raton <span>(2)</span></a><a href="/near-me/bonita-springs-fl/">Bonita Springs <span>(1)</span></a><a href="/near-me/brandon-fl/">Brandon <span>(1)</span></a><a href="/near-me/brickell-fl/">Brickell <span>(1)</span></a><a href="/near-me/cape-coral-fl/">Cape Coral <span>(1)</span></a><a href="/near-me/celebration-fl/">Celebration <span>(1)</span></a><a href="/near-me/clearwater-fl/">Clearwater <span>(2)</span></a><a href="/near-me/clermont-fl/">Clermont <span>(1)</span></a><a href="/near-me/coconut-creek-fl/">Coconut Creek <span>(1)</span></a><a href="/near-me/coral-gables-fl/">Coral Gables <span>(1)</span></a><a href="/near-me/coral-springs-fl/">Coral Springs <span>(2)</span></a><a href="/near-me/daytona-beach-fl/">Daytona Beach <span>(1)</span></a><a href="/near-me/delray-beach-fl/">Delray Beach <span>(2)</span></a><a href="/near-me/doral-fl/">Doral <span>(2)</span></a><a href="/near-me/fort-lauderdale-fl/">Fort Lauderdale <span>(1)</span></a><a href="/near-me/fort-myers-fl/">Fort Myers <span>(1)</span></a><a href="/near-me/gainesville-fl/">Gainesville <span>(1)</span></a><a href="/near-me/hollywood-fl/">Hollywood <span>(2)</span></a><a href="/near-me/jacksonville-fl/">Jacksonville <span>(1)</span></a><a href="/near-me/jupiter-fl/">Jupiter <span>(1)</span></a><a href="/near-me/kissimmee-fl/">Kissimmee <span>(1)</span></a><a href="/near-me/lake-mary-fl/">Lake Mary <span>(1)</span></a><a href="/near-me/lake-worth-fl/">Lake Worth <span>(1)</span></a><a href="/near-me/lakewood-ranch-fl/">Lakewood Ranch <span>(1)</span></a><a href="/near-me/miami-fl/">miami <span>(1)</span></a><a href="/near-me/miami-beach-fl/">Miami Beach <span>(1)</span></a><a href="/near-me/naples-fl/">Naples <span>(1)</span></a><a href="/near-me/ocala-fl/">Ocala <span>(1)</span></a><a href="/near-me/orlando-fl/">Orlando <span>(1)</span></a><a href="/near-me/oviedo-fl/">Oviedo <span>(1)</span></a><a href="/near-me/palm-beach-gardens-fl/">Palm Beach Gardens <span>(1)</span></a><a href="/near-me/pensacola-fl/">Pensacola <span>(1)</span></a><a href="/near-me/plantation-fl/">Plantation <span>(1)</span></a><a href="/near-me/pompano-beach-fl/">Pompano Beach <span>(2)</span></a><a href="/near-me/sarasota-fl/">Sarasota <span>(1)</span></a><a href="/near-me/spring-hill-fl/">Spring Hill <span>(1)</span></a><a href="/near-me/st.-petersburg-fl/">St. Petersburg <span>(1)</span></a><a href="/near-me/tallahassee-fl/">Tallahassee <span>(1)</span></a><a href="/near-me/tampa-fl/">Tampa <span>(2)</span></a><a href="/near-me/venice-fl/">Venice <span>(1)</span></a><a href="/near-me/wellington-fl/">Wellington <span>(1)</span></a><a href="/near-me/wesley-chapel-fl/">Wesley Chapel <span>(1)</span></a><a href="/near-me/west-palm-beach-fl/">West Palm Beach <span>(1)</span></a><a href="/near-me/weston-fl/">Weston <span>(2)</span></a><a href="/near-me/windermere-fl/">Windermere <span>(1)</span></a><a href="/near-me/winter-park-fl/">Winter Park <span>(1)</span></a><a href="/near-me/wynwood-fl/">Wynwood <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Georgia</h2><div class="city-links"><a href="/near-me/alpharetta-ga/">Alpharetta <span>(2)</span></a><a href="/near-me/alpharetta-north-ga/">Alpharetta North <span>(1)</span></a><a href="/near-me/atlanta-ga/">Atlanta <span>(2)</span></a><a href="/near-me/augusta-ga/">Augusta <span>(1)</span></a><a href="/near-me/buckhead-ga/">Buckhead <span>(1)</span></a><a href="/near-me/decatur-ga/">Decatur <span>(2)</span></a><a href="/near-me/duluth-ga/">Duluth <span>(2)</span></a><a href="/near-me/johns-creek-ga/">Johns Creek <span>(1)</span></a><a href="/near-me/lawrenceville-ga/">Lawrenceville <span>(1)</span></a><a href="/near-me/macon-ga/">Macon <span>(1)</span></a><a href="/near-me/marietta-ga/">Marietta <span>(1)</span></a><a href="/near-me/midtown-atl-ga/">Midtown ATL <span>(1)</span></a><a href="/near-me/peachtree-city-ga/">Peachtree City <span>(1)</span></a><a href="/near-me/roswell-ga/">Roswell <span>(2)</span></a><a href="/near-me/sandy-springs-ga/">Sandy Springs <span>(1)</span></a><a href="/near-me/savannah-ga/">Savannah <span>(1)</span></a><a href="/near-me/suwanee-ga/">Suwanee <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Hawaii</h2><div class="city-links"><a href="/near-me/honolulu-hi/">Honolulu <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Idaho</h2><div class="city-links"><a href="/near-me/boise-id/">Boise <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Illinois</h2><div class="city-links"><a href="/near-me/chicago-il/">Chicago <span>(3)</span></a><a href="/near-me/evanston-il/">Evanston <span>(1)</span></a><a href="/near-me/naperville-il/">Naperville <span>(1)</span></a><a href="/near-me/oak-brook-il/">Oak Brook <span>(1)</span></a><a href="/near-me/schaumburg-il/">Schaumburg <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Indiana</h2><div class="city-links"><a href="/near-me/carmel-in/">Carmel <span>(1)</span></a><a href="/near-me/fishers-in/">Fishers <span>(1)</span></a><a href="/near-me/fort-wayne-in/">Fort Wayne <span>(1)</span></a><a href="/near-me/indianapolis-in/">Indianapolis <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Iowa</h2><div class="city-links"><a href="/near-me/des-moines-ia/">Des Moines <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Kansas</h2><div class="city-links"><a href="/near-me/leawood-ks/">Leawood <span>(1)</span></a><a href="/near-me/overland-park-ks/">Overland Park <span>(1)</span></a><a href="/near-me/wichita-ks/">Wichita <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Kentucky</h2><div class="city-links"><a href="/near-me/lexington-ky/">Lexington <span>(1)</span></a><a href="/near-me/louisville-ky/">Louisville <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Louisiana</h2><div class="city-links"><a href="/near-me/baton-rouge-la/">Baton Rouge <span>(1)</span></a><a href="/near-me/new-orleans-la/">New Orleans <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Maine</h2><div class="city-links"><a href="/near-me/portland-me/">Portland <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Maryland</h2><div class="city-links"><a href="/near-me/annapolis-md/">Annapolis <span>(1)</span></a><a href="/near-me/baltimore-md/">Baltimore <span>(1)</span></a><a href="/near-me/bethesda-md/">Bethesda <span>(3)</span></a><a href="/near-me/columbia-md/">Columbia <span>(1)</span></a><a href="/near-me/frederick-md/">Frederick <span>(1)</span></a><a href="/near-me/kensington-md/">Kensington <span>(1)</span></a><a href="/near-me/silver-spring-md/">Silver Spring <span>(2)</span></a><a href="/near-me/towson-md/">Towson <span>(2)</span></a></div></div>
+<div class="state-group"><h2>Massachusetts</h2><div class="city-links"><a href="/near-me/boston-ma/">Boston <span>(1)</span></a><a href="/near-me/cambridge-ma/">Cambridge <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Michigan</h2><div class="city-links"><a href="/near-me/ann-arbor-mi/">Ann Arbor <span>(1)</span></a><a href="/near-me/detroit-mi/">Detroit <span>(1)</span></a><a href="/near-me/grand-rapids-mi/">Grand Rapids <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Minnesota</h2><div class="city-links"><a href="/near-me/edina-mn/">Edina <span>(1)</span></a><a href="/near-me/minneapolis-mn/">Minneapolis <span>(1)</span></a><a href="/near-me/plymouth-mn/">Plymouth <span>(1)</span></a><a href="/near-me/rochester-mn/">Rochester <span>(1)</span></a><a href="/near-me/wayzata-mn/">Wayzata <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Mississippi</h2><div class="city-links"><a href="/near-me/jackson-ms/">Jackson <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Missouri</h2><div class="city-links"><a href="/near-me/chesterfield-mo/">Chesterfield <span>(1)</span></a><a href="/near-me/clayton-mo/">Clayton <span>(1)</span></a><a href="/near-me/kansas-city-mo/">Kansas City <span>(1)</span></a><a href="/near-me/st.-louis-mo/">St. Louis <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Montana</h2><div class="city-links"><a href="/near-me/billings-mt/">Billings <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Nebraska</h2><div class="city-links"><a href="/near-me/omaha-ne/">Omaha <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Nevada</h2><div class="city-links"><a href="/near-me/henderson-nv/">Henderson <span>(1)</span></a><a href="/near-me/las-vegas-nv/">Las Vegas <span>(1)</span></a><a href="/near-me/reno-nv/">Reno <span>(1)</span></a></div></div>
+<div class="state-group"><h2>New Hampshire</h2><div class="city-links"><a href="/near-me/manchester-nh/">Manchester <span>(1)</span></a></div></div>
+<div class="state-group"><h2>New Jersey</h2><div class="city-links"><a href="/near-me/cherry-hill-nj/">Cherry Hill <span>(1)</span></a><a href="/near-me/edgewater-nj/">Edgewater <span>(1)</span></a><a href="/near-me/edison-nj/">Edison <span>(1)</span></a><a href="/near-me/hoboken-nj/">Hoboken <span>(1)</span></a><a href="/near-me/jersey-city-nj/">Jersey City <span>(1)</span></a><a href="/near-me/morristown-nj/">Morristown <span>(2)</span></a><a href="/near-me/newark-nj/">Newark <span>(1)</span></a><a href="/near-me/paramus-nj/">Paramus <span>(2)</span></a><a href="/near-me/princeton-nj/">Princeton <span>(1)</span></a><a href="/near-me/red-bank-nj/">Red Bank <span>(1)</span></a></div></div>
+<div class="state-group"><h2>New Mexico</h2><div class="city-links"><a href="/near-me/albuquerque-nm/">Albuquerque <span>(1)</span></a></div></div>
+<div class="state-group"><h2>New York</h2><div class="city-links"><a href="/near-me/buffalo-ny/">Buffalo <span>(1)</span></a><a href="/near-me/garden-city-ny/">Garden City <span>(1)</span></a><a href="/near-me/great-neck-ny/">Great Neck <span>(2)</span></a><a href="/near-me/huntington-ny/">Huntington <span>(2)</span></a><a href="/near-me/long-island-ny/">Long Island <span>(1)</span></a><a href="/near-me/manhasset-ny/">Manhasset <span>(1)</span></a><a href="/near-me/new-rochelle-ny/">New Rochelle <span>(1)</span></a><a href="/near-me/new-york-ny/">New York <span>(8)</span></a><a href="/near-me/rochester-ny/">Rochester <span>(1)</span></a><a href="/near-me/scarsdale-ny/">Scarsdale <span>(1)</span></a><a href="/near-me/white-plains-ny/">White Plains <span>(1)</span></a><a href="/near-me/yonkers-ny/">Yonkers <span>(1)</span></a></div></div>
+<div class="state-group"><h2>North Carolina</h2><div class="city-links"><a href="/near-me/asheville-nc/">Asheville <span>(1)</span></a><a href="/near-me/cary-nc/">Cary <span>(1)</span></a><a href="/near-me/charlotte-nc/">Charlotte <span>(1)</span></a><a href="/near-me/durham-nc/">Durham <span>(1)</span></a><a href="/near-me/greensboro-nc/">Greensboro <span>(1)</span></a><a href="/near-me/huntersville-nc/">Huntersville <span>(1)</span></a><a href="/near-me/raleigh-nc/">Raleigh <span>(1)</span></a><a href="/near-me/southpark-nc/">Southpark <span>(1)</span></a><a href="/near-me/wilmington-nc/">Wilmington <span>(1)</span></a></div></div>
+<div class="state-group"><h2>North Dakota</h2><div class="city-links"><a href="/near-me/fargo-nd/">Fargo <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Ohio</h2><div class="city-links"><a href="/near-me/akron-oh/">Akron <span>(1)</span></a><a href="/near-me/beachwood-oh/">Beachwood <span>(1)</span></a><a href="/near-me/cincinnati-oh/">Cincinnati <span>(1)</span></a><a href="/near-me/cleveland-oh/">Cleveland <span>(1)</span></a><a href="/near-me/columbus-oh/">Columbus <span>(1)</span></a><a href="/near-me/dayton-oh/">Dayton <span>(1)</span></a><a href="/near-me/solon-oh/">Solon <span>(1)</span></a><a href="/near-me/upper-arlington-oh/">Upper Arlington <span>(1)</span></a><a href="/near-me/westlake-oh/">Westlake <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Oklahoma</h2><div class="city-links"><a href="/near-me/oklahoma-city-ok/">Oklahoma City <span>(1)</span></a><a href="/near-me/tulsa-ok/">Tulsa <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Oregon</h2><div class="city-links"><a href="/near-me/beaverton-or/">Beaverton <span>(1)</span></a><a href="/near-me/bend-or/">Bend <span>(1)</span></a><a href="/near-me/eugene-or/">Eugene <span>(1)</span></a><a href="/near-me/lake-oswego-or/">Lake Oswego <span>(1)</span></a><a href="/near-me/salem-or/">Salem <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Pennsylvania</h2><div class="city-links"><a href="/near-me/philadelphia-pa/">Philadelphia <span>(1)</span></a><a href="/near-me/pittsburgh-pa/">Pittsburgh <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Rhode Island</h2><div class="city-links"><a href="/near-me/providence-ri/">Providence <span>(1)</span></a></div></div>
+<div class="state-group"><h2>South Carolina</h2><div class="city-links"><a href="/near-me/charleston-sc/">Charleston <span>(1)</span></a><a href="/near-me/columbia-sc/">Columbia <span>(1)</span></a><a href="/near-me/greenville-sc/">Greenville <span>(1)</span></a><a href="/near-me/hilton-head-sc/">Hilton Head <span>(1)</span></a><a href="/near-me/mount-pleasant-sc/">Mount Pleasant <span>(1)</span></a></div></div>
+<div class="state-group"><h2>South Dakota</h2><div class="city-links"><a href="/near-me/sioux-falls-sd/">Sioux Falls <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Tennessee</h2><div class="city-links"><a href="/near-me/brentwood-tn/">Brentwood <span>(1)</span></a><a href="/near-me/chattanooga-tn/">Chattanooga <span>(1)</span></a><a href="/near-me/franklin-tn/">Franklin <span>(1)</span></a><a href="/near-me/germantown-tn/">Germantown <span>(1)</span></a><a href="/near-me/knoxville-tn/">Knoxville <span>(1)</span></a><a href="/near-me/memphis-tn/">Memphis <span>(1)</span></a><a href="/near-me/nashville-tn/">Nashville <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Texas</h2><div class="city-links"><a href="/near-me/amarillo-tx/">Amarillo <span>(1)</span></a><a href="/near-me/arlington-tx/">Arlington <span>(2)</span></a><a href="/near-me/austin-tx/">Austin <span>(1)</span></a><a href="/near-me/beaumont-tx/">Beaumont <span>(1)</span></a><a href="/near-me/corpus-christi-tx/">Corpus Christi <span>(1)</span></a><a href="/near-me/dallas-tx/">Dallas <span>(1)</span></a><a href="/near-me/el-paso-tx/">El Paso <span>(1)</span></a><a href="/near-me/fort-worth-tx/">Fort Worth <span>(2)</span></a><a href="/near-me/frisco-tx/">Frisco <span>(1)</span></a><a href="/near-me/houston-tx/">Houston <span>(1)</span></a><a href="/near-me/katy-tx/">Katy <span>(1)</span></a><a href="/near-me/lubbock-tx/">Lubbock <span>(1)</span></a><a href="/near-me/mckinney-tx/">McKinney <span>(1)</span></a><a href="/near-me/plano-tx/">Plano <span>(1)</span></a><a href="/near-me/round-rock-tx/">Round Rock <span>(1)</span></a><a href="/near-me/san-antonio-tx/">San Antonio <span>(1)</span></a><a href="/near-me/sugar-land-tx/">Sugar Land <span>(2)</span></a><a href="/near-me/the-woodlands-tx/">The Woodlands <span>(1)</span></a><a href="/near-me/waco-tx/">Waco <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Utah</h2><div class="city-links"><a href="/near-me/salt-lake-city-ut/">Salt Lake City <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Virginia</h2><div class="city-links"><a href="/near-me/alexandria-va/">Alexandria <span>(1)</span></a><a href="/near-me/arlington-va/">Arlington <span>(1)</span></a><a href="/near-me/mclean-va/">McLean <span>(1)</span></a><a href="/near-me/norfolk-va/">Norfolk <span>(1)</span></a><a href="/near-me/richmond-va/">Richmond <span>(1)</span></a><a href="/near-me/tysons-va/">Tysons <span>(1)</span></a><a href="/near-me/virginia-beach-va/">Virginia Beach <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Washington</h2><div class="city-links"><a href="/near-me/bellevue-wa/">Bellevue <span>(2)</span></a><a href="/near-me/kirkland-wa/">Kirkland <span>(1)</span></a><a href="/near-me/olympia-wa/">Olympia <span>(1)</span></a><a href="/near-me/redmond-wa/">Redmond <span>(1)</span></a><a href="/near-me/seattle-wa/">Seattle <span>(1)</span></a><a href="/near-me/spokane-wa/">Spokane <span>(1)</span></a><a href="/near-me/tacoma-wa/">Tacoma <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Wisconsin</h2><div class="city-links"><a href="/near-me/brookfield-wi/">Brookfield <span>(1)</span></a><a href="/near-me/madison-wi/">Madison <span>(1)</span></a><a href="/near-me/milwaukee-wi/">Milwaukee <span>(1)</span></a><a href="/near-me/wauwatosa-wi/">Wauwatosa <span>(1)</span></a></div></div>
+<div class="state-group"><h2>Wyoming</h2><div class="city-links"><a href="/near-me/cheyenne-wy/">Cheyenne <span>(1)</span></a></div></div>
+</div>
 <footer>
   <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
   <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
