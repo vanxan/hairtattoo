@@ -129,6 +129,14 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .cta-box .btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
 .cta-box .btn:hover{background:rgba(255,255,255,.3)}
 
+.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.city-card{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.25rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);font-size:.9375rem;color:var(--text);transition:all .15s;text-decoration:none}
+.city-card:hover{border-color:var(--ac);box-shadow:0 2px 8px rgba(0,0,0,.06);transform:translateY(-1px)}
+.city-card .city-name{font-weight:500}
+.city-card .city-count{color:var(--ac);font-weight:600;font-size:.8125rem;white-space:nowrap}
+
+a.card{display:block;color:var(--text);text-decoration:none}
+
 footer{background:var(--text);color:#ccc;padding:3rem 1rem;text-align:center;font-size:.8125rem;margin-top:auto}
 footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
 footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
@@ -144,9 +152,11 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
   .dp-grid{grid-template-columns:1fr}
   .dp-socials{justify-content:center}
+  .city-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
   .grid{grid-template-columns:1fr}
+  .city-grid{grid-template-columns:1fr}
   .nav-r .hm{display:none}
   .hero h1{font-size:1.75rem}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
@@ -173,13 +183,12 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   <p>Browse verified scalp micropigmentation professionals in Madison, Wisconsin. Compare services, view pricing, and connect with SMP artists near you.</p>
   <div class="count">1 SMP artist found</div>
 </section>
-<div class="main"><div class="grid"><article class="card" onclick="location.href='/near-me/madison-wi/madison-smp-studio'" itemscope itemtype="https://schema.org/LocalBusiness">
+<div class="main"><div class="grid"><a class="card" href="/near-me/madison-wi/madison-smp-studio" itemscope itemtype="https://schema.org/LocalBusiness">
       <div class="c-img"><img src="https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/istockphoto-1359870647-612x612.jpg" loading="lazy" width="400" height="180" alt="Madison SMP Studio SMP"><span class="c-pill">📷 Sample photo</span></div>
       <div class="c-head"><div class="c-av">MS</div><div class="c-info"><div class="c-name" itemprop="name">Madison SMP Studio</div><div class="c-loc"><span itemprop="address">Madison, WI</span></div></div><div class="c-pr">$$$</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">Madison's professional scalp micropigmentation specialist. Natural, undetectable results for all hair loss types. Free consultations available.</p></div>
       <div class="c-tags"><span class="c-tag">Hairline Restoration</span><span class="c-tag">Density Fill</span><span class="c-tag">Scar Camouflage</span></div>
-      <div class="c-foot"><a class="btn btn-o" href="/near-me/madison-wi/madison-smp-studio">View Profile</a><a class="btn btn-p" href="/near-me/madison-wi/madison-smp-studio">Contact</a></div>
-    </article></div></div>
+    </a></div></div>
 <div class="nearby">
     <h3>SMP Artists in Nearby Cities</h3>
     <div class="nearby-links"><a href="/near-me/brookfield-wi/">Brookfield, WI <span>(1)</span></a><a href="/near-me/wauwatosa-wi/">Wauwatosa, WI <span>(1)</span></a><a href="/near-me/milwaukee-wi/">Milwaukee, WI <span>(1)</span></a><a href="/near-me/schaumburg-il/">Schaumburg, IL <span>(1)</span></a><a href="/near-me/naperville-il/">Naperville, IL <span>(1)</span></a><a href="/near-me/evanston-il/">Evanston, IL <span>(1)</span></a><a href="/near-me/oak-brook-il/">Oak Brook, IL <span>(1)</span></a><a href="/near-me/chicago-il/">Chicago, IL <span>(3)</span></a><a href="/near-me/rochester-mn/">Rochester, MN <span>(1)</span></a><a href="/near-me/grand-rapids-mi/">Grand Rapids, MI <span>(1)</span></a><a href="/near-me/edina-mn/">Edina, MN <span>(1)</span></a><a href="/near-me/minneapolis-mn/">Minneapolis, MN <span>(1)</span></a></div>

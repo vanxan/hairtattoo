@@ -121,6 +121,14 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .cta-box .btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
 .cta-box .btn:hover{background:rgba(255,255,255,.3)}
 
+.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.city-card{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.25rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);font-size:.9375rem;color:var(--text);transition:all .15s;text-decoration:none}
+.city-card:hover{border-color:var(--ac);box-shadow:0 2px 8px rgba(0,0,0,.06);transform:translateY(-1px)}
+.city-card .city-name{font-weight:500}
+.city-card .city-count{color:var(--ac);font-weight:600;font-size:.8125rem;white-space:nowrap}
+
+a.card{display:block;color:var(--text);text-decoration:none}
+
 footer{background:var(--text);color:#ccc;padding:3rem 1rem;text-align:center;font-size:.8125rem;margin-top:auto}
 footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
 footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
@@ -136,9 +144,11 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
   .dp-grid{grid-template-columns:1fr}
   .dp-socials{justify-content:center}
+  .city-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
   .grid{grid-template-columns:1fr}
+  .city-grid{grid-template-columns:1fr}
   .nav-r .hm{display:none}
   .hero h1{font-size:1.75rem}
   .dp-header{flex-direction:column;align-items:center;text-align:center}

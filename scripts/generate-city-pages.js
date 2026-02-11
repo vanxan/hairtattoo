@@ -32,13 +32,12 @@ function renderCard(l, media) {
     const m = media[0];
     thumb = `<div class="c-img"><img src="${mediaUrl(m.storage_path)}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
-  return `<article class="card" onclick="location.href='${url}'" itemscope itemtype="https://schema.org/LocalBusiness">
+  return `<a class="card" href="${url}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div><div class="c-pr">${esc(pr)}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
-      <div class="c-foot"><a class="btn btn-o" href="${url}">View Profile</a><a class="btn btn-p" href="${url}">Contact</a></div>
-    </article>`;
+    </a>`;
 }
 
 function renderPage(city, state, listings, allCities, mediaMap) {
@@ -166,7 +165,7 @@ function generateNearMeIndex(nearMeDir, allCities, totalListings) {
   const canonical = 'https://hairtattoo.com/near-me/';
 
   const cityLinks = sorted.map(c =>
-    `<a href="/near-me/${citySlug(c.city, c.state)}/" class="nearby-links-item" style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;color:var(--text);transition:all .15s"><span>${esc(c.city)}, ${esc(c.state)}</span><span style="color:var(--ac);font-weight:600;font-size:.8125rem">${c.count} artist${c.count !== 1 ? 's' : ''}</span></a>`
+    `<a href="/near-me/${citySlug(c.city, c.state)}/" class="city-card"><span class="city-name">${esc(c.city)}, ${esc(c.state)}</span><span class="city-count">${c.count} artist${c.count !== 1 ? 's' : ''}</span></a>`
   ).join('\n');
 
   const html = `<!DOCTYPE html>
@@ -181,11 +180,9 @@ ${getNav()}
   <h1>Find <em>Hair Tattoo</em> Artists Near You</h1>
   <p>Browse ${totalListings} verified scalp micropigmentation professionals across ${allCities.length} cities in the United States.</p>
 </section>
-<div style="max-width:800px;margin:0 auto;padding:0 1rem 3rem">
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.5rem">
+<div class="main"><div class="city-grid">
     ${cityLinks}
-  </div>
-</div>
+</div></div>
 ${getFooter()}
 </body>
 </html>`;
