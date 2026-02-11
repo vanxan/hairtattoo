@@ -17,12 +17,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5
 a{color:var(--ac);text-decoration:none}
 
 /* NAV */
-.nav{background:var(--card);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
 .nav-in{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
 .logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
 .logo span{color:var(--ac)}
-.close{font-size:.875rem;color:var(--t2);font-weight:500}
-.close:hover{color:var(--text)}
+.close{font-size:.875rem;color:var(--t2);font-weight:500;transition:color .15s}
+.close:hover{color:var(--ac)}
 
 /* PROGRESS */
 .progress{max-width:600px;margin:0 auto;padding:1.5rem 1rem .5rem}

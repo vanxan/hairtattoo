@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://hairtattoo.com/near-me/san-jose-ca/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HairTattoo">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#2D5A3D">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
@@ -25,6 +26,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5
 a{color:var(--ac);text-decoration:none}
 button{font-family:var(--f);cursor:pointer;border:none;background:none}
 input,textarea,select{font-family:var(--f);font-size:1rem}
+
 .nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
 .nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
 .logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
@@ -35,15 +37,9 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;transition:all .15s}
 .btn-p{background:var(--ac);color:#fff}.btn-p:hover{background:var(--ac2)}
 .btn-o{border:1px solid var(--bd);color:var(--text)}.btn-o:hover{border-color:var(--ac);color:var(--ac)}
-.hero{padding:2.5rem 1rem 1.5rem;text-align:center;max-width:700px;margin:0 auto}
-.hero h1{font-family:var(--se);font-size:clamp(1.75rem,4vw,2.5rem);font-weight:400;line-height:1.2;margin-bottom:.5rem;letter-spacing:-.02em}
-.hero h1 em{font-style:italic;color:var(--ac)}
-.hero p{color:var(--t2);font-size:1rem;max-width:540px;margin:0 auto .5rem}
-.hero .count{font-size:.875rem;color:var(--ac);font-weight:600}
-.breadcrumb{max-width:1200px;margin:0 auto;padding:.75rem 1rem;font-size:.8125rem;color:var(--t3)}
-.breadcrumb a{color:var(--t2)}.breadcrumb a:hover{color:var(--ac)}
-.main{max-width:1200px;margin:0 auto;padding:0 1rem 2rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem}
+
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+
 .card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:box-shadow .15s,transform .1s;cursor:pointer}
 .card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
 .c-img{position:relative;width:100%;height:180px;overflow:hidden;background:var(--al)}
@@ -61,6 +57,65 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .c-tag{font-size:.6875rem;padding:.125rem .5rem;background:var(--al);color:var(--ac);border-radius:4px}
 .c-foot{padding:.5rem 1.25rem;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:.8125rem}
 .c-foot .btn{font-size:.8125rem;padding:.375rem .75rem}
+
+.detail-page{max-width:720px;margin:0 auto;padding:1rem 1rem 3rem}
+.dp-back{font-size:.875rem;color:var(--t2);display:inline-flex;align-items:center;gap:.375rem;margin-bottom:1.25rem;padding:.375rem 0}
+.dp-back:hover{color:var(--ac)}
+.dp-header{display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.5rem}
+.dp-av{width:80px;height:80px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-family:var(--se);font-size:2rem;color:var(--ac);flex-shrink:0}
+.dp-info{flex:1;min-width:0}
+.dp-name{font-size:1.5rem;font-weight:700;line-height:1.2;margin-bottom:.25rem}
+.dp-loc{color:var(--t2);font-size:.9375rem;margin-bottom:.25rem}
+.dp-price{color:var(--ac);font-weight:600;font-size:.875rem}
+.dp-socials{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.dp-social{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .625rem;background:var(--al);border-radius:20px;font-size:.75rem;font-weight:500;color:var(--ac);transition:all .15s}
+.dp-social:hover{background:var(--ac);color:#fff}
+.dp-claim{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;padding:.75rem 1rem;border-radius:var(--rs);display:flex;align-items:center;gap:.75rem;font-size:.8125rem;margin-bottom:1.25rem}
+.dp-claim button{background:rgba(255,255,255,.2);color:#fff;padding:.25rem .75rem;border-radius:4px;font-size:.8125rem;font-weight:500;white-space:nowrap}
+.dp-claim button:hover{background:rgba(255,255,255,.35)}
+.dp-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
+.dp-section h3{font-size:.6875rem;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:.625rem;font-weight:600}
+.dp-about{font-size:.9375rem;color:var(--t2);line-height:1.7}
+.dp-svcs{display:flex;flex-wrap:wrap;gap:.375rem}
+.dp-svcs span{font-size:.8125rem;padding:.25rem .75rem;background:var(--al);color:var(--ac);border-radius:6px}
+.dp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.dp-det label{display:block;font-size:.6875rem;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.dp-det a{color:var(--ac);word-break:break-all;font-size:.875rem}
+.dp-det span{font-size:.875rem;color:var(--text)}
+
+.cf{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
+.cf h3{font-size:.9375rem;font-weight:700;color:var(--ac);margin-bottom:.75rem}
+.cf-row{display:flex;gap:.5rem;margin-bottom:.5rem}
+.cf-row input,.cf-row textarea{flex:1;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);outline:none;font-size:.875rem;background:#fff;transition:border-color .15s;font-family:var(--f)}
+.cf-row input:focus,.cf-row textarea:focus{border-color:var(--ac)}
+.cf-row textarea{resize:vertical;min-height:72px}
+.cf-sub{width:100%;padding:.625rem;background:var(--ac);color:#fff;border-radius:var(--rs);font-weight:600;font-size:.875rem;cursor:pointer;border:none;font-family:var(--f)}
+.cf-sub:hover{background:var(--ac2)}
+.cf-ok{text-align:center;padding:.75rem;color:var(--ac);font-weight:500;font-size:.875rem}
+
+.lb{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);justify-content:center;align-items:center;flex-direction:column;padding:1rem}
+.lb.open{display:flex}
+.lb-img{max-width:90vw;max-height:70vh;border-radius:8px;object-fit:contain;background:linear-gradient(135deg,var(--al),#c8dbd0);min-width:280px;min-height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.lb-info{text-align:center;margin-top:1rem;color:#fff}
+.lb-info h4{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.lb-info p{font-size:.8125rem;color:rgba(255,255,255,.7);margin-bottom:.75rem}
+.lb-info .btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(4px)}
+.lb-info .btn:hover{background:rgba(255,255,255,.25)}
+.lb-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+.lb-nav:hover{background:rgba(255,255,255,.2)}
+.lb-prev{left:1rem}.lb-next{right:1rem}
+
+.hero{padding:2.5rem 1rem 1.5rem;text-align:center;max-width:700px;margin:0 auto}
+.hero h1{font-family:var(--se);font-size:clamp(1.75rem,4vw,2.5rem);font-weight:400;line-height:1.2;margin-bottom:.5rem;letter-spacing:-.02em}
+.hero h1 em{font-style:italic;color:var(--ac)}
+.hero p{color:var(--t2);font-size:1rem;max-width:540px;margin:0 auto .5rem}
+.hero .count{font-size:.875rem;color:var(--ac);font-weight:600}
+.breadcrumb{max-width:1200px;margin:0 auto;padding:.75rem 1rem;font-size:.8125rem;color:var(--t3)}
+.breadcrumb a{color:var(--t2)}.breadcrumb a:hover{color:var(--ac)}
+.main{max-width:1200px;margin:0 auto;padding:0 1rem 2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem}
 .nearby{max-width:1200px;margin:0 auto;padding:1.5rem 1rem 1rem}
 .nearby h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:.625rem}
 .nearby-links{display:flex;flex-wrap:wrap;gap:.375rem}
@@ -73,6 +128,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .cta-box p{font-size:.9375rem;opacity:.85;margin-bottom:1rem;max-width:400px;margin-left:auto;margin-right:auto}
 .cta-box .btn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
 .cta-box .btn:hover{background:rgba(255,255,255,.3)}
+
 footer{background:var(--text);color:#ccc;padding:3rem 1rem;text-align:center;font-size:.8125rem;margin-top:auto}
 footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
 footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
@@ -83,12 +139,24 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 .fc-grid{display:flex;flex-wrap:wrap;gap:.375rem}
 .fc-link{font-size:.75rem;color:#aaa;padding:.25rem .5rem;border:1px solid #444;border-radius:4px;white-space:nowrap;transition:all .15s}
 .fc-link:hover{color:#fff;border-color:#888}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.nav-r .hm{display:none}.hero h1{font-size:1.75rem}}
+
+@media(max-width:768px){
+  .dp-header{flex-direction:column;align-items:center;text-align:center}
+  .dp-grid{grid-template-columns:1fr}
+  .dp-socials{justify-content:center}
+}
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .nav-r .hm{display:none}
+  .hero h1{font-size:1.75rem}
+  .dp-header{flex-direction:column;align-items:center;text-align:center}
+  .dp-grid{grid-template-columns:1fr}
+  .dp-socials{justify-content:center}
+  .cf-row{flex-direction:column}
+}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"San Jose Scalp Studio","address":{"@type":"PostalAddress","streetAddress":"380 Main St, Suite 220","addressLocality":"San Jose","addressRegion":"CA","postalCode":"15480","addressCountry":"US"},"telephone":"(240) 480-0620","email":"info@sanjosesmp.com","url":"https://sanjosesmp.com","description":"San Jose's professional scalp micropigmentation specialist. Natural, undetectable results for all hair loss types. Free consultations available.","geo":{"@type":"GeoCoordinates","latitude":37.3429474046678,"longitude":-121.890787573992},"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Hairline Restoration"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Density Fill"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Scar Camouflage"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Female SMP"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beard SMP"}}]}</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Hair Tattoo & SMP Artists in San Jose, CA | HairTattoo.com","description":"Find 1 verified scalp micropigmentation and hair tattoo artist in San Jose, California. Compare services, pricing, and contact SMP professionals near you.","url":"https://hairtattoo.com/near-me/san-jose-ca/","isPartOf":{"@type":"WebSite","name":"HairTattoo","url":"https://hairtattoo.com"}}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Hair Tattoo & SMP Artists in San Jose, CA | HairTattoo.com","description":"Find 1 verified scalp micropigmentation and hair tattoo artist in San Jose, California. Compare services, pricing, and contact SMP professionals near you.","url":"https://hairtattoo.com/near-me/san-jose-ca/","isPartOf":{"@type":"WebSite","name":"HairTattoo","url":"https://hairtattoo.com"}}</script>
 </head>
 <body>
 <nav class="nav"><div class="nav-in">
