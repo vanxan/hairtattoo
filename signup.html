@@ -116,6 +116,10 @@ a{color:var(--ac);text-decoration:none}
 /* ERROR */
 .err{color:#DC2626;font-size:.8125rem;margin-top:.375rem}
 
+/* TOGGLE LINK */
+.toggle-link{text-align:center;font-size:.8125rem;color:var(--t3);margin-top:1.25rem}
+.toggle-link a{color:var(--ac);font-weight:500}
+
 @media(max-width:480px){.row{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.photo-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -153,6 +157,7 @@ a{color:var(--ac);text-decoration:none}
     <p style="color:var(--t2);font-size:.8125rem;margin-top:.25rem">Click the link in the email to continue.</p>
     <div class="resend">Didn't receive it? <a onclick="sendOtp()">Resend</a></div>
   </div>
+  <p class="toggle-link">Already have an account? <a href="/signup?mode=signin">Sign In &rarr;</a></p>
 </div>
 
 <!-- STEP 2: BASIC INFO -->
@@ -282,18 +287,52 @@ a{color:var(--ac);text-decoration:none}
   </div>
 </div>
 
+<!-- SIGN IN VIEW -->
+<div id="signinView" style="display:none">
+  <div class="step-head" style="margin-top:1rem">
+    <h1>Welcome Back</h1>
+    <p>Enter your email and we'll send you a sign-in link.</p>
+  </div>
+  <div id="siForm">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="siEmail" placeholder="you@email.com">
+      <div class="err" id="siErr"></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-p" id="siBtn" onclick="sendSignIn()">Send Sign-In Link</button>
+    </div>
+  </div>
+  <div id="siSent" style="display:none;text-align:center;padding:1rem 0">
+    <div class="sent-icon">✉️</div>
+    <h2 style="font-size:1.25rem;margin-bottom:.375rem">Check your inbox!</h2>
+    <p style="color:var(--t2);font-size:.9375rem">We sent a link to <strong id="siSentTo"></strong>. Click it to access your dashboard.</p>
+    <div class="resend">Didn't receive it? <a onclick="sendSignIn()">Resend</a></div>
+  </div>
+  <p class="toggle-link">Don't have an account yet? <a href="/signup">Create Your Page &rarr;</a></p>
+</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
 
+const isSignIn=new URLSearchParams(location.search).get('mode')==='signin';
 let currentStep=1;
 let claimSlug=new URLSearchParams(location.search).get('claim');
 let claimData=null;
 let userEmail='';
 let avatarData=null;
 let galleryData=[];
+
+// --- SIGN IN MODE ---
+if(isSignIn){
+  document.querySelector('.progress').style.display='none';
+  document.querySelectorAll('.step').forEach(s=>s.style.display='none');
+  document.getElementById('signinView').style.display='block';
+  document.title='Sign In | HairTattoo';
+}
 
 // --- GALLERY INIT ---
 function initGallery(){
@@ -381,6 +420,21 @@ async function sendOtp(){
   document.getElementById('sentTo').textContent=email;
   document.getElementById('emailForm').style.display='none';
   document.getElementById('emailSent').style.display='block';
+}
+
+// --- SIGN IN ---
+async function sendSignIn(){
+  const email=document.getElementById('siEmail').value.trim();
+  if(!email){document.getElementById('siErr').textContent='Please enter your email.';return;}
+  document.getElementById('siErr').textContent='';
+  const btn=document.getElementById('siBtn');
+  btn.disabled=true;btn.textContent='Sending...';
+  const{error}=await SB.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/dashboard.html'}});
+  btn.disabled=false;btn.textContent='Send Sign-In Link';
+  if(error){document.getElementById('siErr').textContent=error.message;return;}
+  document.getElementById('siSentTo').textContent=email;
+  document.getElementById('siForm').style.display='none';
+  document.getElementById('siSent').style.display='block';
 }
 
 // --- CLAIM PREFILL ---
@@ -505,10 +559,13 @@ async function publish(){
 // Never redirect to / — if anything fails, Step 1 stays visible.
 SB.auth.onAuthStateChange(async(event, session)=>{
   try {
-    if((event==='INITIAL_SESSION'||event==='SIGNED_IN') && session && currentStep===1){
-      userEmail=session.user.email;
-      await prefillClaim();
-      goStep(2);
+    if((event==='INITIAL_SESSION'||event==='SIGNED_IN') && session){
+      if(isSignIn){window.location.href='/dashboard.html';return;}
+      if(currentStep===1){
+        userEmail=session.user.email;
+        await prefillClaim();
+        goStep(2);
+      }
     }
   } catch(e){
     console.error('Auth error:', e);
