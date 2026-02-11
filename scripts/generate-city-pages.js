@@ -7,9 +7,12 @@ const SB = createClient(
   'https://ingorrzmoudvoknhwjjb.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc'
 );
-const MEDIA_BASE = 'https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/';
+const SB_STORAGE = 'https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/';
 
-function mediaUrl(p) { return MEDIA_BASE + encodeURIComponent(p); }
+function mediaUrl(m) {
+  const bucket = m.is_placeholder ? 'placeholders' : 'media';
+  return SB_STORAGE + bucket + '/' + m.storage_path;
+}
 
 function stateName(abbr) {
   const m = { 'AL':'Alabama','AK':'Alaska','AZ':'Arizona','AR':'Arkansas','CA':'California','CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida','GA':'Georgia','HI':'Hawaii','ID':'Idaho','IL':'Illinois','IN':'Indiana','IA':'Iowa','KS':'Kansas','KY':'Kentucky','LA':'Louisiana','ME':'Maine','MD':'Maryland','MA':'Massachusetts','MI':'Michigan','MN':'Minnesota','MS':'Mississippi','MO':'Missouri','MT':'Montana','NE':'Nebraska','NV':'Nevada','NH':'New Hampshire','NJ':'New Jersey','NM':'New Mexico','NY':'New York','NC':'North Carolina','ND':'North Dakota','OH':'Ohio','OK':'Oklahoma','OR':'Oregon','PA':'Pennsylvania','RI':'Rhode Island','SC':'South Carolina','SD':'South Dakota','TN':'Tennessee','TX':'Texas','UT':'Utah','VT':'Vermont','VA':'Virginia','WA':'Washington','WV':'West Virginia','WI':'Wisconsin','WY':'Wyoming','DC':'District of Columbia' };
@@ -29,8 +32,9 @@ function renderCard(l, media) {
   const url = listingUrl(l);
   let thumb = '';
   if (media && media.length) {
-    const m = media[0];
-    thumb = `<div class="c-img"><img src="${mediaUrl(m.storage_path)}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
+    const m = media.find(x => x.type !== 'video') || media[0];
+    const src = mediaUrl(m);
+    thumb = `<div class="c-img"><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
   const ratingHTML = l.review_count && l.review_count > 0
     ? `<div class="c-rating"><span class="c-stars">${'\u2605'.repeat(Math.round(l.avg_rating || 0))}</span> ${l.avg_rating || 0} (${l.review_count})</div>`

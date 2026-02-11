@@ -154,14 +154,21 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-bottom:1.5rem}
 .media-item{position:relative;border-radius:var(--rs);overflow:hidden;border:1px solid var(--bd);background:var(--card);cursor:pointer;transition:box-shadow .15s}
 .media-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.media-item img{width:100%;height:160px;object-fit:cover;display:block}
+.media-item img,.media-item video{width:100%;height:160px;object-fit:cover;display:block}
 .media-del{position:absolute;top:.375rem;right:.375rem;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer;opacity:0;transition:opacity .15s}
 .media-item:hover .media-del{opacity:1}
 .media-pill{position:absolute;bottom:.375rem;left:.375rem;font-size:.6875rem;padding:.125rem .5rem;border-radius:4px;background:rgba(0,0,0,.6);color:#fff}
+.media-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;pointer-events:none}
+.media-play::after{content:'';display:block;width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px}
 .tips-card{background:var(--al);border:1px solid #c8dbd0;border-radius:var(--r);padding:1rem;margin-bottom:1.5rem}
 .tips-card h4{font-size:.8125rem;font-weight:600;color:var(--ac);margin-bottom:.375rem}
 .tips-card p{font-size:.75rem;color:var(--t2);line-height:1.5}
 .placeholder-banner{background:#FEF3C7;border:1px solid #FDE68A;border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1rem;font-size:.8125rem;color:#92400E;display:flex;align-items:center;gap:.5rem}
+.video-modal{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.92);justify-content:center;align-items:center;flex-direction:column;padding:1rem}
+.video-modal.open{display:flex}
+.video-modal video{max-width:90vw;max-height:80vh;border-radius:8px;background:#000}
+.video-modal .vm-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.video-modal .vm-close:hover{background:rgba(255,255,255,.2)}
 
 /* REVIEWS */
 .review-stats{display:flex;align-items:center;gap:1.5rem;padding:1.25rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:1.5rem}
@@ -505,6 +512,12 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
   </div>
 </div>
 
+<!-- Video player modal -->
+<div class="video-modal" id="videoModal" onclick="if(event.target===this)closeVideo()">
+  <div class="vm-close" onclick="closeVideo()">&times;</div>
+  <video id="videoPlayer" controls playsinline></video>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB_URL='https://ingorrzmoudvoknhwjjb.supabase.co';
@@ -833,33 +846,66 @@ async function saveLeadNotes(id){
 }
 
 // ══════════════════════ TAB 3: PORTFOLIO ══════════════════════
+function mediaPublicUrl(m){
+  const bucket=m.is_placeholder?'placeholders':'media';
+  return SB_URL+'/storage/v1/object/public/'+bucket+'/'+m.storage_path;
+}
+
 function renderPortfolio(){
   const grid=document.getElementById('mediaGrid');
-  const hasPlaceholders=myMedia.some(m=>m.is_placeholder);
+  const hasPlaceholders=myMedia.some(m=>m.is_placeholder&&m.sort_order>=0);
   const hasReal=myMedia.some(m=>!m.is_placeholder);
   document.getElementById('placeholderBanner').style.display=hasPlaceholders&&!hasReal?'flex':'none';
 
-  const items=myMedia.filter(m=>!m.is_placeholder||!hasReal);
+  // Show real photos; only show placeholders if no real photos exist
+  const items=myMedia.filter(m=>m.sort_order>=0&&(!m.is_placeholder||!hasReal));
   if(!items.length){
     grid.innerHTML='<div class="chart-none">No photos yet. Upload your first SMP photo above!</div>';
     return;
   }
 
   grid.innerHTML=items.map(m=>{
-    const src=SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders/':'media/')+encodeURIComponent(m.storage_path);
+    const src=mediaPublicUrl(m);
+    const isVideo=m.type==='video';
+    if(isVideo){
+      return `<div class="media-item" onclick="openVideo('${src.replace(/'/g,"\\'")}')">
+        <video src="${src}" preload="metadata" muted></video>
+        <div class="media-play"></div>
+        <div class="media-del" onclick="event.stopPropagation();deleteMedia(${m.id})">&times;</div>
+      </div>`;
+    }
     return `<div class="media-item">
       <img src="${src}" loading="lazy" alt="Portfolio">
-      <div class="media-del" onclick="event.stopPropagation();deleteMedia(${m.id})">×</div>
+      <div class="media-del" onclick="event.stopPropagation();deleteMedia(${m.id})">&times;</div>
       ${m.is_placeholder?'<div class="media-pill">Sample</div>':''}
     </div>`;
   }).join('');
 }
 
+function openVideo(src){
+  const v=document.getElementById('videoPlayer');
+  v.src=src;
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  v.play().catch(()=>{});
+}
+function closeVideo(){
+  const v=document.getElementById('videoPlayer');
+  v.pause();v.src='';
+  document.getElementById('videoModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 // Drag and drop
 const uz=document.getElementById('uploadZone');
-uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('dragover');});
-uz.addEventListener('dragleave',()=>uz.classList.remove('dragover'));
-uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('dragover');handleUpload(e.dataTransfer.files);});
+if(uz){
+  uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('dragover');});
+  uz.addEventListener('dragleave',()=>uz.classList.remove('dragover'));
+  uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('dragover');handleUpload(e.dataTransfer.files);});
+}
+
+const ALLOWED_IMAGE=/\.(jpe?g|png|webp|heic)$/i;
+const ALLOWED_VIDEO=/\.(mp4|mov|webm)$/i;
 
 async function handleUpload(files){
   if(!files||!files.length||!myListing)return;
@@ -868,36 +914,57 @@ async function handleUpload(files){
   const status=document.getElementById('uploadStatus');
   prog.style.display='block';
 
+  const hadRealBefore=myMedia.some(m=>!m.is_placeholder);
+  let uploadedCount=0;
+  const maxSort=myMedia.reduce((mx,m)=>Math.max(mx,m.sort_order||0),0);
+
   for(let i=0;i<files.length;i++){
     const file=files[i];
-    const isImage=file.type.startsWith('image/');
-    const isVideo=file.type.startsWith('video/');
+    const isImage=file.type.startsWith('image/')||ALLOWED_IMAGE.test(file.name);
+    const isVideo=file.type.startsWith('video/')||ALLOWED_VIDEO.test(file.name);
     if(!isImage&&!isVideo){status.textContent='Unsupported file: '+file.name;continue;}
     if(isImage&&file.size>10*1024*1024){status.textContent=file.name+' exceeds 10MB limit';continue;}
     if(isVideo&&file.size>50*1024*1024){status.textContent=file.name+' exceeds 50MB limit';continue;}
 
-    const pct=Math.round(((i+1)/files.length)*100);
+    const pct=Math.round(((i+0.5)/files.length)*100);
     bar.style.width=pct+'%';
-    status.textContent=`Uploading ${i+1}/${files.length}: ${file.name}`;
+    status.textContent='Uploading '+(i+1)+'/'+files.length+': '+file.name;
 
-    const path='listings/'+myListing.id+'/'+Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'');
-    const{error:uploadErr}=await SB.storage.from('media').upload(path,file);
-    if(uploadErr){status.textContent='Error: '+uploadErr.message;continue;}
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'');
+    const path='listings/'+myListing.id+'/'+Date.now()+'-'+safeName;
 
+    const{error:uploadErr}=await SB.storage.from('media').upload(path,file,{
+      contentType:file.type,
+      upsert:false
+    });
+    if(uploadErr){console.error('[UPLOAD]',uploadErr);status.textContent='Error: '+uploadErr.message;continue;}
+
+    const newSort=maxSort+1+uploadedCount;
     const{error:insertErr}=await SB.from('media').insert({
       listing_id:myListing.id,
-      type:isImage?'image':'video',
+      type:isVideo?'video':'image',
       storage_path:path,
       is_placeholder:false,
-      sort_order:myMedia.length+i
+      sort_order:newSort
     });
-    if(insertErr){status.textContent='Error saving: '+insertErr.message;continue;}
+    if(insertErr){console.error('[UPLOAD]',insertErr);status.textContent='Error saving: '+insertErr.message;continue;}
+
+    uploadedCount++;
+    bar.style.width=Math.round(((i+1)/files.length)*100)+'%';
   }
 
-  status.textContent='Upload complete!';
-  setTimeout(()=>{prog.style.display='none';bar.style.width='0';},2000);
+  // If this was the first real upload, hide all placeholders
+  if(!hadRealBefore&&uploadedCount>0){
+    status.textContent='Hiding sample photos...';
+    await SB.from('media').update({sort_order:-1}).eq('listing_id',myListing.id).eq('is_placeholder',true);
+  }
 
-  // Refresh media
+  if(uploadedCount>0){
+    status.textContent=uploadedCount+' file'+(uploadedCount>1?'s':'')+' uploaded!';
+  }
+  setTimeout(()=>{prog.style.display='none';bar.style.width='0';},2500);
+
+  // Refresh media list
   const{data}=await SB.from('media').select('*').eq('listing_id',myListing.id).order('sort_order',{ascending:true});
   myMedia=data||[];
   renderPortfolio();
@@ -906,10 +973,13 @@ async function handleUpload(files){
 async function deleteMedia(id){
   if(!confirm('Delete this photo?'))return;
   const m=myMedia.find(x=>x.id===id);
-  if(m&&!m.is_placeholder){
-    await SB.storage.from('media').remove([m.storage_path]);
+  if(!m)return;
+  if(!m.is_placeholder){
+    const{error:delErr}=await SB.storage.from('media').remove([m.storage_path]);
+    if(delErr)console.error('[DELETE storage]',delErr);
   }
-  await SB.from('media').delete().eq('id',id);
+  const{error:dbErr}=await SB.from('media').delete().eq('id',id);
+  if(dbErr){console.error('[DELETE db]',dbErr);alert('Error deleting: '+dbErr.message);return;}
   myMedia=myMedia.filter(x=>x.id!==id);
   renderPortfolio();
 }

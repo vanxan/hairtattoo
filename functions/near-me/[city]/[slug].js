@@ -2,9 +2,10 @@ import { getHead, getNav, getFooter, esc, citySlug, listingUrl } from '../../../
 
 const SB_URL = 'https://ingorrzmoudvoknhwjjb.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc';
-const MEDIA_BASE = SB_URL + '/storage/v1/object/public/placeholders/';
-
-function mediaUrl(p) { return MEDIA_BASE + encodeURIComponent(p); }
+function mediaUrl(m) {
+  const bucket = m.is_placeholder ? 'placeholders' : 'media';
+  return SB_URL + '/storage/v1/object/public/' + bucket + '/' + m.storage_path;
+}
 
 export async function onRequestGet(context) {
   const { params } = context;
@@ -24,7 +25,7 @@ export async function onRequestGet(context) {
   // Fetch media and reviews in parallel
   const [mediaRes, reviewsRes] = await Promise.all([
     fetch(
-      `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&select=*&order=sort_order.asc`,
+      `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&sort_order=gte.0&select=*&order=sort_order.asc`,
       { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
     ),
     fetch(
@@ -94,7 +95,14 @@ function renderDetailPage(l, media, reviews) {
   // Gallery
   let gallery = '';
   if (media.length) {
-    gallery = media.map((m, i) => `<div class="gallery-item" onclick="openLb(${i})" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><img src="${mediaUrl(m.storage_path)}" loading="lazy" width="240" height="200" alt="${esc(l.name)}" style="width:100%;height:200px;object-fit:cover;display:block">${m.is_placeholder ? '<span class="c-pill">\u{1F4F7} Sample photo</span>' : ''}</div>`).join('');
+    gallery = media.map((m, i) => {
+      const src = mediaUrl(m);
+      const isVideo = m.type === 'video';
+      if (isVideo) {
+        return `<div class="gallery-item" onclick="openVideoLb('${src.replace(/'/g, "\\'")}')" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><video src="${src}" preload="metadata" muted style="width:100%;height:200px;object-fit:cover;display:block"></video><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px"></div></div></div>`;
+      }
+      return `<div class="gallery-item" onclick="openLb(${i})" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><img src="${src}" loading="lazy" width="240" height="200" alt="${esc(l.name)}" style="width:100%;height:200px;object-fit:cover;display:block">${m.is_placeholder ? '<span class="c-pill">\u{1F4F7} Sample photo</span>' : ''}</div>`;
+    }).join('');
   } else {
     const colors = ['#c8dbd0', '#b8d0c2', '#a8c5b4', '#d4e4d9', '#e0ebe5', '#bcd4c6'];
     const glabels = ['Before & After', 'Hairline Closeup', 'Density Session', 'Side Profile', 'Top View', 'Final Result'];
@@ -171,7 +179,7 @@ function renderDetailPage(l, media, reviews) {
 
   // Build lightbox media data for JS
   const lbData = media.length
-    ? JSON.stringify(media.map(m => ({ url: mediaUrl(m.storage_path), isPlaceholder: m.is_placeholder })))
+    ? JSON.stringify(media.filter(m => m.type !== 'video').map(m => ({ url: mediaUrl(m), isPlaceholder: m.is_placeholder })))
     : '[]';
 
   return `<!DOCTYPE html>
@@ -230,6 +238,12 @@ ${getNav()}
   <button class="lb-nav lb-next" onclick="lbNav(1)">\u203a</button>
   <div class="lb-img" id="lbImg"></div>
   <div class="lb-info" id="lbInfo"></div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div id="videoModalPub" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.92);justify-content:center;align-items:center" onclick="if(event.target===this)closeVideoLb()">
+  <button onclick="closeVideoLb()" style="position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">\u00d7</button>
+  <video id="videoPub" controls playsinline style="max-width:90vw;max-height:80vh;border-radius:8px;background:#000"></video>
 </div>
 
 ${getFooter()}
@@ -293,8 +307,24 @@ function renderLb(){
   const dots=lbMedia.length>1?'<div style="display:flex;gap:4px;justify-content:center;margin-top:.5rem">'+lbMedia.map(function(_,i){return '<span style="width:6px;height:6px;border-radius:50%;background:'+(i===lbIdx?'#fff':'rgba(255,255,255,.4)')+'"></span>';}).join('')+'</div>':'';
   document.getElementById('lbInfo').innerHTML='<h4>${esc(l.name).replace(/'/g, "\\'")}</h4><p>${esc(l.city)}, ${esc(l.state)}</p>'+dots;
 }
+// Video modal
+function openVideoLb(src){
+  var v=document.getElementById('videoPub');
+  v.src=src;
+  var m=document.getElementById('videoModalPub');
+  m.style.display='flex';
+  document.body.style.overflow='hidden';
+  v.play().catch(function(){});
+}
+function closeVideoLb(){
+  var v=document.getElementById('videoPub');
+  v.pause();v.src='';
+  document.getElementById('videoModalPub').style.display='none';
+  document.body.style.overflow='';
+}
+
 document.addEventListener('keydown',function(e){
-  if(e.key==='Escape')closeLb();
+  if(e.key==='Escape'){closeLb();closeVideoLb();}
   if(document.getElementById('lightbox').classList.contains('open')){
     if(e.key==='ArrowLeft')lbNav(-1);
     if(e.key==='ArrowRight')lbNav(1);
