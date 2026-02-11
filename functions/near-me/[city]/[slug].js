@@ -21,12 +21,19 @@ export async function onRequestGet(context) {
   }
   const l = listings[0];
 
-  // Fetch media for this listing
-  const mediaRes = await fetch(
-    `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&select=*&order=sort_order.asc`,
-    { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
-  );
+  // Fetch media and reviews in parallel
+  const [mediaRes, reviewsRes] = await Promise.all([
+    fetch(
+      `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&select=*&order=sort_order.asc`,
+      { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
+    ),
+    fetch(
+      `${SB_URL}/rest/v1/reviews?listing_id=eq.${l.id}&status=eq.approved&select=*&order=created_at.desc&limit=5`,
+      { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
+    )
+  ]);
   const media = await mediaRes.json() || [];
+  const reviews = await reviewsRes.json() || [];
 
   // Track page view (non-blocking)
   context.waitUntil(
@@ -42,7 +49,7 @@ export async function onRequestGet(context) {
     })
   );
 
-  const html = renderDetailPage(l, media);
+  const html = renderDetailPage(l, media, reviews);
   return new Response(html, {
     headers: {
       'Content-Type': 'text/html;charset=UTF-8',
@@ -51,7 +58,12 @@ export async function onRequestGet(context) {
   });
 }
 
-function renderDetailPage(l, media) {
+function starsHtml(n) {
+  return '<span style="color:#F59E0B">' + '\u2605'.repeat(n) + '</span>' +
+         '<span style="color:var(--bd)">' + '\u2605'.repeat(5 - n) + '</span>';
+}
+
+function renderDetailPage(l, media, reviews) {
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
   const pr = l.price_range || '$$';
   const cs = citySlug(l.city, l.state);
@@ -67,6 +79,18 @@ function renderDetailPage(l, media) {
   if (l.tiktok) socHTML += `<a href="https://tiktok.com/@${esc(l.tiktok)}" target="_blank" rel="noopener" class="dp-social">TikTok</a>`;
   if (l.website) socHTML += `<a href="${esc(l.website)}" target="_blank" rel="noopener" class="dp-social"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>`;
 
+  // Star rating in header
+  let ratingHTML = '';
+  if (l.review_count && l.review_count > 0) {
+    ratingHTML = `<div class="dp-rating">${starsHtml(Math.round(l.avg_rating || 0))} <span style="font-size:.8125rem;color:var(--t2)">${l.avg_rating || 0} (${l.review_count} review${l.review_count === 1 ? '' : 's'})</span></div>`;
+  }
+
+  // Booking button
+  let bookingHTML = '';
+  if (l.booking_type === 'external' && l.booking_url) {
+    bookingHTML = `<a href="${esc(l.booking_url)}" target="_blank" rel="noopener" class="dp-booking" onclick="trackBooking()">Book a Consultation \u2192</a>`;
+  }
+
   // Gallery
   let gallery = '';
   if (media.length) {
@@ -79,11 +103,38 @@ function renderDetailPage(l, media) {
     }
   }
 
+  // Reviews section
+  let reviewsHTML = '';
+  if (reviews.length) {
+    const avgRating = l.avg_rating || (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+    const reviewCount = l.review_count || reviews.length;
+    reviewsHTML = `
+  <div class="dp-section">
+    <h3>Reviews ${starsHtml(Math.round(parseFloat(avgRating)))} <span style="font-size:.8125rem;color:var(--t2);font-weight:400">${avgRating} (${reviewCount} review${reviewCount === 1 ? '' : 's'})</span></h3>
+    <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:.75rem">
+      ${reviews.map(r => `<div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+          <span>${starsHtml(r.rating)}</span>
+          <strong style="font-size:.8125rem">${esc(r.reviewer_name)}</strong>
+          <span style="font-size:.6875rem;color:var(--t3);margin-left:auto">${new Date(r.created_at).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+        </div>
+        ${r.title ? `<div style="font-size:.875rem;font-weight:600;margin-bottom:.25rem">${esc(r.title)}</div>` : ''}
+        <div style="font-size:.8125rem;color:var(--t2);line-height:1.5">${esc(r.body || '')}</div>
+        ${r.artist_reply ? `<div style="margin-top:.75rem;padding:.75rem;background:var(--bg);border-radius:8px;border-left:3px solid var(--ac)">
+          <div style="font-size:.6875rem;font-weight:600;color:var(--ac);text-transform:uppercase;margin-bottom:.25rem">Artist Reply</div>
+          <div style="font-size:.8125rem;color:var(--t2)">${esc(r.artist_reply)}</div>
+        </div>` : ''}
+      </div>`).join('')}
+    </div>
+    ${reviewCount > 5 ? `<p style="text-align:center;margin-top:.75rem"><a href="/review.html?listing=${esc(l.slug)}" style="font-size:.8125rem">Leave a review</a></p>` : ''}
+  </div>`;
+  }
+
   // Services
   const services = (l.services || []).map(s => `<span>${esc(s)}</span>`).join('');
 
   // Schema.org JSON-LD
-  const schema = JSON.stringify({
+  const schemaObj = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     'name': l.name,
@@ -108,7 +159,15 @@ function renderDetailPage(l, media) {
       '@type': 'Offer',
       'itemOffered': { '@type': 'Service', 'name': s }
     }))
-  });
+  };
+  if (l.avg_rating && l.review_count) {
+    schemaObj.aggregateRating = {
+      '@type': 'AggregateRating',
+      'ratingValue': l.avg_rating,
+      'reviewCount': l.review_count
+    };
+  }
+  const schema = JSON.stringify(schemaObj);
 
   // Build lightbox media data for JS
   const lbData = media.length
@@ -119,6 +178,7 @@ function renderDetailPage(l, media) {
 <html lang="en">
 <head>
 ${getHead(title, desc, canonical, ogImage)}
+<style>.dp-booking{display:inline-block;padding:.625rem 1.25rem;background:var(--ac);color:#fff;border-radius:var(--rs);font-size:.875rem;font-weight:500;margin-top:.75rem;transition:background .15s}.dp-booking:hover{background:var(--ac2);color:#fff}.dp-rating{margin-top:.375rem}</style>
 </head>
 <body>
 ${getNav()}
@@ -132,7 +192,9 @@ ${getNav()}
       <h1 class="dp-name">${esc(l.name)}</h1>
       <div class="dp-loc">${esc(l.address || '')}, ${esc(l.city)}, ${esc(l.state)} ${esc(l.zip || '')}</div>
       <div class="dp-price">${esc(pr)} \u00b7 Scalp Micropigmentation</div>
+      ${ratingHTML}
       <div class="dp-socials">${socHTML}</div>
+      ${bookingHTML}
     </div>
   </div>
 
@@ -148,6 +210,8 @@ ${getNav()}
   </div></div>
 
   <div class="dp-section"><h3>Gallery</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${gallery}</div><p style="font-size:.75rem;color:var(--t3);margin-top:.5rem;text-align:center">${l.claimed ? '' : 'Photos will appear when this business claims their page'}</p></div>
+
+  ${reviewsHTML}
 
   <div class="cf" id="contactForm">
     <h3>\u{1F4E9} Send a Message to ${esc(l.name)}</h3>
@@ -192,6 +256,15 @@ async function sendMessage(){
     if(!res.ok)throw new Error('Failed');
     document.getElementById('contactForm').innerHTML='<div class="cf-ok">\u2713 Message sent! The artist will reach out to you shortly.</div>';
   }catch(e){console.error(e);alert('Something went wrong. Please try again.');}
+}
+
+// Track booking click
+function trackBooking(){
+  fetch(SB_URL+'/rest/v1/page_views',{
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({listing_id:LISTING_ID,path:'/booking-click'})
+  }).catch(()=>{});
 }
 
 // Lightbox

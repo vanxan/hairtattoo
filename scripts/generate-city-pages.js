@@ -32,9 +32,12 @@ function renderCard(l, media) {
     const m = media[0];
     thumb = `<div class="c-img"><img src="${mediaUrl(m.storage_path)}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
+  const ratingHTML = l.review_count && l.review_count > 0
+    ? `<div class="c-rating"><span class="c-stars">${'\u2605'.repeat(Math.round(l.avg_rating || 0))}</span> ${l.avg_rating || 0} (${l.review_count})</div>`
+    : '';
   return `<a class="card" href="${url}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div><div class="c-pr">${esc(pr)}</div></div>
+      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div>${ratingHTML}</div><div class="c-pr">${esc(pr)}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
     </a>`;

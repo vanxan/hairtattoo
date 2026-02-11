@@ -225,6 +225,7 @@ a{color:var(--ac);text-decoration:none}
     <div class="tab active" data-tab="listings" onclick="showTab('listings')">Listings <span class="badge" id="cntListings">0</span></div>
     <div class="tab" data-tab="leads" onclick="showTab('leads')">Leads <span class="badge" id="cntLeads">0</span></div>
     <div class="tab" data-tab="signups" onclick="showTab('signups')">Signups <span class="badge" id="cntSignups">0</span></div>
+    <div class="tab" data-tab="reviews" onclick="showTab('reviews')">Reviews <span class="badge" id="cntReviews">0</span></div>
   </div>
 
   <div class="container">
@@ -272,6 +273,25 @@ a{color:var(--ac);text-decoration:none}
         </table>
       </div>
       <div id="signupEmpty"></div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="section" id="sec-reviews">
+      <div class="toolbar">
+        <div class="filters" id="reviewFilters">
+          <span class="chip active" data-filter="pending" onclick="setReviewFilter(this)">Pending</span>
+          <span class="chip" data-filter="approved" onclick="setReviewFilter(this)">Approved</span>
+          <span class="chip" data-filter="rejected" onclick="setReviewFilter(this)">Rejected</span>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <colgroup><col style="width:10%"><col style="width:15%"><col style="width:10%"><col style="width:20%"><col style="width:15%"><col style="width:10%"><col style="width:120px"></colgroup>
+          <thead><tr><th>Date</th><th>Reviewer</th><th>Rating</th><th>Review</th><th>Listing</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="reviewBody"></tbody>
+        </table>
+      </div>
+      <div id="reviewEmpty"></div>
     </div>
   </div>
 </div>
@@ -375,8 +395,10 @@ const ALL_SERVICES=['Hairline Restoration','Density Fill','Scar Camouflage','Fem
 let allListings=[];
 let allLeads=[];
 let allSignups=[];
+let allReviews=[];
 let listPage=0;
 let listFilter='all';
+let reviewFilter='pending';
 let openMenuId=null;
 
 // ── PASSWORD GATE ──
@@ -409,16 +431,18 @@ function showTab(name){
 
 // ── LOAD ALL DATA ──
 async function loadAll(){
-  const[listings,leads,signups,viewData]=await Promise.all([
+  const[listings,leads,signups,viewData,reviewsData]=await Promise.all([
     SB.from('listings').select('*').neq('status','archived').order('name'),
     SB.from('leads').select('*,listings(name,slug)').order('created_at',{ascending:false}),
     SB.from('signups').select('*').order('created_at',{ascending:false}),
-    SB.from('page_views').select('listing_id')
+    SB.from('page_views').select('listing_id'),
+    SB.from('reviews').select('*,listings(name,slug)').order('created_at',{ascending:false})
   ]);
 
   allListings=listings.data||[];
   allLeads=leads.data||[];
   allSignups=signups.data||[];
+  allReviews=reviewsData.data||[];
 
   // Count views per listing
   const viewMap={};
@@ -437,10 +461,12 @@ async function loadAll(){
   document.getElementById('cntListings').textContent=allListings.length;
   document.getElementById('cntLeads').textContent=allLeads.length;
   document.getElementById('cntSignups').textContent=allSignups.length;
+  document.getElementById('cntReviews').textContent=allReviews.filter(r=>r.status==='pending').length;
 
   renderListings();
   renderLeads();
   renderSignups();
+  renderReviews();
 }
 
 // ── LISTINGS ──
@@ -792,6 +818,67 @@ function closePanel(){
   document.getElementById('panel').classList.remove('open');
   // Restore edit form if it was replaced by signup view
   setTimeout(()=>{document.getElementById('panelBody').innerHTML=editPanelHTML;},300);
+}
+
+// ── REVIEWS ──
+function setReviewFilter(el){
+  document.querySelectorAll('#reviewFilters .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  reviewFilter=el.dataset.filter;
+  renderReviews();
+}
+
+function starsText(n){return '\u2605'.repeat(n)+'\u2606'.repeat(5-n);}
+
+function renderReviews(){
+  const body=document.getElementById('reviewBody');
+  const filtered=allReviews.filter(r=>r.status===reviewFilter);
+  if(!filtered.length){
+    body.innerHTML='';
+    document.getElementById('reviewEmpty').innerHTML='<div class="empty">No '+reviewFilter+' reviews</div>';
+    return;
+  }
+  document.getElementById('reviewEmpty').innerHTML='';
+  body.innerHTML=filtered.map((r,i)=>{
+    const dt=new Date(r.created_at);
+    const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const listing=r.listings?esc(r.listings.name):'—';
+    const preview=r.body?(esc(r.body).substring(0,60)+(r.body.length>60?'...':'')):'-';
+    const st=r.status;
+    return `<tr>
+      <td>${dateStr}</td>
+      <td style="font-weight:600">${esc(r.reviewer_name)}</td>
+      <td style="color:#F59E0B">${starsText(r.rating)}</td>
+      <td title="${r.body?esc(r.body):''}">${r.title?'<strong>'+esc(r.title)+'</strong> — ':''}${preview}</td>
+      <td style="color:var(--ac)">${listing}</td>
+      <td><span class="badge-s b-${st}">${st}</span></td>
+      <td style="white-space:nowrap">${st==='pending'
+        ?`<button class="su-btn su-approve" onclick="approveReview(${r.id},${r.listing_id})">Approve</button> <button class="su-btn su-reject" onclick="rejectReview(${r.id})">Reject</button>`
+        :st==='approved'?`<button class="su-btn su-reject" onclick="rejectReview(${r.id})">Reject</button>`:''
+      }</td>
+    </tr>`;
+  }).join('');
+}
+
+async function approveReview(id,listingId){
+  await SB.from('reviews').update({status:'approved'}).eq('id',id);
+  const r=allReviews.find(x=>x.id===id);
+  if(r)r.status='approved';
+  // Recalculate listing avg_rating and review_count
+  const approvedForListing=allReviews.filter(x=>x.listing_id===listingId&&x.status==='approved');
+  const avg=approvedForListing.length?(approvedForListing.reduce((s,x)=>s+x.rating,0)/approvedForListing.length).toFixed(1):null;
+  const cnt=approvedForListing.length;
+  await SB.from('listings').update({avg_rating:avg,review_count:cnt}).eq('id',listingId);
+  document.getElementById('cntReviews').textContent=allReviews.filter(x=>x.status==='pending').length;
+  renderReviews();
+}
+
+async function rejectReview(id){
+  await SB.from('reviews').update({status:'rejected'}).eq('id',id);
+  const r=allReviews.find(x=>x.id===id);
+  if(r)r.status='rejected';
+  document.getElementById('cntReviews').textContent=allReviews.filter(x=>x.status==='pending').length;
+  renderReviews();
 }
 
 // ── UTILS ──
