@@ -529,15 +529,22 @@ function stars(n){return '<span style="color:#F59E0B">'+'&#9733;'.repeat(n)+'</s
 
 // ══════════════════════ AUTH ══════════════════════
 SB.auth.onAuthStateChange(async(event,session)=>{
+  console.log('[DASH] onAuthStateChange event=',event,'session=',!!session,'user=',session?.user?.id);
   if(!session||!session.user){
     if(loggingOut)return;
+    console.log('[DASH] No session, redirecting to signup');
     window.location.href='/signup.html?from=dashboard';
     return;
   }
   if(event==='INITIAL_SESSION'||event==='SIGNED_IN'){
     currentUser=session.user;
     document.getElementById('logoutBtn').style.display='';
-    await loadDashboard(session.user);
+    try{
+      await loadDashboard(session.user);
+    }catch(err){
+      console.error('[DASH] loadDashboard crashed:',err);
+      document.getElementById('dashLoading').innerHTML='<div style="color:#DC2626;text-align:center"><strong>Dashboard error</strong><br><span style="font-size:.75rem">'+esc(err.message)+'</span><br><br><button class="btn btn-o" onclick="location.reload()">Reload</button></div>';
+    }
   }
 });
 
@@ -549,6 +556,7 @@ async function doLogout(){
 
 // ══════════════════════ LOAD DASHBOARD ══════════════════════
 async function loadDashboard(user){
+  console.log('[DASH] loadDashboard called, user.id=',user.id,'user.email=',user.email);
   const email=user.email||'';
   const ini=email.split('@')[0].slice(0,2).toUpperCase();
   document.getElementById('sbAvatar').textContent=ini;
@@ -557,10 +565,14 @@ async function loadDashboard(user){
 
   // Find listing: claimed_by first, then email fallback
   let listing=null;
-  const{data:d1}=await SB.from('listings').select('*').eq('claimed_by',user.id).limit(1).maybeSingle();
+  console.log('[DASH] Querying listings by claimed_by=',user.id);
+  const{data:d1,error:e1}=await SB.from('listings').select('*').eq('claimed_by',user.id).limit(1).maybeSingle();
+  console.log('[DASH] claimed_by result: data=',d1,'error=',e1);
   if(d1) listing=d1;
   if(!listing){
-    const{data:d2}=await SB.from('listings').select('*').ilike('email',email).limit(1).maybeSingle();
+    console.log('[DASH] No claimed_by match, trying email=',email);
+    const{data:d2,error:e2}=await SB.from('listings').select('*').ilike('email',email).limit(1).maybeSingle();
+    console.log('[DASH] email result: data=',d2,'error=',e2);
     if(d2){
       listing=d2;
       // Auto-fix: set claimed_by
@@ -570,9 +582,11 @@ async function loadDashboard(user){
 
   document.getElementById('dashLoading').style.display='none';
   if(!listing){
+    console.log('[DASH] No listing found, showing empty state');
     document.getElementById('dashEmpty').style.display='';
     return;
   }
+  console.log('[DASH] Found listing:',listing.id,listing.name,listing.slug);
 
   myListing=listing;
   document.getElementById('sbName').textContent=listing.name;
@@ -583,6 +597,7 @@ async function loadDashboard(user){
   document.getElementById('qaViewListing').href=liveUrl;
 
   // Load all data in parallel
+  console.log('[DASH] Fetching parallel data for listing_id=',listing.id);
   const[viewsRes,leadsRes,mediaRes,reviewsRes,rrRes]=await Promise.all([
     SB.from('page_views').select('id,created_at').eq('listing_id',listing.id),
     SB.from('leads').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
@@ -590,6 +605,11 @@ async function loadDashboard(user){
     SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
     SB.from('review_requests').select('*').eq('listing_id',listing.id).order('sent_at',{ascending:false})
   ]);
+  console.log('[DASH] Parallel fetch done. views=',viewsRes.data?.length,'err=',viewsRes.error,
+    'leads=',leadsRes.data?.length,'err=',leadsRes.error,
+    'media=',mediaRes.data?.length,'err=',mediaRes.error,
+    'reviews=',reviewsRes.data?.length,'err=',reviewsRes.error,
+    'rr=',rrRes.data?.length,'err=',rrRes.error);
 
   myViews=viewsRes.data||[];
   myLeads=leadsRes.data||[];
@@ -605,6 +625,7 @@ async function loadDashboard(user){
     b.style.display='';
   }
 
+  console.log('[DASH] Populating form and rendering tabs...');
   populateForm(listing);
   renderOverview();
   renderLeads();
@@ -612,6 +633,7 @@ async function loadDashboard(user){
   renderReviews();
   renderInsights();
   renderBooking();
+  console.log('[DASH] Dashboard fully loaded!');
 }
 
 // ══════════════════════ TAB 1: OVERVIEW ══════════════════════
