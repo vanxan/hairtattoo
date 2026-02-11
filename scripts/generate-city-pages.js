@@ -42,7 +42,7 @@ function renderCard(l, media, viewCount) {
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div><div class="c-pr">${esc(pr)}</div></div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
-      <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
+      <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg" onclick="event.preventDefault();event.stopPropagation();openMsgPanel(${l.id})"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
     </a>`;
 }
 
@@ -111,7 +111,59 @@ ${nearbyHTML ? `<div class="nearby">
   <p>List your business for free and start getting leads from local clients.</p>
   <a href="/signup.html" class="btn">List Your Business \u2192</a>
 </div></div>
+<!-- MESSAGE PANEL -->
+<div class="msg-overlay" id="msgOverlay" onclick="closeMsgPanel()"></div>
+<div class="msg-panel" id="msgPanel">
+  <div class="msg-panel-head">
+    <h3 id="msgPanelTitle">Send a Message</h3>
+    <button onclick="closeMsgPanel()" style="font-size:1.25rem;color:var(--t3);line-height:1">&times;</button>
+  </div>
+  <div class="msg-panel-body" id="msgPanelBody"></div>
+</div>
 ${getFooter()}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SB=supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+var ML=${JSON.stringify(listings.map(l => ({ id: l.id, name: l.name, services: l.services || [] })))};
+var msgListingId=null;
+function openMsgPanel(id){
+  var l=ML.find(function(x){return x.id===id});if(!l)return;
+  msgListingId=id;
+  document.getElementById('msgPanelTitle').textContent='Message '+l.name;
+  var svcs=l.services.map(function(s){return '<span class="msg-svc" onclick="this.classList.toggle(\\'on\\')">'+s+'</span>'}).join('');
+  document.getElementById('msgPanelBody').innerHTML=
+    '<label class="mp-label">Your Name</label>'+
+    '<input type="text" id="mpName" placeholder="Full name">'+
+    '<label class="mp-label">Phone Number</label>'+
+    '<input type="tel" id="mpPhone" placeholder="(555) 123-4567">'+
+    (svcs?'<label class="mp-label">Services Interested In</label><div class="msg-svcs">'+svcs+'</div>':'')+
+    '<label class="mp-label">Message</label>'+
+    '<textarea id="mpMsg" placeholder="Hi, I\\'m interested in learning more about your SMP services..."></textarea>'+
+    '<label class="msg-consent"><input type="checkbox" id="mpConsent"> I agree to receive SMS/text messages from this business regarding my inquiry. Message &amp; data rates may apply.</label>'+
+    '<button class="msg-submit" onclick="submitMsgPanel()">Send Message \\u2192</button>';
+  document.getElementById('msgOverlay').classList.add('open');
+  document.getElementById('msgPanel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMsgPanel(){
+  document.getElementById('msgOverlay').classList.remove('open');
+  document.getElementById('msgPanel').classList.remove('open');
+  document.body.style.overflow='';
+  msgListingId=null;
+}
+async function submitMsgPanel(){
+  var name=document.getElementById('mpName').value.trim();
+  var phone=document.getElementById('mpPhone').value.trim();
+  var msg=document.getElementById('mpMsg').value.trim();
+  var svcs=[].slice.call(document.querySelectorAll('.msg-svc.on')).map(function(s){return s.textContent});
+  if(!name||!phone){alert('Please enter your name and phone number.');return;}
+  var fullMsg=(svcs.length?'Services: '+svcs.join(', ')+'\\n\\n':'')+(msg||'');
+  var res=await SB.from('leads').insert({listing_id:msgListingId,sender_name:name,sender_phone:phone,sender_message:fullMsg||null});
+  if(res.error){console.error('Lead insert error:',res.error.message);alert('Something went wrong. Please try again.');return;}
+  document.getElementById('msgPanelBody').innerHTML='<div class="msg-ok"><h4>\\u2713 Message Sent!</h4><p>The artist will reach out to you shortly.</p><button class="btn btn-o" onclick="closeMsgPanel()">Close</button></div>';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMsgPanel()});
+</script>
 </body>
 </html>`;
 }
