@@ -18,6 +18,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ingorrzmoudvoknhwjjb.supabase.co">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -35,6 +36,28 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .nav-r{display:flex;gap:.75rem;align-items:center}
 .nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
 .nav-r a:hover{color:var(--ac)}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}
+.nav-dd-btn:hover{background:var(--ac2)}
+.nav-dd-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;padding:.375rem;z-index:110}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;border-radius:6px;font-size:.875rem;color:var(--text);font-weight:400;transition:background .1s}
+.nav-menu a:hover{background:var(--al)}
+.nav-menu a.primary{font-weight:600;color:var(--ac)}
+.nav-menu .nm-sep{height:1px;background:var(--bd);margin:.25rem .5rem}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--rs);transition:background .15s}
+.hamburger:hover{background:var(--al)}
+.hamburger svg{width:20px;height:20px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:block}
+.mob-drawer{position:fixed;top:0;right:-300px;width:280px;max-width:85vw;height:100vh;background:var(--card);z-index:151;box-shadow:-4px 0 20px rgba(0,0,0,.1);transition:right .3s ease;padding:1.25rem}
+.mob-menu.open .mob-drawer{right:0}
+.mob-drawer .mob-close{float:right;font-size:1.25rem;color:var(--t3);cursor:pointer;line-height:1}
+.mob-drawer nav{clear:both;padding-top:1rem}
+.mob-drawer nav a{display:block;padding:.75rem 0;font-size:1rem;color:var(--text);border-bottom:1px solid var(--bd)}
+.mob-drawer nav a:last-child{border-bottom:none}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;transition:all .15s}
 .btn-p{background:var(--ac);color:#fff}.btn-p:hover{background:var(--ac2)}
 .btn-o{border:1px solid var(--bd);color:var(--text)}.btn-o:hover{border-color:var(--ac);color:var(--ac)}
@@ -163,6 +186,11 @@ footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem
 footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 .f-links{display:flex;gap:1.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
 .f-links a{color:#aaa;font-size:.8125rem}.f-links a:hover{color:#fff}
+.fc-wrap{margin:1.5rem auto;max-width:700px;text-align:left}
+.fc-label{font-size:.6875rem;color:#888;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em}
+.fc-grid{display:flex;flex-wrap:wrap;gap:.375rem}
+.fc-link{font-size:.75rem;color:#aaa;padding:.25rem .5rem;border:1px solid #444;border-radius:4px;white-space:nowrap;transition:all .15s}
+.fc-link:hover{color:#fff;border-color:#888}
 
 .empty{text-align:center;padding:3rem 1rem;color:var(--t2)}
 .empty h3{font-size:1.125rem;margin-bottom:.5rem;color:var(--text)}
@@ -189,7 +217,8 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   .grid{grid-template-columns:1fr}
   .masonry{columns:2;column-gap:3px}
   .m-item{margin-bottom:3px;border-radius:4px}
-  .nav-r .hm{display:none}
+  .nav-r .hm,.nav-dd{display:none}
+  .hamburger{display:flex}
   .filters{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
   .filters::-webkit-scrollbar{display:none}
   .dp-header{flex-direction:column;align-items:center;text-align:center}
@@ -216,11 +245,28 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <nav class="nav"><div class="nav-in">
   <div class="logo" onclick="goHome()">Hair<span>Tattoo</span></div>
   <div class="nav-r">
-    <a href="#" onclick="event.preventDefault();goHome();showTab('directory')" class="hm">Directory</a>
-    <a href="#" onclick="event.preventDefault();goHome();showTab('feed')" class="hm">Explore</a>
-    <a href="/signup.html" class="btn btn-p">List Your Business</a>
+    <a href="/near-me/" class="hm">Near Me</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/signup.html" class="primary">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
 </div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
 
 <!-- HOME VIEW -->
 <div id="homeView">
@@ -228,11 +274,11 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
     <h1>Find a <em>Hair Tattoo</em> Artist Near You</h1>
     <p>The #1 directory for scalp micropigmentation professionals. Browse 350+ verified SMP artists, compare services, and connect instantly.</p>
     <div class="hero-btns">
-      <button class="btn btn-o" onclick="geoSort()" id="nearMeBtn" style="font-size:.8125rem">
-        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> Near Me
+      <button class="btn btn-o" onclick="toggleGeo()" id="nearMeBtn" style="font-size:.8125rem">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Find Near Me
       </button>
       <button class="btn btn-o" onclick="showTab('feed')" style="font-size:.8125rem">
-        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Browse Results
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Browse Artwork
       </button>
     </div>
   </section>
@@ -297,13 +343,15 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <footer>
   <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
   <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
-  <div style="margin:1.5rem auto;max-width:700px;text-align:left">
-    <p style="font-size:.6875rem;color:#888;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em">Popular Cities</p>
-    <div style="display:flex;flex-wrap:wrap;gap:.375rem" id="footerCities"></div>
+  <div class="fc-wrap">
+    <p class="fc-label">Popular Cities</p>
+    <div class="fc-grid">
+      <a href="/near-me/new-york-ny/" class="fc-link">New York, NY</a><a href="/near-me/los-angeles-ca/" class="fc-link">Los Angeles, CA</a><a href="/near-me/houston-tx/" class="fc-link">Houston, TX</a><a href="/near-me/chicago-il/" class="fc-link">Chicago, IL</a><a href="/near-me/miami-beach-fl/" class="fc-link">Miami Beach, FL</a><a href="/near-me/atlanta-ga/" class="fc-link">Atlanta, GA</a><a href="/near-me/phoenix-az/" class="fc-link">Phoenix, AZ</a><a href="/near-me/dallas-tx/" class="fc-link">Dallas, TX</a><a href="/near-me/san-francisco-ca/" class="fc-link">San Francisco, CA</a><a href="/near-me/seattle-wa/" class="fc-link">Seattle, WA</a><a href="/near-me/boston-ma/" class="fc-link">Boston, MA</a><a href="/near-me/denver-co/" class="fc-link">Denver, CO</a><a href="/near-me/austin-tx/" class="fc-link">Austin, TX</a><a href="/near-me/nashville-tn/" class="fc-link">Nashville, TN</a><a href="/near-me/tampa-fl/" class="fc-link">Tampa, FL</a><a href="/near-me/fort-lauderdale-fl/" class="fc-link">Fort Lauderdale, FL</a><a href="/near-me/san-diego-ca/" class="fc-link">San Diego, CA</a><a href="/near-me/philadelphia-pa/" class="fc-link">Philadelphia, PA</a><a href="/near-me/charlotte-nc/" class="fc-link">Charlotte, NC</a><a href="/near-me/las-vegas-nv/" class="fc-link">Las Vegas, NV</a><a href="/near-me/portland-or/" class="fc-link">Portland, OR</a><a href="/near-me/scottsdale-az/" class="fc-link">Scottsdale, AZ</a><a href="/near-me/boca-raton-fl/" class="fc-link">Boca Raton, FL</a><a href="/near-me/fort-worth-tx/" class="fc-link">Fort Worth, TX</a><a href="/near-me/beverly-hills-ca/" class="fc-link">Beverly Hills, CA</a>
+    </div>
   </div>
-  <p style="font-size:.75rem;margin-top:1rem">© 2025 HairTattoo.com. All rights reserved.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 HairTattoo.com. All rights reserved.</p>
   <div class="f-links">
-    <a href="#">About</a><a href="#">For Professionals</a><a href="#">Privacy</a><a href="#">Terms</a><a href="mailto:hello@hairtattoo.com">Contact</a>
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
   </div>
 </footer>
 
@@ -379,16 +427,29 @@ function setFilter(f){
 }
 
 // === GEO ===
-function geoSort(){
-  if(!navigator.geolocation)return;
+let geoActive=false;
+function toggleGeo(){
   const b=document.getElementById('nearMeBtn');
-  if(b)b.innerHTML='<span style="display:inline-block;animation:spin .8s linear infinite">⟳</span> Locating...';
-  navigator.geolocation.getCurrentPosition(p=>{
-    L.forEach(l=>l._dist=dist(p.coords.latitude,p.coords.longitude,l.lat,l.lng));
-    L.sort((a,b)=>(a._dist||9999)-(b._dist||9999));
-    if(b)b.innerHTML='<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> Near Me ✓';
+  if(geoActive){
+    geoActive=false;
+    L.forEach(l=>delete l._dist);
+    if(b)b.innerHTML='<svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Find Near Me';
     doSearch();
-  },()=>{if(b)b.textContent='Location unavailable';});
+    return;
+  }
+  if(!navigator.geolocation)return;
+  if(b)b.innerHTML='<span style="display:inline-block;animation:spin .8s linear infinite">\u27F3</span> Locating...';
+  navigator.geolocation.getCurrentPosition(p=>{
+    const lat=p.coords.latitude,lng=p.coords.longitude;
+    L.forEach(l=>l._dist=dist(lat,lng,l.lat,l.lng));
+    L.sort((a,bb)=>(a._dist||9999)-(bb._dist||9999));
+    geoActive=true;
+    // Find nearest city from listings
+    const nearest=L[0];
+    const cityLabel=nearest?nearest.city+', '+nearest.state:'Your Area';
+    if(b)b.innerHTML='<svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> '+cityLabel;
+    doSearch();
+  },()=>{if(b)b.innerHTML='<svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Find Near Me';});
 }
 
 // === RENDER DIRECTORY ===
@@ -640,10 +701,6 @@ async function initApp(){
   filtered=[...L];
   doSearch();
   geoSort();
-  // Footer city links
-  const topC=['New York, NY','Los Angeles, CA','Houston, TX','Chicago, IL','Miami Beach, FL','Atlanta, GA','Phoenix, AZ','Dallas, TX','San Francisco, CA','Seattle, WA','Boston, MA','Denver, CO','Austin, TX','Nashville, TN','Tampa, FL','Fort Lauderdale, FL','San Diego, CA','Philadelphia, PA','Charlotte, NC','Las Vegas, NV','Portland, OR','Scottsdale, AZ','Boca Raton, FL','Fort Worth, TX','Beverly Hills, CA'];
-  const fc=document.getElementById('footerCities');
-  if(fc)fc.innerHTML=topC.map(c=>`<a href="#" onclick="event.preventDefault();document.getElementById('searchCity').value='${c.split(',')[0]}';goHome();showTab('directory');doSearch()" style="font-size:.75rem;color:#aaa;padding:.25rem .5rem;border:1px solid #444;border-radius:4px;white-space:nowrap">${c}</a>`).join('');
   // Schema for top listings
   L.slice(0,20).forEach(l=>{const s=document.createElement('script');s.type='application/ld+json';s.textContent=JSON.stringify({"@context":"https://schema.org","@type":"LocalBusiness","name":l.name,"address":{"@type":"PostalAddress","streetAddress":l.address,"addressLocality":l.city,"addressRegion":l.state,"postalCode":l.zip},"telephone":l.phone,"url":l.website,"geo":{"@type":"GeoCoordinates","latitude":l.lat,"longitude":l.lng}});document.head.appendChild(s);});
   // Route
@@ -660,9 +717,10 @@ async function initApp(){
   });
 }
 document.addEventListener('DOMContentLoaded',()=>initApp());
+document.addEventListener('click',e=>{var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')});
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeMsgPanel();closeLb();}
+  if(e.key==='Escape'){closeMsgPanel();closeLb();document.getElementById('mobMenu')?.classList.remove('open');
   if(document.getElementById('lightbox').classList.contains('open')){
     if(e.key==='ArrowLeft')lbNav(-1);
     if(e.key==='ArrowRight')lbNav(1);
