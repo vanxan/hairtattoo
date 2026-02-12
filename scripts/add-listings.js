@@ -642,8 +642,12 @@ async function main() {
   const listingsWithMedia = new Set((allMedia || []).map(m => m.listing_id));
 
   const placeholderFiles = [
-    'smp-placeholder-1.jpg', 'smp-placeholder-2.jpg', 'smp-placeholder-3.jpg',
-    'smp-placeholder-4.jpg', 'smp-placeholder-5.jpg', 'smp-placeholder-6.jpg'
+    'istockphoto-1359870624-612x612.jpg', 'istockphoto-1455517622-612x612.jpg',
+    'istockphoto-182490968-612x612.jpg', 'istockphoto-932724850-612x612.jpg',
+    'istockphoto-639042482-612x612.jpg', 'istockphoto-689527776-612x612.jpg',
+    'istockphoto-2205354064-612x612.jpg', 'istockphoto-2147622228-612x612.jpg',
+    'IMG_6822-1.webp', 'Scar_Camouflage_with_Scalp_Micropigmentation_59e317b3-e53d-4a16-aa5e-07b7c6db6d36.webp',
+    'thinning_34.webp', 'shutterstock_624234890.jpg'
   ];
 
   let seeded = 0;

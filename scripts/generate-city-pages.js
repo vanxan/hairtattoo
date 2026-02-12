@@ -188,10 +188,19 @@ async function main() {
   console.log(`Got ${listings.length} listings`);
 
   console.log('Fetching media...');
-  const { data: media } = await SB.from('media').select('*').order('sort_order', { ascending: true });
+  let allMedia = [];
+  let from = 0;
+  const PAGE = 1000;
+  while (true) {
+    const { data: batch } = await SB.from('media').select('*').order('sort_order', { ascending: true }).range(from, from + PAGE - 1);
+    if (!batch || !batch.length) break;
+    allMedia = allMedia.concat(batch);
+    if (batch.length < PAGE) break;
+    from += PAGE;
+  }
   const mediaMap = {};
-  if (media) { media.forEach(m => { if (!mediaMap[m.listing_id]) mediaMap[m.listing_id] = []; mediaMap[m.listing_id].push(m); }); }
-  console.log(`Got ${media ? media.length : 0} media items`);
+  allMedia.forEach(m => { if (!mediaMap[m.listing_id]) mediaMap[m.listing_id] = []; mediaMap[m.listing_id].push(m); });
+  console.log(`Got ${allMedia.length} media items`);
 
   console.log('Fetching page views...');
   const { data: views } = await SB.from('page_views').select('listing_id');

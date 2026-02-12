@@ -25,7 +25,7 @@ export async function onRequestGet(context) {
   // Fetch media and reviews in parallel
   const [mediaRes, reviewsRes] = await Promise.all([
     fetch(
-      `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&sort_order=gte.0&select=*&order=sort_order.asc`,
+      `${SB_URL}/rest/v1/media?listing_id=eq.${l.id}&select=*&order=sort_order.asc`,
       { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` } }
     ),
     fetch(
@@ -64,9 +64,11 @@ function starsHtml(n) {
          '<span style="color:var(--bd)">' + '\u2605'.repeat(5 - n) + '</span>';
 }
 
-function renderDetailPage(l, media, reviews) {
+function renderDetailPage(l, allMedia, reviews) {
+  // Separate profile photo from gallery media (gallery = non-profile, sort_order >= 0)
+  const profilePhoto = allMedia.find(m => m.is_profile);
+  const media = allMedia.filter(m => !m.is_profile && m.sort_order >= 0);
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
-  const profilePhoto = media.find(m => m.is_profile);
   const avatarHTML = profilePhoto
     ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
     : ini;
