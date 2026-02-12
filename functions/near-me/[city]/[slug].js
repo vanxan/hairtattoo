@@ -65,9 +65,12 @@ function starsHtml(n) {
 }
 
 function renderDetailPage(l, allMedia, reviews) {
-  // Separate profile photo from gallery media (gallery = non-profile, sort_order >= 0)
+  // Separate profile photo from gallery media
   const profilePhoto = allMedia.find(m => m.is_profile);
-  const media = allMedia.filter(m => !m.is_profile && m.sort_order >= 0);
+  const galleryAll = allMedia.filter(m => !m.is_profile && m.sort_order >= 0);
+  const hasReal = galleryAll.some(m => !m.is_placeholder);
+  // Hide placeholders when real images exist
+  const media = hasReal ? galleryAll.filter(m => !m.is_placeholder) : galleryAll;
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
   const avatarHTML = profilePhoto
     ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
@@ -120,15 +123,15 @@ function renderDetailPage(l, allMedia, reviews) {
       const src = mediaUrl(m);
       const isVideo = m.type === 'video';
       if (isVideo) {
-        return `<div class="gallery-item" onclick="openVideoLb('${src.replace(/'/g, "\\'")}')" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><video src="${src}" preload="metadata" muted style="width:100%;height:200px;object-fit:cover;display:block"></video><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px"></div></div></div>`;
+        return `<div class="gallery-item" onclick="openVideoLb('${src.replace(/'/g, "\\'")}')" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s;aspect-ratio:1" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><video src="${src}" preload="metadata" muted style="width:100%;height:100%;object-fit:cover;display:block"></video><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px"></div></div></div>`;
       }
-      return `<div class="gallery-item" onclick="openLb(${i})" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><img src="${src}" loading="lazy" width="240" height="200" alt="${esc(l.name)}" style="width:100%;height:200px;object-fit:cover;display:block">${m.is_placeholder ? '<span class="c-pill">\u{1F4F7} Sample photo</span>' : ''}</div>`;
+      return `<div class="gallery-item" onclick="openLb(${i})" style="border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:transform .15s;aspect-ratio:1" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''"><img src="${src}" loading="lazy" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;display:block">${m.is_placeholder ? '<span class="c-pill">\u{1F4F7} Sample photo</span>' : ''}</div>`;
     }).join('');
   } else {
     const colors = ['#c8dbd0', '#b8d0c2', '#a8c5b4', '#d4e4d9', '#e0ebe5', '#bcd4c6'];
     const glabels = ['Before & After', 'Hairline Closeup', 'Density Session', 'Side Profile', 'Top View', 'Final Result'];
     for (let i = 0; i < 6; i++) {
-      gallery += `<div style="background:${colors[i]};border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--ac)"><span style="font-family:var(--se);font-size:1.5rem;opacity:.5">${ini}</span><span style="font-size:.6rem;opacity:.35;margin-top:.25rem">${glabels[i]}</span></div>`;
+      gallery += `<div style="background:${colors[i]};border-radius:8px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--ac)"><span style="font-family:var(--se);font-size:1.5rem;opacity:.5">${ini}</span><span style="font-size:.6rem;opacity:.35;margin-top:.25rem">${glabels[i]}</span></div>`;
     }
   }
 
