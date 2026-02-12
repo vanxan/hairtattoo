@@ -962,10 +962,10 @@ function renderPortfolio(){
   const hasReal=myMedia.some(m=>!m.is_placeholder);
   document.getElementById('placeholderBanner').style.display=hasPlaceholders&&!hasReal?'flex':'none';
 
-  // Free tier upload limit (6 non-placeholder uploads)
+  // Free tier upload limit (6 non-placeholder, non-profile uploads)
   const FREE_UPLOAD_LIMIT=6;
-  const realCount=myMedia.filter(m=>!m.is_placeholder).length;
-  const atLimit=realCount>=FREE_UPLOAD_LIMIT;
+  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile).length;
+  const atLimit=!myListing.promoted&&realCount>=FREE_UPLOAD_LIMIT;
   document.getElementById('uploadLimitMsg').style.display=atLimit?'block':'none';
   document.getElementById('uploadZone').style.display=atLimit?'none':'';
   document.getElementById('fileInput').disabled=atLimit;
@@ -1022,9 +1022,9 @@ const ALLOWED_VIDEO=/\.(mp4|mov|webm)$/i;
 
 async function handleUpload(files){
   if(!files||!files.length||!myListing)return;
-  // Free tier limit check
-  const realCount=myMedia.filter(m=>!m.is_placeholder).length;
-  if(realCount>=6){renderPortfolio();return;}
+  // Free tier limit check (promoted = unlimited)
+  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile).length;
+  if(!myListing.promoted&&realCount>=6){renderPortfolio();return;}
   const prog=document.getElementById('uploadProgress');
   const bar=document.getElementById('uploadBarFill');
   const status=document.getElementById('uploadStatus');
