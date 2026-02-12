@@ -170,7 +170,6 @@ function renderDetailPage(l, media, reviews) {
       'addressCountry': 'US'
     },
     'telephone': l.phone,
-    'email': l.email,
     'url': l.website,
     'description': l.about,
     'geo': {
@@ -226,8 +225,8 @@ ${getNav()}
   <div class="dp-section"><h3>Services Offered</h3><div class="dp-svcs">${services}</div></div>
 
   <div class="dp-section"><h3>Contact Information</h3><div class="dp-grid">
-    <div class="dp-det"><label>Phone</label><a href="tel:${esc(l.phone || '')}">${esc(l.phone || '')}</a></div>
-    <div class="dp-det"><label>Email</label><a href="mailto:${esc(l.email || '')}">${esc(l.email || '')}</a></div>
+    <div class="dp-det"><label>Phone</label><span class="obf-phone" data-a="${esc((l.phone || '').slice(0, 3))}" data-b="${esc((l.phone || '').slice(3, 6))}" data-c="${esc((l.phone || '').slice(6))}">${esc(l.phone || '')}</span></div>
+    <div class="dp-det"><label>Email</label><span class="obf-email" data-u="${esc((l.email || '').split('@')[0] || '')}" data-d="${esc((l.email || '').split('@')[1] || '')}">${l.email ? esc((l.email || '').split('@')[0]) + ' [at] ' + esc(((l.email || '').split('@')[1] || '').replace(/\./g, ' [dot] ')) : ''}</span></div>
     <div class="dp-det"><label>Website</label><a href="${esc(l.website || '')}" target="_blank" rel="noopener">${esc((l.website || '').replace(/https?:\/\//, ''))}</a></div>
     <div class="dp-det"><label>Location</label><span>${esc(l.city)}, ${esc(l.state)} ${esc(l.zip || '')}</span></div>
   </div></div>
@@ -337,6 +336,16 @@ function closeVideoLb(){
   document.getElementById('videoModalPub').style.display='none';
   document.body.style.overflow='';
 }
+
+// Obfuscate contact info — assemble links from data attributes
+document.querySelectorAll('.obf-email').forEach(function(el){
+  var u=el.dataset.u,d=el.dataset.d;
+  if(u&&d){var addr=u+'@'+d;el.innerHTML='<a href="mai'+'lto:'+addr+'">'+addr+'</a>';}
+});
+document.querySelectorAll('.obf-phone').forEach(function(el){
+  var a=el.dataset.a,b=el.dataset.b,c=el.dataset.c;
+  if(a){var num=a+b+c;var display=a.length>=3?'('+a+') '+b+'-'+c:num;el.innerHTML='<a href="t'+'el:'+num+'">'+display+'</a>';}
+});
 
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){closeLb();closeVideoLb();}
