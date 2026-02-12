@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read approved reviews" ON reviews FOR SELECT USING (status = 'approved');
+CREATE POLICY "Public read all reviews" ON reviews FOR SELECT USING (true);
 CREATE POLICY "Public insert reviews" ON reviews FOR INSERT WITH CHECK (true);
-CREATE POLICY "Auth update own listing reviews" ON reviews FOR UPDATE TO authenticated USING (true);
+CREATE POLICY "Public update reviews" ON reviews FOR UPDATE USING (true);
 CREATE INDEX idx_reviews_listing ON reviews(listing_id);
 
 -- 3. Add review stats and booking to listings

@@ -279,6 +279,7 @@ a{color:var(--ac);text-decoration:none}
     <div class="section" id="sec-reviews">
       <div class="toolbar">
         <div class="filters" id="reviewFilters">
+          <span class="chip" data-filter="all" onclick="setReviewFilter(this)">All</span>
           <span class="chip active" data-filter="pending" onclick="setReviewFilter(this)">Pending</span>
           <span class="chip" data-filter="approved" onclick="setReviewFilter(this)">Approved</span>
           <span class="chip" data-filter="rejected" onclick="setReviewFilter(this)">Rejected</span>
@@ -835,10 +836,10 @@ function starsText(n){return '\u2605'.repeat(n)+'\u2606'.repeat(5-n);}
 
 function renderReviews(){
   const body=document.getElementById('reviewBody');
-  const filtered=allReviews.filter(r=>r.status===reviewFilter);
+  const filtered=reviewFilter==='all'?allReviews:allReviews.filter(r=>r.status===reviewFilter);
   if(!filtered.length){
     body.innerHTML='';
-    document.getElementById('reviewEmpty').innerHTML='<div class="empty">No '+reviewFilter+' reviews</div>';
+    document.getElementById('reviewEmpty').innerHTML='<div class="empty">No '+(reviewFilter==='all'?'':reviewFilter+' ')+'reviews</div>';
     return;
   }
   document.getElementById('reviewEmpty').innerHTML='';
@@ -856,8 +857,9 @@ function renderReviews(){
       <td style="color:var(--ac)">${listing}</td>
       <td><span class="badge-s b-${st}">${st}</span></td>
       <td style="white-space:nowrap">${st==='pending'
-        ?`<button class="su-btn su-approve" onclick="approveReview(${r.id},${r.listing_id})">Approve</button> <button class="su-btn su-reject" onclick="rejectReview(${r.id})">Reject</button>`
-        :st==='approved'?`<button class="su-btn su-reject" onclick="rejectReview(${r.id})">Reject</button>`:''
+        ?`<button class="su-btn su-approve" onclick="approveReview(${r.id},${r.listing_id})">Approve</button> <button class="su-btn su-reject" onclick="rejectReview(${r.id},${r.listing_id})">Reject</button>`
+        :st==='approved'?`<button class="su-btn su-reject" onclick="rejectReview(${r.id},${r.listing_id})">Reject</button>`
+        :st==='rejected'?`<button class="su-btn su-approve" onclick="approveReview(${r.id},${r.listing_id})">Approve</button>`:''
       }</td>
     </tr>`;
   }).join('');
@@ -876,10 +878,17 @@ async function approveReview(id,listingId){
   renderReviews();
 }
 
-async function rejectReview(id){
+async function rejectReview(id,listingId){
   await SB.from('reviews').update({status:'rejected'}).eq('id',id);
   const r=allReviews.find(x=>x.id===id);
   if(r)r.status='rejected';
+  // Recalculate listing avg_rating and review_count
+  if(listingId){
+    const approvedForListing=allReviews.filter(x=>x.listing_id===listingId&&x.status==='approved');
+    const avg=approvedForListing.length?(approvedForListing.reduce((s,x)=>s+x.rating,0)/approvedForListing.length).toFixed(1):null;
+    const cnt=approvedForListing.length;
+    await SB.from('listings').update({avg_rating:avg,review_count:cnt}).eq('id',listingId);
+  }
   document.getElementById('cntReviews').textContent=allReviews.filter(x=>x.status==='pending').length;
   renderReviews();
 }

@@ -197,10 +197,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .ri-reply-form textarea{width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.8125rem;resize:vertical;min-height:60px;outline:none}
 .ri-reply-form textarea:focus{border-color:var(--ac)}
 .ri-pending{font-size:.6875rem;color:#92400E;background:#FEF3C7;padding:.125rem .5rem;border-radius:4px;margin-left:.5rem}
-.review-request-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);align-items:center;justify-content:center}
-.review-request-modal.open{display:flex}
-.rrm-box{background:var(--card);border-radius:var(--r);padding:1.5rem;max-width:440px;width:100%}
-.rrm-box h3{font-size:1rem;margin-bottom:1rem}
 
 /* INSIGHTS */
 .funnel{display:flex;align-items:center;gap:.5rem;padding:1rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:1.5rem;overflow-x:auto}
@@ -336,7 +332,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <div class="quick-actions">
         <a class="btn btn-p" id="qaViewListing" href="#" target="_blank">View My Listing</a>
         <button class="btn btn-o" onclick="copyListingUrl()">Share My Page</button>
-        <button class="btn btn-o" onclick="openReviewRequest()">Request a Review</button>
+        <button class="btn btn-o" onclick="showTab('reviews')">Get Reviews</button>
       </div>
       <div class="chart-wrap">
         <h3>Recent Activity</h3>
@@ -403,12 +399,19 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <div id="dtab-reviews" class="dtab">
       <h2>Reviews</h2>
       <div class="review-stats" id="reviewStats"></div>
-      <p style="font-size:.75rem;color:var(--t3);margin-bottom:1rem">New reviews are published after a quick verification.</p>
-      <div style="margin-bottom:1rem">
-        <button class="btn btn-p" onclick="openReviewRequest()">Request a Review</button>
+
+      <!-- Review link share -->
+      <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem">
+        <h3 style="font-size:.875rem;font-weight:600;margin-bottom:.5rem">Share your review link</h3>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:.75rem">Send this link to past clients so they can leave a review.</p>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <input type="text" id="reviewLinkInput" readonly style="flex:1;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.8125rem;background:var(--bg);color:var(--text);cursor:text" value="">
+          <button class="btn btn-p" id="copyReviewLink" onclick="copyReviewLink()">Copy Link</button>
+        </div>
       </div>
+
+      <p style="font-size:.75rem;color:var(--t3);margin-bottom:1rem">New reviews are published after a quick verification.</p>
       <div class="review-list" id="reviewList"><div class="chart-none">Loading reviews...</div></div>
-      <div id="reviewRequests" style="margin-top:1.5rem"></div>
     </div>
 
     <!-- TAB 5: INSIGHTS -->
@@ -586,22 +589,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
   </main>
 </div>
 
-<!-- REVIEW REQUEST MODAL -->
-<div class="review-request-modal" id="rrModal">
-  <div class="rrm-box">
-    <h3>Request a Review</h3>
-    <p style="font-size:.8125rem;color:var(--t2);margin-bottom:1rem">Share the review link with your past clients.</p>
-    <div class="fg" style="margin-bottom:.75rem"><label>Client Name</label><input type="text" id="rrName"></div>
-    <div class="fg" style="margin-bottom:.75rem"><label>Email or Phone</label><input type="text" id="rrContact" placeholder="email or phone"></div>
-    <div id="rrLink" style="display:none;padding:.75rem;background:var(--al);border-radius:var(--rs);margin-bottom:.75rem;font-size:.8125rem;word-break:break-all"></div>
-    <div style="display:flex;gap:.5rem">
-      <button class="btn btn-p" id="rrSubmitBtn" onclick="submitReviewRequest()">Generate Link</button>
-      <button class="btn btn-o" onclick="closeReviewRequest()">Close</button>
-    </div>
-    <div id="rrMsg" style="font-size:.8125rem;margin-top:.5rem"></div>
-  </div>
-</div>
-
 <!-- CONFIRM DIALOG -->
 <div id="confirmOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);align-items:center;justify-content:center">
   <div style="background:var(--card);border-radius:var(--r);padding:1.5rem;max-width:380px;width:100%;text-align:center">
@@ -631,7 +618,6 @@ let myLeads=[];
 let myViews=[];
 let myMedia=[];
 let myReviews=[];
-let myReviewRequests=[];
 let currentUser=null;
 let loggingOut=false;
 let selectedLead=null;
@@ -750,30 +736,28 @@ async function loadDashboard(user){
   const cs=listing.city.toLowerCase().replace(/\s+/g,'-')+'-'+listing.state.toLowerCase();
   const liveUrl='/near-me/'+cs+'/'+listing.slug;
   document.getElementById('qaViewListing').href=liveUrl;
+  document.getElementById('reviewLinkInput').value='https://hairtattoo.com/review.html?listing='+listing.slug;
 
   // Load all data in parallel
   console.log('[DASH] Fetching parallel data for listing_id=',listing.id);
-  const[viewsRes,leadsRes,mediaRes,reviewsRes,rrRes]=await Promise.all([
+  const[viewsRes,leadsRes,mediaRes,reviewsRes]=await Promise.all([
     SB.from('page_views').select('id,created_at').eq('listing_id',listing.id),
     SB.from('leads').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
     SB.from('media').select('*').eq('listing_id',listing.id).order('sort_order',{ascending:true}),
-    SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
-    SB.from('review_requests').select('*').eq('listing_id',listing.id).order('sent_at',{ascending:false})
+    SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false})
   ]);
   console.log('[DASH] Parallel data loaded — views:',viewsRes.data?.length,
     'leads:',leadsRes.data?.length,'media:',mediaRes.data?.length,
-    'reviews:',reviewsRes.data?.length,'rr:',rrRes.data?.length);
+    'reviews:',reviewsRes.data?.length);
   if(viewsRes.error)console.warn('[DASH] views error:',viewsRes.error);
   if(leadsRes.error)console.warn('[DASH] leads error:',leadsRes.error);
   if(mediaRes.error)console.warn('[DASH] media error:',mediaRes.error);
   if(reviewsRes.error)console.warn('[DASH] reviews error:',reviewsRes.error);
-  if(rrRes.error)console.warn('[DASH] review_requests error:',rrRes.error);
 
   myViews=viewsRes.data||[];
   myLeads=leadsRes.data||[];
   myMedia=mediaRes.data||[];
   myReviews=reviewsRes.data||[];
-  myReviewRequests=rrRes.data||[];
 
   // Show leads badge
   const newLeads=myLeads.filter(l=>!l.status||l.status==='new').length;
@@ -1146,16 +1130,6 @@ function renderReviews(){
     }).join('');
   }
 
-  // Review requests
-  const rrEl=document.getElementById('reviewRequests');
-  if(myReviewRequests.length){
-    rrEl.innerHTML=`<h3 style="font-size:.875rem;font-weight:600;margin-bottom:.75rem">Review Requests Sent</h3>
-      ${myReviewRequests.map(rr=>`<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--bd);font-size:.8125rem">
-        <span style="flex:1">${esc(rr.client_name)}</span>
-        <span style="color:var(--t3)">${rr.completed?'Completed':'Sent'}</span>
-        <span style="color:var(--t3)">${ago(rr.sent_at)}</span>
-      </div>`).join('')}`;
-  }
 }
 
 async function submitReply(reviewId){
@@ -1167,39 +1141,17 @@ async function submitReply(reviewId){
   renderReviews();
 }
 
-function openReviewRequest(){
-  document.getElementById('rrModal').classList.add('open');
-  document.getElementById('rrName').value='';
-  document.getElementById('rrContact').value='';
-  document.getElementById('rrLink').style.display='none';
-  document.getElementById('rrMsg').textContent='';
-}
-function closeReviewRequest(){document.getElementById('rrModal').classList.remove('open');}
-
-async function submitReviewRequest(){
-  const name=document.getElementById('rrName').value.trim();
-  const contact=document.getElementById('rrContact').value.trim();
-  if(!name){document.getElementById('rrMsg').textContent='Please enter client name.';return;}
-
-  const isEmail=contact.includes('@');
-  const{error}=await SB.from('review_requests').insert({
-    listing_id:myListing.id,
-    client_name:name,
-    client_email:isEmail?contact:null,
-    client_phone:isEmail?null:contact
+function copyReviewLink(){
+  const input=document.getElementById('reviewLinkInput');
+  navigator.clipboard.writeText(input.value).then(()=>{
+    const btn=document.getElementById('copyReviewLink');
+    btn.textContent='Copied!';
+    btn.style.background='#059669';
+    setTimeout(()=>{btn.textContent='Copy Link';btn.style.background='';},2000);
+  }).catch(()=>{
+    input.select();
+    document.execCommand('copy');
   });
-
-  if(error){document.getElementById('rrMsg').textContent='Error: '+error.message;return;}
-
-  const reviewUrl='https://hairtattoo.com/review.html?listing='+myListing.slug;
-  document.getElementById('rrLink').innerHTML='<strong>Share this link:</strong><br>'+reviewUrl;
-  document.getElementById('rrLink').style.display='block';
-  document.getElementById('rrMsg').innerHTML='<span style="color:var(--ac)">Request saved! Share the link above with your client.</span>';
-
-  // Refresh
-  const{data}=await SB.from('review_requests').select('*').eq('listing_id',myListing.id).order('sent_at',{ascending:false});
-  myReviewRequests=data||[];
-  renderReviews();
 }
 
 // ══════════════════════ TAB 5: INSIGHTS ══════════════════════
@@ -1432,7 +1384,6 @@ function showTab(name){
 // Close modals on Escape
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    closeReviewRequest();
     document.getElementById('confirmOverlay').style.display='none';
   }
 });
