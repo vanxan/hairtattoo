@@ -84,7 +84,7 @@ function renderDetailPage(l, media, reviews) {
 
   const cs = citySlug(l.city, l.state);
   const canonical = `https://hairtattoo.com/near-me/${cs}/${l.slug}`;
-  const title = `${l.name} — Hair Tattoo & SMP | HairTattoo.com`;
+  const title = `${l.name} — SMP in ${l.city}, ${l.state} | Hair Tattoo`;
   const desc = l.about ? l.about.substring(0, 160) : `${l.name} — scalp micropigmentation artist in ${l.city}, ${l.state}. View services, pricing, and contact information.`;
   const ogImage = media.length ? mediaUrl(media[0]) : null;
 

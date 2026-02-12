@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
-<title>HairTattoo — Find Scalp Micropigmentation & Hair Tattoo Artists Near You</title>
-<meta name="description" content="HairTattoo.com is the #1 directory for scalp micropigmentation (SMP) and hair tattoo professionals. Browse 200+ verified artists across the US. Compare services, pricing, and connect instantly.">
-<meta name="keywords" content="hair tattoo, scalp micropigmentation, SMP, hair tattoo near me, scalp tattoo, micropigmentation near me, hair restoration, smp artist, hair loss solution, best hair tattoo, hair tattoo cost">
+<title>Hair Tattoo — Find SMP & Scalp Micropigmentation Artists Near You</title>
+<meta name="description" content="Hair Tattoo is the #1 directory for scalp micropigmentation (SMP) professionals. Browse 350+ verified artists across the US. Compare services, view portfolios, and connect instantly.">
+<meta name="keywords" content="scalp micropigmentation, SMP, SMP near me, scalp tattoo, micropigmentation near me, hair restoration, smp artist, hair loss solution, best SMP artist, SMP cost">
 <link rel="canonical" href="https://hairtattoo.com">
-<meta property="og:title" content="HairTattoo — Find Hair Tattoo & SMP Artists Near You">
-<meta property="og:description" content="The #1 directory for scalp micropigmentation professionals. Browse 200+ verified artists.">
+<meta property="og:title" content="Hair Tattoo — Find SMP Artists Near You">
+<meta property="og:description" content="The #1 directory for scalp micropigmentation professionals. Browse 350+ verified artists.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hairtattoo.com">
-<meta property="og:site_name" content="HairTattoo">
+<meta property="og:site_name" content="Hair Tattoo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#2D5A3D">
@@ -162,7 +162,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .featured-section h2{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.75rem}
 .featured-row{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:.5rem}
 .featured-row::-webkit-scrollbar{display:none}
-.featured-row .card{min-width:320px;max-width:360px;flex-shrink:0;border-top:3px solid #D4A853}
+.featured-row .card{min-width:320px;max-width:360px;flex-shrink:0;border:2px solid #D4A853;border-radius:16px;box-shadow:0 2px 12px rgba(212,168,83,.15)}
 .c-featured-pill{position:absolute;top:8px;left:8px;background:rgba(212,168,83,.9);backdrop-filter:blur(4px);padding:2px 8px;border-radius:12px;font-size:.625rem;color:#fff;font-weight:600;pointer-events:none;z-index:1}
 .dp-socials{display:flex;gap:.5rem;margin-top:.5rem}
 .dp-social{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .625rem;background:var(--al);border-radius:20px;font-size:.75rem;font-weight:500;color:var(--ac);transition:all .15s}
@@ -253,15 +253,16 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 </head>
 <body>
 <nav class="nav"><div class="nav-in">
-  <div class="logo" onclick="goHome()">Hair<span>Tattoo</span></div>
+  <div class="logo" onclick="goHome()" title="Hair Tattoo - SMP Artist Directory">Hair<span>Tattoo</span></div>
   <div class="nav-r">
-    <a href="/near-me/" class="hm">Near Me</a>
+    <a href="/near-me/" class="hm" title="Find SMP artists near you">Near Me</a>
     <div class="nav-dd" id="navDD">
-      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="nav-dd-btn" title="Tools and resources for SMP professionals" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="nav-menu">
-        <a href="/signup.html" class="primary">Create Your Page</a>
+        <a href="/for-professionals" title="Why SMP artists choose Hair Tattoo">Why Hair Tattoo?</a>
+        <a href="/signup.html" class="primary" title="Create your free SMP artist profile">Create Your Page</a>
         <div class="nm-sep"></div>
-        <a href="/signup.html?mode=signin">Sign In</a>
+        <a href="/signup.html?mode=signin" title="Sign in to your Hair Tattoo dashboard">Sign In</a>
       </div>
     </div>
     <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
@@ -271,9 +272,10 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   <div class="mob-drawer" onclick="event.stopPropagation()">
     <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
     <nav>
-      <a href="/near-me/">Near Me</a>
-      <a href="/signup.html?mode=signin">Sign In</a>
-      <a href="/signup.html">Create Your Page</a>
+      <a href="/near-me/" title="Find SMP artists near you">Near Me</a>
+      <a href="/for-professionals" title="Why SMP artists choose Hair Tattoo">Why Hair Tattoo?</a>
+      <a href="/signup.html?mode=signin" title="Sign in to your Hair Tattoo dashboard">Sign In</a>
+      <a href="/signup.html" title="Create your free SMP artist profile">Create Your Page</a>
     </nav>
   </div>
 </div>
@@ -281,7 +283,7 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <!-- HOME VIEW -->
 <div id="homeView">
   <section class="hero">
-    <h1>Find a <em>Hair Tattoo</em> Artist Near You</h1>
+    <h1>Find an <em>SMP</em> Artist Near You</h1>
     <p>The #1 directory for scalp micropigmentation professionals. Browse 350+ verified SMP artists, compare services, and connect instantly.</p>
     <div class="hero-btns">
       <button class="btn btn-o" onclick="toggleGeo()" id="nearMeBtn" style="font-size:.8125rem">
@@ -354,21 +356,21 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 
 <footer>
   <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
-  <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
+  <p>The #1 directory for scalp micropigmentation professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
   <div class="fc-wrap">
     <p class="fc-label">Popular Cities</p>
     <div class="fc-grid">
-      <a href="/near-me/new-york-ny/" class="fc-link">New York, NY</a><a href="/near-me/los-angeles-ca/" class="fc-link">Los Angeles, CA</a><a href="/near-me/houston-tx/" class="fc-link">Houston, TX</a><a href="/near-me/chicago-il/" class="fc-link">Chicago, IL</a><a href="/near-me/miami-beach-fl/" class="fc-link">Miami Beach, FL</a><a href="/near-me/atlanta-ga/" class="fc-link">Atlanta, GA</a><a href="/near-me/phoenix-az/" class="fc-link">Phoenix, AZ</a><a href="/near-me/dallas-tx/" class="fc-link">Dallas, TX</a><a href="/near-me/san-francisco-ca/" class="fc-link">San Francisco, CA</a><a href="/near-me/seattle-wa/" class="fc-link">Seattle, WA</a><a href="/near-me/boston-ma/" class="fc-link">Boston, MA</a><a href="/near-me/denver-co/" class="fc-link">Denver, CO</a><a href="/near-me/austin-tx/" class="fc-link">Austin, TX</a><a href="/near-me/nashville-tn/" class="fc-link">Nashville, TN</a><a href="/near-me/tampa-fl/" class="fc-link">Tampa, FL</a><a href="/near-me/fort-lauderdale-fl/" class="fc-link">Fort Lauderdale, FL</a><a href="/near-me/san-diego-ca/" class="fc-link">San Diego, CA</a><a href="/near-me/philadelphia-pa/" class="fc-link">Philadelphia, PA</a><a href="/near-me/charlotte-nc/" class="fc-link">Charlotte, NC</a><a href="/near-me/las-vegas-nv/" class="fc-link">Las Vegas, NV</a><a href="/near-me/portland-or/" class="fc-link">Portland, OR</a><a href="/near-me/scottsdale-az/" class="fc-link">Scottsdale, AZ</a><a href="/near-me/boca-raton-fl/" class="fc-link">Boca Raton, FL</a><a href="/near-me/fort-worth-tx/" class="fc-link">Fort Worth, TX</a><a href="/near-me/beverly-hills-ca/" class="fc-link">Beverly Hills, CA</a>
+      <a href="/near-me/new-york-ny/" class="fc-link" title="SMP artists in New York, NY">New York, NY</a><a href="/near-me/los-angeles-ca/" class="fc-link" title="SMP artists in Los Angeles, CA">Los Angeles, CA</a><a href="/near-me/houston-tx/" class="fc-link" title="SMP artists in Houston, TX">Houston, TX</a><a href="/near-me/chicago-il/" class="fc-link" title="SMP artists in Chicago, IL">Chicago, IL</a><a href="/near-me/miami-beach-fl/" class="fc-link" title="SMP artists in Miami Beach, FL">Miami Beach, FL</a><a href="/near-me/atlanta-ga/" class="fc-link" title="SMP artists in Atlanta, GA">Atlanta, GA</a><a href="/near-me/phoenix-az/" class="fc-link" title="SMP artists in Phoenix, AZ">Phoenix, AZ</a><a href="/near-me/dallas-tx/" class="fc-link" title="SMP artists in Dallas, TX">Dallas, TX</a><a href="/near-me/san-francisco-ca/" class="fc-link" title="SMP artists in San Francisco, CA">San Francisco, CA</a><a href="/near-me/seattle-wa/" class="fc-link" title="SMP artists in Seattle, WA">Seattle, WA</a><a href="/near-me/boston-ma/" class="fc-link" title="SMP artists in Boston, MA">Boston, MA</a><a href="/near-me/denver-co/" class="fc-link" title="SMP artists in Denver, CO">Denver, CO</a><a href="/near-me/austin-tx/" class="fc-link" title="SMP artists in Austin, TX">Austin, TX</a><a href="/near-me/nashville-tn/" class="fc-link" title="SMP artists in Nashville, TN">Nashville, TN</a><a href="/near-me/tampa-fl/" class="fc-link" title="SMP artists in Tampa, FL">Tampa, FL</a><a href="/near-me/fort-lauderdale-fl/" class="fc-link" title="SMP artists in Fort Lauderdale, FL">Fort Lauderdale, FL</a><a href="/near-me/san-diego-ca/" class="fc-link" title="SMP artists in San Diego, CA">San Diego, CA</a><a href="/near-me/philadelphia-pa/" class="fc-link" title="SMP artists in Philadelphia, PA">Philadelphia, PA</a><a href="/near-me/charlotte-nc/" class="fc-link" title="SMP artists in Charlotte, NC">Charlotte, NC</a><a href="/near-me/las-vegas-nv/" class="fc-link" title="SMP artists in Las Vegas, NV">Las Vegas, NV</a><a href="/near-me/portland-or/" class="fc-link" title="SMP artists in Portland, OR">Portland, OR</a><a href="/near-me/scottsdale-az/" class="fc-link" title="SMP artists in Scottsdale, AZ">Scottsdale, AZ</a><a href="/near-me/boca-raton-fl/" class="fc-link" title="SMP artists in Boca Raton, FL">Boca Raton, FL</a><a href="/near-me/fort-worth-tx/" class="fc-link" title="SMP artists in Fort Worth, TX">Fort Worth, TX</a><a href="/near-me/beverly-hills-ca/" class="fc-link" title="SMP artists in Beverly Hills, CA">Beverly Hills, CA</a>
     </div>
   </div>
-  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 HairTattoo.com. All rights reserved.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 Hair Tattoo. All rights reserved.</p>
   <div class="f-links">
-    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+    <a href="/for-professionals" title="Tools and resources for SMP professionals">For Professionals</a><a href="/privacy" title="Hair Tattoo Privacy Policy">Privacy</a><a href="/terms" title="Hair Tattoo Terms of Service">Terms</a><a href="/contact" title="Contact Hair Tattoo">Contact</a>
   </div>
 </footer>
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"HairTattoo","alternateName":"HairTattoo.com","url":"https://hairtattoo.com","description":"The #1 directory for scalp micropigmentation and hair tattoo professionals","potentialAction":{"@type":"SearchAction","target":"https://hairtattoo.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"Hair Tattoo","alternateName":"HairTattoo.com","url":"https://hairtattoo.com","description":"The #1 directory for scalp micropigmentation professionals","potentialAction":{"@type":"SearchAction","target":"https://hairtattoo.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -406,7 +408,7 @@ function goHome(){location.hash='';showHome();}
 function showHome(){
   document.getElementById('homeView').style.display='';
   document.getElementById('detailPage').style.display='none';
-  document.title='HairTattoo — Find Hair Tattoo & SMP Artists Near You';
+  document.title='Hair Tattoo — Find SMP Artists Near You';
 }
 
 // === DISTANCE ===
@@ -482,9 +484,7 @@ function render(){
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
     const badge=getBadge(l);
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
-    const thumb=l._media&&l._media[0]?`<div class="c-img"><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">📷 Sample photo</span>':''}</div>`:'';
-    return `<article class="card" onclick="location.href='${listingUrl(l)}'" itemscope itemtype="https://schema.org/LocalBusiness">
-      ${thumb}
+    return `<article class="card" onclick="location.href='${listingUrl(l)}'" title="${l.name} - SMP in ${l.city}, ${l.state}" itemscope itemtype="https://schema.org/LocalBusiness">
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
       <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
@@ -509,7 +509,7 @@ function showDetail(l){
   const dp=document.getElementById('detailPage');
   dp.style.display='block';
   window.scrollTo(0,0);
-  document.title=l.name+' — Hair Tattoo & SMP | HairTattoo.com';
+  document.title=l.name+' — SMP in '+l.city+', '+l.state+' | Hair Tattoo';
   trackView(l);
 
   const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');

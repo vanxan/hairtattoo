@@ -32,14 +32,13 @@ function renderCard(l, media, viewCount, opts) {
   const svcs = (l.services || []).slice(0, 3).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
   const url = listingUrl(l);
   let thumb = '';
-  if (media && media.length) {
+  if (opts.featured && media && media.length) {
     const m = media.find(x => x.type !== 'video') || media[0];
     const src = mediaUrl(m);
-    const featuredPill = opts.featured ? '<span class="c-featured-pill">\u2B50 Featured</span>' : '';
-    thumb = `<div class="c-img">${featuredPill}<img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
+    thumb = `<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
   }
   const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
-  return `<a class="card" href="${url}" itemscope itemtype="https://schema.org/LocalBusiness">
+  return `<a class="card" href="${url}" title="${esc(l.name)} - SMP in ${esc(l.city)}, ${esc(l.state)}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
       <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
@@ -53,8 +52,8 @@ function renderPage(city, state, listings, allCities, mediaMap, viewMap) {
   const sn = stateName(state);
   const count = listings.length;
   const plural = count === 1 ? 'artist' : 'artists';
-  const title = `Hair Tattoo & SMP Artists in ${city}, ${state} | HairTattoo.com`;
-  const desc = `Find ${count} verified scalp micropigmentation and hair tattoo ${plural} in ${city}, ${sn}. Compare services, pricing, and contact SMP professionals near you.`;
+  const title = `SMP Artists in ${city}, ${state} | Hair Tattoo`;
+  const desc = `Find ${count} verified scalp micropigmentation ${plural} in ${city}, ${sn}. Compare services, view portfolios, and contact SMP professionals near you.`;
   const canonical = `https://hairtattoo.com/near-me/${cs}/`;
 
   const now = new Date().toISOString();
@@ -74,7 +73,7 @@ function renderPage(city, state, listings, allCities, mediaMap, viewMap) {
     .sort((a, b) => a._d - b._d)
     .slice(0, 12);
   const nearbyHTML = nearby.map(c =>
-    `<a href="/near-me/${citySlug(c.city, c.state)}/">${c.city}, ${c.state} <span>(${c.count})</span></a>`
+    `<a href="/near-me/${citySlug(c.city, c.state)}/" title="SMP artists in ${c.city}, ${c.state}">${c.city}, ${c.state} <span>(${c.count})</span></a>`
   ).join('');
 
   // Schema.org
@@ -92,7 +91,7 @@ function renderPage(city, state, listings, allCities, mediaMap, viewMap) {
     '@context': 'https://schema.org', '@type': 'WebPage',
     'name': title, 'description': desc,
     'url': canonical,
-    'isPartOf': { '@type': 'WebSite', 'name': 'HairTattoo', 'url': 'https://hairtattoo.com' }
+    'isPartOf': { '@type': 'WebSite', 'name': 'Hair Tattoo', 'url': 'https://hairtattoo.com' }
   })}<\/script>`;
 
   return `<!DOCTYPE html>
@@ -104,10 +103,10 @@ ${webPageSchema}
 </head>
 <body>
 ${getNav()}
-<div class="breadcrumb"><a href="/">HairTattoo</a> \u203a <a href="/near-me/">Near Me</a> \u203a ${esc(city)}, ${esc(state)}</div>
+<div class="breadcrumb"><a href="/" title="Hair Tattoo - SMP Artist Directory">Hair Tattoo</a> \u203a <a href="/near-me/" title="Find SMP artists near you">Near Me</a> \u203a ${esc(city)}, ${esc(state)}</div>
 <section class="hero">
-  <h1><em>Hair Tattoo</em> Artists in ${esc(city)}, ${esc(state)}</h1>
-  <p>Browse verified scalp micropigmentation professionals in ${esc(city)}, ${esc(sn)}. Compare services, view pricing, and connect with SMP artists near you.</p>
+  <h1><em>SMP</em> Artists in ${esc(city)}, ${esc(state)}</h1>
+  <p>Browse verified scalp micropigmentation professionals in ${esc(city)}, ${esc(sn)}. Compare services, view portfolios, and connect with SMP artists near you.</p>
   <div class="count">${count} SMP ${plural} found</div>
 </section>
 ${featuredHTML}
@@ -119,7 +118,7 @@ ${nearbyHTML ? `<div class="nearby">
 <div class="cta"><div class="cta-box">
   <h3>SMP Professional in ${esc(city)}?</h3>
   <p>List your business for free and start getting leads from local clients.</p>
-  <a href="/signup.html" class="btn">List Your Business \u2192</a>
+  <a href="/signup.html" class="btn" title="Create your free SMP artist profile">List Your Business \u2192</a>
 </div></div>
 <!-- MESSAGE PANEL -->
 <div class="msg-overlay" id="msgOverlay" onclick="closeMsgPanel()"></div>
@@ -233,7 +232,7 @@ async function main() {
 }
 
 function generateNearMeIndex(nearMeDir, allCities, totalListings) {
-  const title = 'Find SMP & Hair Tattoo Artists Near You | HairTattoo.com';
+  const title = 'Find SMP Artists Near You | Hair Tattoo';
   const desc = `Browse ${totalListings} scalp micropigmentation professionals across ${allCities.length} cities in the United States.`;
   const canonical = 'https://hairtattoo.com/near-me/';
 
@@ -249,7 +248,7 @@ function generateNearMeIndex(nearMeDir, allCities, totalListings) {
 
   const stateGroups = stateNames.map(s => {
     const pills = byState[s].map(c =>
-      `<a href="/near-me/${citySlug(c.city, c.state)}/">${esc(c.city)} <span>(${c.count})</span></a>`
+      `<a href="/near-me/${citySlug(c.city, c.state)}/" title="SMP artists in ${esc(c.city)}, ${esc(c.state)}">${esc(c.city)} <span>(${c.count})</span></a>`
     ).join('');
     return `<div class="state-group"><h2>${esc(s)}</h2><div class="city-links">${pills}</div></div>`;
   }).join('\n');
@@ -261,9 +260,9 @@ ${getHead(title, desc, canonical)}
 </head>
 <body>
 ${getNav()}
-<div class="breadcrumb"><a href="/">HairTattoo</a> \u203a Near Me</div>
+<div class="breadcrumb"><a href="/" title="Hair Tattoo - SMP Artist Directory">Hair Tattoo</a> \u203a Near Me</div>
 <section class="hero">
-  <h1>Find <em>Hair Tattoo</em> Artists Near You</h1>
+  <h1>Find an <em>SMP</em> Artist Near You</h1>
   <p>Browse ${totalListings} verified scalp micropigmentation professionals across ${allCities.length} cities in the United States.</p>
 </section>
 <div class="states">

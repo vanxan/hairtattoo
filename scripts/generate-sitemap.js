@@ -18,13 +18,11 @@ async function main() {
   const today = new Date().toISOString().slice(0, 10);
   const urls = [];
 
-  // Main page
+  // Static pages
   urls.push({ loc: 'https://hairtattoo.com/', priority: '1.0', changefreq: 'daily' });
-
-  // Near Me index
   urls.push({ loc: 'https://hairtattoo.com/near-me/', priority: '0.9', changefreq: 'weekly' });
-
-  // Signup
+  urls.push({ loc: 'https://hairtattoo.com/for-professionals', priority: '0.8', changefreq: 'monthly' });
+  urls.push({ loc: 'https://hairtattoo.com/contact', priority: '0.5', changefreq: 'monthly' });
   urls.push({ loc: 'https://hairtattoo.com/signup.html', priority: '0.7', changefreq: 'monthly' });
 
   // City pages

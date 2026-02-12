@@ -105,7 +105,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .featured-section h2{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.75rem}
 .featured-row{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:.5rem}
 .featured-row::-webkit-scrollbar{display:none}
-.featured-row .card{min-width:320px;max-width:360px;flex-shrink:0;border-top:3px solid #D4A853}
+.featured-row .card{min-width:320px;max-width:360px;flex-shrink:0;border:2px solid #D4A853;border-radius:16px;box-shadow:0 2px 12px rgba(212,168,83,.15)}
 .c-featured-pill{position:absolute;top:8px;left:8px;background:rgba(212,168,83,.9);backdrop-filter:blur(4px);padding:2px 8px;border-radius:12px;font-size:.625rem;color:#fff;font-weight:600;pointer-events:none;z-index:1}
 .dp-badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:600;margin-top:.25rem}
 .dp-badge-verified{color:var(--ac)}
@@ -232,7 +232,7 @@ function getHead(title, description, canonical, ogImage) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="HairTattoo">${ogImage ? `\n<meta property="og:image" content="${esc(ogImage)}">` : ''}
+<meta property="og:site_name" content="Hair Tattoo">${ogImage ? `\n<meta property="og:image" content="${esc(ogImage)}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#2D5A3D">
@@ -248,15 +248,16 @@ ${getCSS()}
 
 function getNav() {
   return `<nav class="nav"><div class="nav-in">
-  <a href="/" class="logo">Hair<span>Tattoo</span></a>
+  <a href="/" class="logo" title="Hair Tattoo - SMP Artist Directory">Hair<span>Tattoo</span></a>
   <div class="nav-r">
-    <a href="/near-me/" class="hm">Near Me</a>
+    <a href="/near-me/" class="hm" title="Find SMP artists near you">Near Me</a>
     <div class="nav-dd" id="navDD">
-      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="nav-dd-btn" title="Tools and resources for SMP professionals" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="nav-menu">
-        <a href="/signup.html" class="primary">Create Your Page</a>
+        <a href="/for-professionals" title="Why SMP artists choose Hair Tattoo">Why Hair Tattoo?</a>
+        <a href="/signup.html" class="primary" title="Create your free SMP artist profile">Create Your Page</a>
         <div class="nm-sep"></div>
-        <a href="/signup.html?mode=signin">Sign In</a>
+        <a href="/signup.html?mode=signin" title="Sign in to your Hair Tattoo dashboard">Sign In</a>
       </div>
     </div>
     <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
@@ -266,9 +267,10 @@ function getNav() {
   <div class="mob-drawer" onclick="event.stopPropagation()">
     <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
     <nav>
-      <a href="/near-me/">Near Me</a>
-      <a href="/signup.html?mode=signin">Sign In</a>
-      <a href="/signup.html">Create Your Page</a>
+      <a href="/near-me/" title="Find SMP artists near you">Near Me</a>
+      <a href="/for-professionals" title="Why SMP artists choose Hair Tattoo">Why Hair Tattoo?</a>
+      <a href="/signup.html?mode=signin" title="Sign in to your Hair Tattoo dashboard">Sign In</a>
+      <a href="/signup.html" title="Create your free SMP artist profile">Create Your Page</a>
     </nav>
   </div>
 </div>
@@ -279,19 +281,19 @@ function getFooter() {
   const cities = TOP_CITIES.map(c => {
     const p = c.split(', ');
     const s = p[0].toLowerCase().replace(/\s+/g, '-') + '-' + p[1].toLowerCase();
-    return `<a href="/near-me/${s}/" class="fc-link">${c}</a>`;
+    return `<a href="/near-me/${s}/" class="fc-link" title="SMP artists in ${c}">${c}</a>`;
   }).join('');
 
   return `<footer>
   <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
-  <p>The #1 directory for scalp micropigmentation and hair tattoo professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
+  <p>The #1 directory for scalp micropigmentation professionals in the United States. Connecting people with trusted SMP artists since 2025.</p>
   <div class="fc-wrap">
     <p class="fc-label">Popular Cities</p>
     <div class="fc-grid">${cities}</div>
   </div>
-  <p style="font-size:.75rem;margin-top:1rem">\u00a9 2025 HairTattoo.com. All rights reserved.</p>
+  <p style="font-size:.75rem;margin-top:1rem">\u00a9 2025 Hair Tattoo. All rights reserved.</p>
   <div class="f-links">
-    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+    <a href="/for-professionals" title="Tools and resources for SMP professionals">For Professionals</a><a href="/privacy" title="Hair Tattoo Privacy Policy">Privacy</a><a href="/terms" title="Hair Tattoo Terms of Service">Terms</a><a href="/contact" title="Contact Hair Tattoo">Contact</a>
   </div>
 </footer>`;
 }
