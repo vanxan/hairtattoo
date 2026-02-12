@@ -225,6 +225,21 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .booking-stat{display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--al);border-radius:var(--r);margin-bottom:1rem}
 .booking-stat .stat-val{font-size:1.25rem}
 
+/* PRO GATING */
+.sb-pro{font-size:.5625rem;font-weight:700;padding:.0625rem .3rem;border-radius:4px;background:#F3E8FF;color:#7C3AED;margin-left:auto;text-transform:uppercase;letter-spacing:.03em}
+.sb-lock{opacity:.55}
+.upgrade-banner{background:linear-gradient(135deg,#F3E8FF,#EDE9FE);border:1px solid #DDD6FE;border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;text-align:center}
+.upgrade-banner h3{font-size:.9375rem;font-weight:700;color:#5B21B6;margin-bottom:.375rem}
+.upgrade-banner p{font-size:.8125rem;color:#6D28D9;margin-bottom:1rem;line-height:1.5}
+.upgrade-banner .btn-pro{display:inline-flex;align-items:center;gap:.375rem;padding:.625rem 1.5rem;border-radius:var(--rs);font-size:.875rem;font-weight:600;background:var(--bd);color:var(--t3);cursor:default;border:none}
+.sms-banner{background:#FFF7ED;border:1px solid #FED7AA;border-radius:var(--r);padding:1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+.sms-banner-icon{font-size:1.25rem;flex-shrink:0}
+.sms-banner-text{flex:1}
+.sms-banner-text strong{font-size:.8125rem;display:block;color:#9A3412;margin-bottom:.125rem}
+.sms-banner-text span{font-size:.75rem;color:#C2410C}
+.upload-limit-msg{background:#FEF3C7;border:1px solid #FDE68A;border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:center;font-size:.8125rem;color:#92400E}
+.upload-limit-msg strong{display:block;margin-bottom:.25rem}
+
 /* MOBILE MENU TOGGLE */
 .mob-toggle{display:none;position:fixed;bottom:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;z-index:99;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
@@ -304,6 +319,11 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Booking
     </a>
+    <a class="sb-link sb-lock" data-tab="marketplace" onclick="showTab('marketplace')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Marketplace
+      <span class="sb-pro">PRO</span>
+    </a>
   </aside>
 
   <main class="dash-main">
@@ -327,6 +347,14 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <!-- TAB 2: LEADS -->
     <div id="dtab-leads" class="dtab">
       <h2>Leads</h2>
+      <div class="sms-banner">
+        <div class="sms-banner-icon">📱</div>
+        <div class="sms-banner-text">
+          <strong>Get instant SMS notifications for new leads</strong>
+          <span>Pro members receive real-time text alerts when a new lead comes in. Never miss a client again.</span>
+        </div>
+        <span class="sb-pro" style="font-size:.625rem;white-space:nowrap">PRO</span>
+      </div>
       <div class="leads-layout">
         <div class="leads-list">
           <div class="leads-filters">
@@ -349,6 +377,10 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <h2>Portfolio</h2>
       <div class="placeholder-banner" id="placeholderBanner" style="display:none">
         Your listing is showing sample photos. Upload your own work to attract more clients.
+      </div>
+      <div class="upload-limit-msg" id="uploadLimitMsg" style="display:none">
+        <strong>Free plan limit reached (6 uploads)</strong>
+        Upgrade to Pro for unlimited media uploads.
       </div>
       <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -478,10 +510,42 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
           <div class="stat-val" id="bookingClicks">0</div>
         </div>
       </div>
-      <div id="bookingContent"></div>
+
+      <div class="booking-setup" id="bookingContent">
+        <h3>Booking Method</h3>
+        <div class="booking-type" id="bookingTypeInline">
+          <div class="bt-option on" data-type="message" onclick="selectBookingTypeInline('message')">
+            <h4>Message Only</h4>
+            <p>Clients contact you via the form</p>
+          </div>
+          <div class="bt-option" data-type="external" onclick="selectBookingTypeInline('external')">
+            <h4>External Link</h4>
+            <p>Calendly, Square, Booksy, etc.</p>
+          </div>
+        </div>
+        <div class="fg" id="bookingUrlInline" style="display:none;margin-bottom:1rem">
+          <label>Booking URL</label>
+          <input type="url" id="fBookingUrlInline" placeholder="https://calendly.com/your-link">
+        </div>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <button class="btn btn-p btn-sm" onclick="saveBooking()">Save Booking Settings</button>
+          <span class="saved" id="bookingSaved" style="display:none">Saved!</span>
+        </div>
+        <div id="bookingPreview" style="margin-top:1.25rem"></div>
+      </div>
+
+      <!-- CALENDAR SYNC — Coming Soon -->
+      <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;position:relative;overflow:hidden">
+        <div style="display:flex;align-items:flex-start;gap:.375rem;margin-bottom:.5rem">
+          <h3 style="font-size:.875rem;font-weight:600">Calendar Sync</h3>
+          <span style="font-size:.6875rem;font-weight:600;padding:.125rem .5rem;border-radius:10px;background:#F3E8FF;color:#7C3AED">Pro</span>
+        </div>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:.75rem">Sync your availability with Google Calendar, Apple Calendar, or Outlook. Show real-time open slots on your listing.</p>
+        <button class="btn" style="background:var(--bd);color:var(--t3);cursor:default;padding:.5rem 1.25rem;border-radius:var(--rs);font-size:.8125rem;font-weight:600" disabled>Coming Soon</button>
+      </div>
 
       <!-- PROMOTE YOUR LISTING — Coming Soon -->
-      <div style="margin-top:2rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden">
+      <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#D4A853,#E8C97A,#D4A853)"></div>
         <div style="display:flex;align-items:flex-start;gap:.375rem;margin-bottom:.75rem">
           <h3 style="font-size:1rem;font-weight:700">Promote Your Listing</h3>
@@ -496,6 +560,26 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         </div>
         <button class="btn" style="background:var(--bd);color:var(--t3);cursor:default;padding:.625rem 1.5rem;border-radius:var(--rs);font-weight:600" disabled>Coming Soon — $29/month</button>
         <p style="font-size:.75rem;color:var(--t3);margin-top:.75rem">We're launching promoted listings soon. You'll be the first to know.</p>
+      </div>
+    </div>
+
+    <!-- TAB 8: MARKETPLACE -->
+    <div id="dtab-marketplace" class="dtab">
+      <h2>SMP Marketplace</h2>
+      <div class="upgrade-banner">
+        <h3>SMP Products Marketplace</h3>
+        <p>Buy and sell SMP equipment, pigments, needles, and supplies directly with other professionals. Available exclusively for Pro members.</p>
+        <button class="btn-pro" disabled>Upgrade to Pro — Coming Soon</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;opacity:.5">
+          <h4 style="font-size:.8125rem;font-weight:600;margin-bottom:.25rem">Buy Equipment</h4>
+          <p style="font-size:.75rem;color:var(--t2)">Browse SMP machines, pigments, needles, and aftercare products from trusted sellers.</p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;opacity:.5">
+          <h4 style="font-size:.8125rem;font-weight:600;margin-bottom:.25rem">Sell Your Products</h4>
+          <p style="font-size:.75rem;color:var(--t2)">List your products for sale to the Hair Tattoo community of SMP professionals.</p>
+        </div>
       </div>
     </div>
 
@@ -875,6 +959,14 @@ function renderPortfolio(){
   const hasReal=myMedia.some(m=>!m.is_placeholder);
   document.getElementById('placeholderBanner').style.display=hasPlaceholders&&!hasReal?'flex':'none';
 
+  // Free tier upload limit (6 non-placeholder uploads)
+  const FREE_UPLOAD_LIMIT=6;
+  const realCount=myMedia.filter(m=>!m.is_placeholder).length;
+  const atLimit=realCount>=FREE_UPLOAD_LIMIT;
+  document.getElementById('uploadLimitMsg').style.display=atLimit?'block':'none';
+  document.getElementById('uploadZone').style.display=atLimit?'none':'';
+  document.getElementById('fileInput').disabled=atLimit;
+
   // Show real photos; only show placeholders if no real photos exist
   const items=myMedia.filter(m=>m.sort_order>=0&&(!m.is_placeholder||!hasReal));
   if(!items.length){
@@ -927,6 +1019,9 @@ const ALLOWED_VIDEO=/\.(mp4|mov|webm)$/i;
 
 async function handleUpload(files){
   if(!files||!files.length||!myListing)return;
+  // Free tier limit check
+  const realCount=myMedia.filter(m=>!m.is_placeholder).length;
+  if(realCount>=6){renderPortfolio();return;}
   const prog=document.getElementById('uploadProgress');
   const bar=document.getElementById('uploadBarFill');
   const status=document.getElementById('uploadStatus');
@@ -1265,31 +1360,65 @@ async function confirmArchive(){
 // ══════════════════════ TAB 7: BOOKING ══════════════════════
 function renderBooking(){
   const type=myListing.booking_type||'message';
-  const url=myListing.booking_url;
-  const el=document.getElementById('bookingContent');
+  const url=myListing.booking_url||'';
 
+  // Populate inline form
+  document.querySelectorAll('#bookingTypeInline .bt-option').forEach(el=>{
+    el.classList.toggle('on',el.dataset.type===type);
+  });
+  document.getElementById('bookingUrlInline').style.display=type==='external'?'block':'none';
+  document.getElementById('fBookingUrlInline').value=url;
+
+  // Booking clicks this month
+  const now=new Date();
+  const ms=new Date(now.getFullYear(),now.getMonth(),1);
+  const clicks=myViews.filter(v=>v.created_at&&new Date(v.created_at)>=ms).length;
+  document.getElementById('bookingClicks').textContent=clicks;
+
+  // Preview
+  const preview=document.getElementById('bookingPreview');
   if(type==='external'&&url){
-    el.innerHTML=`
-      <div class="booking-setup">
-        <h3>Current Booking Method: External Link</h3>
-        <div style="background:var(--bg);padding:.75rem;border-radius:var(--rs);margin:.75rem 0;font-size:.8125rem;word-break:break-all">${esc(url)}</div>
-        <div style="display:flex;gap:.5rem">
-          <a href="${esc(url)}" target="_blank" class="btn btn-o btn-sm">Test It</a>
-          <button class="btn btn-o btn-sm" onclick="showTab('settings')">Change</button>
-        </div>
+    preview.innerHTML=`
+      <div style="background:var(--bg);padding:.75rem 1rem;border-radius:var(--rs);border:1px solid var(--bd)">
+        <div style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem">Current Booking Link</div>
+        <div style="font-size:.8125rem;word-break:break-all;margin-bottom:.5rem">${esc(url)}</div>
+        <a href="${esc(url)}" target="_blank" class="btn btn-o btn-sm">Test Link</a>
       </div>`;
   } else {
-    el.innerHTML=`
-      <div class="booking-setup">
-        <h3>Current Booking Method: Message Only</h3>
-        <p style="font-size:.8125rem;color:var(--t2);margin:.75rem 0">Clients contact you through the message form on your listing.</p>
-        <div style="padding:1rem;background:var(--al);border-radius:var(--r);margin:.75rem 0;text-align:center">
-          <p style="font-size:.875rem;font-weight:500;margin-bottom:.5rem">Set up direct booking to let clients schedule instantly</p>
-          <p style="font-size:.75rem;color:var(--t2);margin-bottom:.75rem">Connect Calendly, Square, Booksy, or any booking link.</p>
-          <button class="btn btn-p" onclick="showTab('settings')">Set Up Booking Link</button>
-        </div>
+    preview.innerHTML=`
+      <div style="background:var(--bg);padding:.75rem 1rem;border-radius:var(--rs);border:1px solid var(--bd)">
+        <div style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem">Current Method</div>
+        <div style="font-size:.8125rem;color:var(--t2)">Message only — clients contact you through the form on your listing.</div>
       </div>`;
   }
+}
+
+function selectBookingTypeInline(type){
+  document.querySelectorAll('#bookingTypeInline .bt-option').forEach(el=>{
+    el.classList.toggle('on',el.dataset.type===type);
+  });
+  document.getElementById('bookingUrlInline').style.display=type==='external'?'block':'none';
+}
+
+async function saveBooking(){
+  if(!myListing)return;
+  const type=document.querySelector('#bookingTypeInline .bt-option.on').dataset.type;
+  const url=type==='external'?document.getElementById('fBookingUrlInline').value.trim():null;
+
+  const{error}=await SB.from('listings').update({booking_type:type,booking_url:url}).eq('id',myListing.id);
+  if(error){alert('Error saving: '+error.message);return;}
+  myListing.booking_type=type;
+  myListing.booking_url=url;
+
+  // Also sync the Settings tab form
+  selectBookingType(type);
+  document.getElementById('fBookingUrl').value=url||'';
+
+  const msg=document.getElementById('bookingSaved');
+  msg.style.display='inline';
+  setTimeout(()=>msg.style.display='none',3000);
+  renderBooking();
+  renderOverview();
 }
 
 // ══════════════════════ TAB SWITCHING ══════════════════════
