@@ -37,9 +37,11 @@ function renderCard(l, media, viewCount, opts) {
   const url = listingUrl(l);
   let thumb = '';
   if (opts.featured && media && media.length) {
-    const m = media.find(x => x.is_cover) || media.find(x => !x.is_profile && !x.is_cover && !x.is_placeholder && x.type !== 'video') || media.find(x => !x.is_profile && !x.is_cover && x.type !== 'video') || media[0];
-    const src = mediaUrl(m);
-    thumb = `<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
+    const m = media.find(x => x.is_cover) || media.find(x => !x.is_profile && !x.is_cover && !x.is_placeholder && x.type !== 'video') || media.find(x => !x.is_profile && !x.is_cover);
+    if (m) {
+      const src = mediaUrl(m);
+      thumb = `<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${src}" loading="lazy" width="400" height="180" alt="${esc(l.name)} SMP">${m.is_placeholder ? '<span class="c-pill">\ud83d\udcf7 Sample photo</span>' : ''}</div>`;
+    }
   }
   const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
   return `<a class="card" href="${url}" title="${esc(l.name)} - SMP in ${esc(l.city)}, ${esc(l.state)}" itemscope itemtype="https://schema.org/LocalBusiness">
