@@ -453,6 +453,22 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         </div>
       </div>
 
+      <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.25rem">
+        <div id="coverImagePreview" style="width:120px;height:90px;border-radius:8px;background:var(--al);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--t3);flex-shrink:0;overflow:hidden">
+          <span id="coverPlaceholderText">No cover</span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:.875rem;font-weight:600;margin-bottom:.375rem">Cover Image</div>
+          <p style="font-size:.75rem;color:var(--t2);margin-bottom:.625rem">Used as the card thumbnail in search results and city pages. Recommended: 800×600px landscape.</p>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn btn-o btn-sm" onclick="document.getElementById('coverImageInput').click()">Upload Cover</button>
+            <button class="btn btn-sm" id="removeCoverImage" style="color:#DC2626;border:1px solid #FCA5A5;display:none" onclick="removeCoverImage()">Remove</button>
+            <input type="file" id="coverImageInput" style="display:none" accept="image/jpeg,image/png,image/webp" onchange="uploadCoverImage(this.files)">
+          </div>
+          <div id="coverImageMsg" style="font-size:.75rem;margin-top:.375rem"></div>
+        </div>
+      </div>
+
       <h3 style="font-size:.875rem;font-weight:600;margin-bottom:1rem">Business Information</h3>
       <div class="form-grid">
         <div class="fg"><label>Business Name</label><input type="text" id="fName"></div>
@@ -793,6 +809,7 @@ async function loadDashboard(user){
   renderInsights();
   renderBooking();
   renderProfilePhoto();
+  renderCoverImage();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -964,14 +981,14 @@ function renderPortfolio(){
 
   // Free tier upload limit (6 non-placeholder, non-profile uploads)
   const FREE_UPLOAD_LIMIT=6;
-  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile).length;
+  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile&&!m.is_cover).length;
   const atLimit=!myListing.promoted&&realCount>=FREE_UPLOAD_LIMIT;
   document.getElementById('uploadLimitMsg').style.display=atLimit?'block':'none';
   document.getElementById('uploadZone').style.display=atLimit?'none':'';
   document.getElementById('fileInput').disabled=atLimit;
 
-  // Show real photos; only show placeholders if no real photos exist
-  const items=myMedia.filter(m=>m.sort_order>=0&&(!m.is_placeholder||!hasReal));
+  // Show real photos; only show placeholders if no real photos exist (exclude cover from gallery)
+  const items=myMedia.filter(m=>m.sort_order>=0&&!m.is_cover&&(!m.is_placeholder||!hasReal));
   if(!items.length){
     grid.innerHTML='<div class="chart-none">No photos yet. Upload your first SMP photo above!</div>';
     return;
@@ -1023,7 +1040,7 @@ const ALLOWED_VIDEO=/\.(mp4|mov|webm)$/i;
 async function handleUpload(files){
   if(!files||!files.length||!myListing)return;
   // Free tier limit check (promoted = unlimited)
-  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile).length;
+  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile&&!m.is_cover).length;
   if(!myListing.promoted&&realCount>=6){renderPortfolio();return;}
   const prog=document.getElementById('uploadProgress');
   const bar=document.getElementById('uploadBarFill');
@@ -1406,6 +1423,86 @@ async function removeProfilePhoto(){
   await SB.from('media').delete().eq('id',profileMedia.id);
   myMedia=myMedia.filter(m=>m.id!==profileMedia.id);
   renderProfilePhoto();
+}
+
+function renderCoverImage(){
+  const preview=document.getElementById('coverImagePreview');
+  const placeholder=document.getElementById('coverPlaceholderText');
+  const removeBtn=document.getElementById('removeCoverImage');
+  const coverMedia=myMedia.find(m=>m.is_cover);
+
+  if(coverMedia){
+    const src=mediaPublicUrl(coverMedia);
+    preview.innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover" alt="Cover">`;
+    removeBtn.style.display='';
+  } else {
+    preview.innerHTML='<span id="coverPlaceholderText">No cover</span>';
+    removeBtn.style.display='none';
+  }
+}
+
+async function uploadCoverImage(files){
+  if(!files||!files.length||!myListing)return;
+  const file=files[0];
+  const msg=document.getElementById('coverImageMsg');
+  msg.textContent='';
+
+  if(!file.type.match(/^image\/(jpeg|png|webp)$/)){
+    msg.innerHTML='<span style="color:#DC2626">Please upload a JPEG, PNG, or WebP image.</span>';
+    return;
+  }
+  if(file.size>5*1024*1024){
+    msg.innerHTML='<span style="color:#DC2626">Image must be under 5MB.</span>';
+    return;
+  }
+
+  msg.innerHTML='<span style="color:var(--ac)">Uploading...</span>';
+
+  // Remove old cover image first
+  const oldCover=myMedia.find(m=>m.is_cover);
+  if(oldCover){
+    if(!oldCover.is_placeholder){
+      await SB.storage.from('media').remove([oldCover.storage_path]);
+    }
+    await SB.from('media').delete().eq('id',oldCover.id);
+    myMedia=myMedia.filter(m=>m.id!==oldCover.id);
+  }
+
+  // Upload new
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'');
+  const path='listings/'+myListing.id+'/cover-'+Date.now()+'-'+safeName;
+
+  const{error:upErr}=await SB.storage.from('media').upload(path,file,{contentType:file.type,upsert:false});
+  if(upErr){msg.innerHTML='<span style="color:#DC2626">Upload error: '+upErr.message+'</span>';return;}
+
+  const{data:insertData,error:insertErr}=await SB.from('media').insert({
+    listing_id:myListing.id,
+    type:'image',
+    storage_path:path,
+    is_placeholder:false,
+    is_profile:false,
+    is_cover:true,
+    sort_order:-1
+  }).select();
+  if(insertErr){msg.innerHTML='<span style="color:#DC2626">Error: '+insertErr.message+'</span>';return;}
+
+  if(insertData&&insertData.length)myMedia.push(insertData[0]);
+  msg.innerHTML='<span style="color:var(--ac)">Cover image updated!</span>';
+  setTimeout(()=>{msg.textContent='';},3000);
+  renderCoverImage();
+}
+
+async function removeCoverImage(){
+  if(!myListing)return;
+  const coverMedia=myMedia.find(m=>m.is_cover);
+  if(!coverMedia)return;
+
+  if(!coverMedia.is_placeholder){
+    await SB.storage.from('media').remove([coverMedia.storage_path]);
+  }
+  await SB.from('media').delete().eq('id',coverMedia.id);
+  myMedia=myMedia.filter(m=>m.id!==coverMedia.id);
+  renderCoverImage();
 }
 
 function archiveListing(){

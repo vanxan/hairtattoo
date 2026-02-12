@@ -738,7 +738,8 @@ async function initApp(){
       const pp=l._media&&l._media.find(m=>m.is_profile);
       const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:ini;
       const badge=getBadge(l);
-      const thumb=l._media&&l._media[0]?`<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">\uD83D\uDCF7 Sample photo</span>':''}</div>`:'';
+      const thumbImg=l._media&&(l._media.find(m=>m.is_cover)||l._media.find(m=>!m.is_profile&&!m.is_cover&&!m.is_placeholder)||l._media.find(m=>!m.is_profile&&!m.is_cover));
+      const thumb=thumbImg?`<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${mediaUrl(thumbImg)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${thumbImg.is_placeholder?'<span class="c-pill">\uD83D\uDCF7 Sample photo</span>':''}</div>`:'';
       return `<article class="card" onclick="location.href='${listingUrl(l)}'">
         ${thumb}
         <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>

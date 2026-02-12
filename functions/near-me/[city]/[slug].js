@@ -67,7 +67,7 @@ function starsHtml(n) {
 function renderDetailPage(l, allMedia, reviews) {
   // Separate profile photo from gallery media
   const profilePhoto = allMedia.find(m => m.is_profile);
-  const galleryAll = allMedia.filter(m => !m.is_profile && m.sort_order >= 0);
+  const galleryAll = allMedia.filter(m => !m.is_profile && !m.is_cover && m.sort_order >= 0);
   const hasReal = galleryAll.some(m => !m.is_placeholder);
   // Hide placeholders when real images exist
   const media = hasReal ? galleryAll.filter(m => !m.is_placeholder) : galleryAll;
