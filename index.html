@@ -95,7 +95,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .card:nth-child(1){animation-delay:.02s}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.06s}
 .card:nth-child(4){animation-delay:.08s}.card:nth-child(5){animation-delay:.1s}.card:nth-child(6){animation-delay:.12s}
 .c-head{padding:1.25rem 1.25rem .5rem;display:flex;gap:.75rem;align-items:flex-start}
-.c-av{width:44px;height:44px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--se);font-size:1.125rem;color:var(--ac)}
+.c-av{width:44px;height:44px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--se);font-size:1.125rem;color:var(--ac);overflow:hidden}
 .c-info{flex:1;min-width:0}
 .c-name{font-weight:700;font-size:.9375rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c-loc{font-size:.8125rem;color:var(--t2);margin-top:1px}
@@ -376,8 +376,8 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
-const MEDIA_BASE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/placeholders/';
-function mediaUrl(p){return MEDIA_BASE+encodeURIComponent(p);}
+const SB_STORAGE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/';
+function mediaUrl(m){if(typeof m==='string')return SB_STORAGE+'placeholders/'+encodeURIComponent(m);return SB_STORAGE+(m.is_placeholder?'placeholders':'media')+'/'+encodeURIComponent(m.storage_path);}
 function listingUrl(l){return '/near-me/'+l.city.toLowerCase().replace(/\s+/g,'-')+'-'+l.state.toLowerCase()+'/'+l.slug;}
 let L=[];
 const _viewedAt={};
@@ -482,10 +482,12 @@ function render(){
   if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>No artists found</h3><p>Try adjusting your search or filters</p></div>';document.getElementById('pager').innerHTML='';return;}
   g.innerHTML=items.map(l=>{
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+    const pp=l._media&&l._media.find(m=>m.is_profile);
+    const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:ini;
     const badge=getBadge(l);
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
     return `<article class="card" onclick="location.href='${listingUrl(l)}'" title="${l.name} - SMP in ${l.city}, ${l.state}" itemscope itemtype="https://schema.org/LocalBusiness">
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
+      <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
       <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
       <div class="c-foot"><span class="c-views">${l._views?'👁 '+l._views+' view'+(l._views!==1?'s':''):'New'}</span><span class="c-msg" onclick="event.stopPropagation();openMsgPanel(${l.id})"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
@@ -733,11 +735,13 @@ async function initApp(){
     document.getElementById('featuredSection').style.display='';
     document.getElementById('featuredRow').innerHTML=promoted.map(l=>{
       const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+      const pp=l._media&&l._media.find(m=>m.is_profile);
+      const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:ini;
       const badge=getBadge(l);
       const thumb=l._media&&l._media[0]?`<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${mediaUrl(l._media[0].storage_path)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${l._media[0].is_placeholder?'<span class="c-pill">\uD83D\uDCF7 Sample photo</span>':''}</div>`:'';
       return `<article class="card" onclick="location.href='${listingUrl(l)}'">
         ${thumb}
-        <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>
+        <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>
         <div class="c-body"><p class="c-about">${l.about}</p></div>
         <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
       </article>`;

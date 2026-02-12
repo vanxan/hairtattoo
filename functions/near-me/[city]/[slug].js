@@ -66,6 +66,10 @@ function starsHtml(n) {
 
 function renderDetailPage(l, media, reviews) {
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
+  const profilePhoto = media.find(m => m.is_profile);
+  const avatarHTML = profilePhoto
+    ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    : ini;
 
   // Badges
   let badgeHTML = '';
@@ -209,7 +213,7 @@ ${getNav()}
   <a href="/near-me/${esc(cs)}/" class="dp-back"><svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to directory</a>
 
   <div class="dp-header">
-    <div class="dp-av">${ini}</div>
+    <div class="dp-av">${avatarHTML}</div>
     <div class="dp-info">
       <h1 class="dp-name">${esc(l.name)}</h1>
       <div class="dp-loc">${esc(l.address || '')}, ${esc(l.city)}, ${esc(l.state)} ${esc(l.zip || '')}</div>

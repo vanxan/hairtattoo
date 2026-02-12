@@ -435,6 +435,24 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <!-- TAB 6: SETTINGS -->
     <div id="dtab-settings" class="dtab">
       <h2>Settings</h2>
+
+      <!-- Profile Photo -->
+      <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.25rem">
+        <div id="profilePhotoPreview" style="width:72px;height:72px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:700;color:var(--ac);flex-shrink:0;overflow:hidden">
+          <span id="profileInitials"></span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:.875rem;font-weight:600;margin-bottom:.375rem">Profile Photo</div>
+          <p style="font-size:.75rem;color:var(--t2);margin-bottom:.625rem">This appears on your listing and in search results.</p>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn btn-o btn-sm" onclick="document.getElementById('profilePhotoInput').click()">Upload Photo</button>
+            <button class="btn btn-sm" id="removeProfilePhoto" style="color:#DC2626;border:1px solid #FCA5A5;display:none" onclick="removeProfilePhoto()">Remove</button>
+            <input type="file" id="profilePhotoInput" style="display:none" accept="image/jpeg,image/png,image/webp" onchange="uploadProfilePhoto(this.files)">
+          </div>
+          <div id="profilePhotoMsg" style="font-size:.75rem;margin-top:.375rem"></div>
+        </div>
+      </div>
+
       <h3 style="font-size:.875rem;font-weight:600;margin-bottom:1rem">Business Information</h3>
       <div class="form-grid">
         <div class="fg"><label>Business Name</label><input type="text" id="fName"></div>
@@ -774,6 +792,7 @@ async function loadDashboard(user){
   renderReviews();
   renderInsights();
   renderBooking();
+  renderProfilePhoto();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -1296,6 +1315,97 @@ async function saveSettings(){
   setTimeout(()=>msg.style.display='none',3000);
   renderOverview();
   renderBooking();
+}
+
+// ══════════════════════ PROFILE PHOTO ══════════════════════
+function renderProfilePhoto(){
+  const preview=document.getElementById('profilePhotoPreview');
+  const initials=document.getElementById('profileInitials');
+  const removeBtn=document.getElementById('removeProfilePhoto');
+  const profileMedia=myMedia.find(m=>m.is_profile);
+
+  if(profileMedia){
+    const src=mediaPublicUrl(profileMedia);
+    preview.innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover" alt="Profile">`;
+    removeBtn.style.display='';
+  } else {
+    const ini=(myListing.name||'').split(' ').map(w=>w[0]).slice(0,2).join('');
+    preview.innerHTML=`<span id="profileInitials">${ini}</span>`;
+    removeBtn.style.display='none';
+  }
+
+  // Update sidebar avatar too
+  const sbAv=document.getElementById('sbAvatar');
+  if(profileMedia){
+    const src=mediaPublicUrl(profileMedia);
+    sbAv.innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`;
+  } else {
+    const ini=(myListing.email||'').split('@')[0].slice(0,2).toUpperCase();
+    sbAv.textContent=ini;
+  }
+}
+
+async function uploadProfilePhoto(files){
+  if(!files||!files.length||!myListing)return;
+  const file=files[0];
+  const msg=document.getElementById('profilePhotoMsg');
+  msg.textContent='';
+
+  if(!file.type.match(/^image\/(jpeg|png|webp)$/)){
+    msg.innerHTML='<span style="color:#DC2626">Please upload a JPEG, PNG, or WebP image.</span>';
+    return;
+  }
+  if(file.size>5*1024*1024){
+    msg.innerHTML='<span style="color:#DC2626">Image must be under 5MB.</span>';
+    return;
+  }
+
+  msg.innerHTML='<span style="color:var(--ac)">Uploading...</span>';
+
+  // Remove old profile photo first
+  const oldProfile=myMedia.find(m=>m.is_profile);
+  if(oldProfile){
+    if(!oldProfile.is_placeholder){
+      await SB.storage.from('media').remove([oldProfile.storage_path]);
+    }
+    await SB.from('media').delete().eq('id',oldProfile.id);
+    myMedia=myMedia.filter(m=>m.id!==oldProfile.id);
+  }
+
+  // Upload new
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'');
+  const path='listings/'+myListing.id+'/profile-'+Date.now()+'-'+safeName;
+
+  const{error:upErr}=await SB.storage.from('media').upload(path,file,{contentType:file.type,upsert:false});
+  if(upErr){msg.innerHTML='<span style="color:#DC2626">Upload error: '+upErr.message+'</span>';return;}
+
+  const{data:insertData,error:insertErr}=await SB.from('media').insert({
+    listing_id:myListing.id,
+    type:'image',
+    storage_path:path,
+    is_placeholder:false,
+    is_profile:true,
+    sort_order:-1
+  }).select();
+  if(insertErr){msg.innerHTML='<span style="color:#DC2626">Error: '+insertErr.message+'</span>';return;}
+
+  if(insertData&&insertData.length)myMedia.push(insertData[0]);
+  msg.innerHTML='<span style="color:var(--ac)">Profile photo updated!</span>';
+  setTimeout(()=>{msg.textContent='';},3000);
+  renderProfilePhoto();
+}
+
+async function removeProfilePhoto(){
+  if(!myListing)return;
+  const profileMedia=myMedia.find(m=>m.is_profile);
+  if(!profileMedia)return;
+
+  if(!profileMedia.is_placeholder){
+    await SB.storage.from('media').remove([profileMedia.storage_path]);
+  }
+  await SB.from('media').delete().eq('id',profileMedia.id);
+  myMedia=myMedia.filter(m=>m.id!==profileMedia.id);
+  renderProfilePhoto();
 }
 
 function archiveListing(){

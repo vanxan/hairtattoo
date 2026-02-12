@@ -28,6 +28,10 @@ function dist(lat1, lng1, lat2, lng2) {
 function renderCard(l, media, viewCount, opts) {
   opts = opts || {};
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
+  const profilePhoto = media && media.find(m => m.is_profile);
+  const avHTML = profilePhoto
+    ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    : ini;
   const badge = getBadge(l, media);
   const svcs = (l.services || []).slice(0, 3).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
   const url = listingUrl(l);
@@ -40,7 +44,7 @@ function renderCard(l, media, viewCount, opts) {
   const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
   return `<a class="card" href="${url}" title="${esc(l.name)} - SMP in ${esc(l.city)}, ${esc(l.state)}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${ini}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
+      <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
       <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg" onclick="event.preventDefault();event.stopPropagation();openMsgPanel(${l.id})"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
