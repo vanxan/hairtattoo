@@ -1,0 +1,8 @@
+/near-me/*
+  Cache-Control: public, max-age=300, s-maxage=3600
+
+/*.js
+  Cache-Control: public, max-age=86400
+
+/*.css
+  Cache-Control: public, max-age=86400

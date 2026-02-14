@@ -29,8 +29,11 @@ function renderCard(l, media, viewCount, opts) {
   opts = opts || {};
   const ini = l.name.split(' ').map(w => w[0]).slice(0, 2).join('');
   const profilePhoto = media && media.find(m => m.is_profile);
+  const now = new Date().toISOString();
+  const isPromoted = l.promoted && l.promoted_until && l.promoted_until > now;
+  const avR = isPromoted ? '12px' : '50%';
   const avHTML = profilePhoto
-    ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    ? `<img src="${mediaUrl(profilePhoto)}" alt="${esc(l.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:${avR}">`
     : ini;
   const badge = getBadge(l, media);
   const svcs = (l.services || []).slice(0, 3).map(s => `<span class="c-tag">${esc(s)}</span>`).join('');
@@ -46,7 +49,7 @@ function renderCard(l, media, viewCount, opts) {
   const viewsLabel = viewCount ? `\ud83d\udc41 ${viewCount} view${viewCount !== 1 ? 's' : ''}` : 'New';
   return `<a class="card" href="${url}" title="${esc(l.name)} - SMP in ${esc(l.city)}, ${esc(l.state)}" itemscope itemtype="https://schema.org/LocalBusiness">
       ${thumb}
-      <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
+      <div class="c-head"><div class="c-av"${isPromoted ? ' style="border-radius:12px"' : ''}>${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${esc(l.name)}</div><div class="c-loc"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${esc(l.city)}, ${esc(l.state)}</span></div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${esc(l.about)}</p></div>
       <div class="c-tags">${svcs}</div>
       <div class="c-foot"><span class="c-views">${viewsLabel}</span><span class="c-msg" onclick="event.preventDefault();event.stopPropagation();openMsgPanel(${l.id})"><svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
@@ -136,13 +139,14 @@ ${nearbyHTML ? `<div class="nearby">
   <div class="msg-panel-body" id="msgPanelBody"></div>
 </div>
 ${getFooter()}
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-var SB=supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+var SB=null,_sbP=null;
+function loadSB(){if(SB)return Promise.resolve(SB);if(_sbP)return _sbP;_sbP=new Promise(function(resolve,reject){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';s.onload=function(){SB=supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');resolve(SB)};s.onerror=function(){_sbP=null;reject(new Error('Failed to load Supabase'))};document.head.appendChild(s)});return _sbP}
 var ML=${JSON.stringify(listings.map(l => ({ id: l.id, name: l.name, services: l.services || [] })))};
 var msgListingId=null;
 function openMsgPanel(id){
   var l=ML.find(function(x){return x.id===id});if(!l)return;
+  loadSB();
   msgListingId=id;
   document.getElementById('msgPanelTitle').textContent='Message '+l.name;
   var svcs=l.services.map(function(s){return '<span class="msg-svc" onclick="this.classList.toggle(\\'on\\')">'+s+'</span>'}).join('');
@@ -173,6 +177,7 @@ async function submitMsgPanel(){
   var svcs=[].slice.call(document.querySelectorAll('.msg-svc.on')).map(function(s){return s.textContent});
   if(!name||!phone){alert('Please enter your name and phone number.');return;}
   var fullMsg=(svcs.length?'Services: '+svcs.join(', ')+'\\n\\n':'')+(msg||'');
+  await loadSB();
   var res=await SB.from('leads').insert({listing_id:msgListingId,sender_name:name,sender_phone:phone,sender_message:fullMsg||null});
   if(res.error){console.error('Lead insert error:',res.error.message);alert('Something went wrong. Please try again.');return;}
   document.getElementById('msgPanelBody').innerHTML='<div class="msg-ok"><h4>\\u2713 Message Sent!</h4><p>The artist will reach out to you shortly.</p><button class="btn btn-o" onclick="closeMsgPanel()">Close</button></div>';

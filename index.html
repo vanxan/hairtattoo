@@ -19,7 +19,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://ingorrzmoudvoknhwjjb.supabase.co">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--sh:0 1px 3px rgba(0,0,0,.06);--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
@@ -373,9 +375,9 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 {"@context":"https://schema.org","@type":"WebSite","name":"Hair Tattoo","alternateName":"HairTattoo.com","url":"https://hairtattoo.com","description":"The #1 directory for scalp micropigmentation professionals","potentialAction":{"@type":"SearchAction","target":"https://hairtattoo.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
+let SB;
 const SB_STORAGE='https://ingorrzmoudvoknhwjjb.supabase.co/storage/v1/object/public/';
 function mediaUrl(m){if(typeof m==='string')return SB_STORAGE+'placeholders/'+encodeURIComponent(m);return SB_STORAGE+(m.is_placeholder?'placeholders':'media')+'/'+encodeURIComponent(m.storage_path);}
 function listingUrl(l){return '/near-me/'+l.city.toLowerCase().replace(/\s+/g,'-')+'-'+l.state.toLowerCase()+'/'+l.slug;}
@@ -483,11 +485,12 @@ function render(){
   g.innerHTML=items.map(l=>{
     const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
     const pp=l._media&&l._media.find(m=>m.is_profile);
-    const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:ini;
+    const avR=isPromotedNow(l)?'12px':'50%';
+    const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:${avR}">`:ini;
     const badge=getBadge(l);
     const d=l._dist?'<span style="margin-left:.25rem;font-size:.7rem;color:var(--t3)">'+Math.round(l._dist)+' mi</span>':'';
     return `<article class="card" onclick="location.href='${listingUrl(l)}'" title="${l.name} - SMP in ${l.city}, ${l.state}" itemscope itemtype="https://schema.org/LocalBusiness">
-      <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
+      <div class="c-head"><div class="c-av" style="border-radius:${avR}">${avHTML}</div><div class="c-info"><div class="c-name" itemprop="name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span itemprop="address">${l.city}, ${l.state}</span>${d}</div></div>${badge}</div>
       <div class="c-body"><p class="c-about" itemprop="description">${l.about}</p></div>
       <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
       <div class="c-foot"><span class="c-views">${l._views?'👁 '+l._views+' view'+(l._views!==1?'s':''):'New'}</span><span class="c-msg" onclick="event.stopPropagation();openMsgPanel(${l.id})"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Message</span></div>
@@ -711,6 +714,7 @@ function renderMasonry(){
 
 // === INIT ===
 async function initApp(){
+  SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
   // Fetch listings from Supabase
   const{data,error}=await SB.from('listings').select('*');
   if(error){console.error('Failed to load listings:',error.message);document.getElementById('listGrid').innerHTML='<div class="empty" style="grid-column:1/-1"><h3>Failed to load listings</h3><p>Please refresh the page</p></div>';return;}
@@ -736,13 +740,13 @@ async function initApp(){
     document.getElementById('featuredRow').innerHTML=promoted.map(l=>{
       const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
       const pp=l._media&&l._media.find(m=>m.is_profile);
-      const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`:ini;
+      const avHTML=pp?`<img src="${mediaUrl(pp)}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:ini;
       const badge=getBadge(l);
       const thumbImg=l._media&&(l._media.find(m=>m.is_cover)||l._media.find(m=>!m.is_profile&&!m.is_cover&&!m.is_placeholder)||l._media.find(m=>!m.is_profile&&!m.is_cover));
       const thumb=thumbImg?`<div class="c-img"><span class="c-featured-pill">\u2B50 Featured</span><img src="${mediaUrl(thumbImg)}" loading="lazy" width="400" height="180" alt="${l.name} SMP">${thumbImg.is_placeholder?'<span class="c-pill">\uD83D\uDCF7 Sample photo</span>':''}</div>`:'';
       return `<article class="card" onclick="location.href='${listingUrl(l)}'">
         ${thumb}
-        <div class="c-head"><div class="c-av">${avHTML}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>
+        <div class="c-head"><div class="c-av" style="border-radius:12px">${avHTML}</div><div class="c-info"><div class="c-name">${l.name}</div><div class="c-loc"><svg class="icon" style="width:12px;height:12px" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${l.city}, ${l.state}</div></div>${badge}</div>
         <div class="c-body"><p class="c-about">${l.about}</p></div>
         <div class="c-tags">${l.services.slice(0,3).map(s=>'<span class="c-tag">'+s+'</span>').join('')}</div>
       </article>`;
