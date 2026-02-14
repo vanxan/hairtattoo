@@ -233,8 +233,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .sms-banner-text{flex:1}
 .sms-banner-text strong{font-size:.8125rem;display:block;color:#9A3412;margin-bottom:.125rem}
 .sms-banner-text span{font-size:.75rem;color:#C2410C}
-.upload-limit-msg{background:#FEF3C7;border:1px solid #FDE68A;border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:center;font-size:.8125rem;color:#92400E}
-.upload-limit-msg strong{display:block;margin-bottom:.25rem}
 
 /* MOBILE MENU TOGGLE */
 .mob-toggle{display:none;position:fixed;bottom:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;z-index:99;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.2)}
@@ -298,6 +296,10 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <a class="sb-link" data-tab="portfolio" onclick="showTab('portfolio')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
       Portfolio
+    </a>
+    <a class="sb-link" data-tab="posts" onclick="showTab('posts')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Posts
     </a>
     <a class="sb-link" data-tab="reviews" onclick="showTab('reviews')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -374,10 +376,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <div class="placeholder-banner" id="placeholderBanner" style="display:none">
         Your listing is showing sample photos. Upload your own work to attract more clients.
       </div>
-      <div class="upload-limit-msg" id="uploadLimitMsg" style="display:none">
-        <strong>Free plan limit reached (6 uploads)</strong>
-        Upgrade to Pro for unlimited media uploads.
-      </div>
       <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <p>Drop photos or videos here, or click to browse</p>
@@ -392,6 +390,44 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <div class="tips-card">
         <h4>Tips for great SMP photos</h4>
         <p>Use natural lighting, shoot from multiple angles, include close-ups of hairline work. Before &amp; after pairs get the most engagement.</p>
+      </div>
+    </div>
+
+    <!-- TAB: POSTS -->
+    <div id="dtab-posts" class="dtab">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <h2 style="margin-bottom:0">Posts</h2>
+        <button class="btn btn-p" onclick="openPostCompose()">+ New Post</button>
+      </div>
+      <p style="font-size:.8125rem;color:var(--t2);margin-bottom:1.25rem">Share your latest SMP work. Posts appear on your business page and the global feed.</p>
+      <div id="postsList"><div class="chart-none">Loading posts...</div></div>
+    </div>
+
+    <!-- Post compose modal -->
+    <div id="postComposeOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);align-items:center;justify-content:center" onclick="if(event.target===this)closePostCompose()">
+      <div style="background:var(--card);border-radius:var(--r);padding:1.5rem;max-width:520px;width:calc(100% - 2rem);max-height:90vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3 style="font-size:1rem;font-weight:600" id="postComposeTitle">New Post</h3>
+          <button onclick="closePostCompose()" style="font-size:1.25rem;color:var(--t3)">&times;</button>
+        </div>
+        <input type="hidden" id="postEditId" value="">
+        <div class="fg" style="margin-bottom:1rem">
+          <label>Caption</label>
+          <textarea id="postBody" rows="3" placeholder="Describe your work..." style="resize:vertical"></textarea>
+        </div>
+        <div class="fg" style="margin-bottom:1rem">
+          <label>Photos / Videos</label>
+          <div class="upload-zone" id="postUploadZone" onclick="document.getElementById('postFileInput').click()" style="padding:1rem;margin-top:.25rem">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p style="font-size:.8125rem;margin-top:.25rem">Drop files or click to browse</p>
+            <input type="file" id="postFileInput" style="display:none" multiple accept="image/*,video/*" onchange="handlePostFiles(this.files)">
+          </div>
+          <div id="postMediaPreview" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
+        </div>
+        <div style="display:flex;gap:.5rem;justify-content:flex-end">
+          <button class="btn btn-o" onclick="closePostCompose()">Cancel</button>
+          <button class="btn btn-p" id="postSubmitBtn" onclick="submitPost()">Publish</button>
+        </div>
       </div>
     </div>
 
@@ -652,6 +688,8 @@ let myLeads=[];
 let myViews=[];
 let myMedia=[];
 let myReviews=[];
+let myPosts=[];
+let postMediaFiles=[];
 let currentUser=null;
 let loggingOut=false;
 let selectedLead=null;
@@ -774,24 +812,27 @@ async function loadDashboard(user){
 
   // Load all data in parallel
   console.log('[DASH] Fetching parallel data for listing_id=',listing.id);
-  const[viewsRes,leadsRes,mediaRes,reviewsRes]=await Promise.all([
+  const[viewsRes,leadsRes,mediaRes,reviewsRes,postsRes]=await Promise.all([
     SB.from('page_views').select('id,created_at').eq('listing_id',listing.id),
     SB.from('leads').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
     SB.from('media').select('*').eq('listing_id',listing.id).order('sort_order',{ascending:true}),
-    SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false})
+    SB.from('reviews').select('*').eq('listing_id',listing.id).order('created_at',{ascending:false}),
+    SB.from('posts').select('*,media(*)').eq('listing_id',listing.id).order('created_at',{ascending:false})
   ]);
   console.log('[DASH] Parallel data loaded — views:',viewsRes.data?.length,
     'leads:',leadsRes.data?.length,'media:',mediaRes.data?.length,
-    'reviews:',reviewsRes.data?.length);
+    'reviews:',reviewsRes.data?.length,'posts:',postsRes.data?.length);
   if(viewsRes.error)console.warn('[DASH] views error:',viewsRes.error);
   if(leadsRes.error)console.warn('[DASH] leads error:',leadsRes.error);
   if(mediaRes.error)console.warn('[DASH] media error:',mediaRes.error);
   if(reviewsRes.error)console.warn('[DASH] reviews error:',reviewsRes.error);
+  if(postsRes.error)console.warn('[DASH] posts error:',postsRes.error);
 
   myViews=viewsRes.data||[];
   myLeads=leadsRes.data||[];
   myMedia=mediaRes.data||[];
   myReviews=reviewsRes.data||[];
+  myPosts=postsRes.data||[];
 
   // Show leads badge
   const newLeads=myLeads.filter(l=>!l.status||l.status==='new').length;
@@ -805,6 +846,7 @@ async function loadDashboard(user){
   renderOverview();
   renderLeads();
   renderPortfolio();
+  renderPosts();
   renderReviews();
   renderInsights();
   renderBooking();
@@ -979,14 +1021,6 @@ function renderPortfolio(){
   const hasReal=myMedia.some(m=>!m.is_placeholder);
   document.getElementById('placeholderBanner').style.display=hasPlaceholders&&!hasReal?'flex':'none';
 
-  // Free tier upload limit (6 non-placeholder, non-profile uploads)
-  const FREE_UPLOAD_LIMIT=6;
-  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile&&!m.is_cover).length;
-  const atLimit=!myListing.promoted&&realCount>=FREE_UPLOAD_LIMIT;
-  document.getElementById('uploadLimitMsg').style.display=atLimit?'block':'none';
-  document.getElementById('uploadZone').style.display=atLimit?'none':'';
-  document.getElementById('fileInput').disabled=atLimit;
-
   // Show real photos; only show placeholders if no real photos exist (exclude cover from gallery)
   const items=myMedia.filter(m=>m.sort_order>=0&&!m.is_cover&&(!m.is_placeholder||!hasReal));
   if(!items.length){
@@ -1039,9 +1073,6 @@ const ALLOWED_VIDEO=/\.(mp4|mov|webm)$/i;
 
 async function handleUpload(files){
   if(!files||!files.length||!myListing)return;
-  // Free tier limit check (promoted = unlimited)
-  const realCount=myMedia.filter(m=>!m.is_placeholder&&!m.is_profile&&!m.is_cover).length;
-  if(!myListing.promoted&&realCount>=6){renderPortfolio();return;}
   const prog=document.getElementById('uploadProgress');
   const bar=document.getElementById('uploadBarFill');
   const status=document.getElementById('uploadStatus');
@@ -1115,6 +1146,186 @@ async function deleteMedia(id){
   if(dbErr){console.error('[DELETE db]',dbErr);alert('Error deleting: '+dbErr.message);return;}
   myMedia=myMedia.filter(x=>x.id!==id);
   renderPortfolio();
+}
+
+// ══════════════════════ TAB: POSTS ══════════════════════
+function postMediaUrl(m){
+  return SB_URL+'/storage/v1/object/public/media/'+m.storage_path;
+}
+
+function renderPosts(){
+  const el=document.getElementById('postsList');
+  if(!myPosts.length){
+    el.innerHTML='<div class="chart-none">No posts yet. Share your latest SMP work!</div>';
+    return;
+  }
+  el.innerHTML=myPosts.map(p=>{
+    const media=p.media||[];
+    const thumb=media.length?`<img src="${postMediaUrl(media[0])}" style="width:64px;height:64px;object-fit:cover;border-radius:var(--rs);flex-shrink:0" alt="">`:'';
+    const body=p.body?esc(p.body).slice(0,120)+(p.body.length>120?'...':''):'<span style="color:var(--t3)">(no caption)</span>';
+    const date=new Date(p.created_at).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+    const mediaCount=media.length?`<span style="font-size:.75rem;color:var(--t3)">${media.length} photo${media.length===1?'':'s'}</span>`:'';
+    return `<div style="display:flex;gap:1rem;align-items:center;padding:1rem;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:.75rem;background:var(--card)">
+      ${thumb}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.875rem;margin-bottom:.25rem">${body}</div>
+        <div style="display:flex;gap:.75rem;align-items:center">
+          <span style="font-size:.75rem;color:var(--t3)">${date}</span>
+          ${mediaCount}
+        </div>
+      </div>
+      <div style="display:flex;gap:.375rem;flex-shrink:0">
+        <button class="btn btn-o btn-sm" onclick="editPost('${p.id}')">Edit</button>
+        <button class="btn btn-sm" style="color:#DC2626;border:1px solid #DC2626" onclick="deletePost('${p.id}')">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openPostCompose(){
+  document.getElementById('postEditId').value='';
+  document.getElementById('postBody').value='';
+  document.getElementById('postMediaPreview').innerHTML='';
+  document.getElementById('postComposeTitle').textContent='New Post';
+  document.getElementById('postSubmitBtn').textContent='Publish';
+  postMediaFiles=[];
+  document.getElementById('postComposeOverlay').style.display='flex';
+}
+
+function closePostCompose(){
+  document.getElementById('postComposeOverlay').style.display='none';
+  postMediaFiles=[];
+}
+
+function handlePostFiles(files){
+  const preview=document.getElementById('postMediaPreview');
+  for(const file of files){
+    const isImage=file.type.startsWith('image/');
+    const isVideo=file.type.startsWith('video/');
+    if(!isImage&&!isVideo)continue;
+    if(isImage&&file.size>10*1024*1024)continue;
+    if(isVideo&&file.size>50*1024*1024)continue;
+    postMediaFiles.push(file);
+    const idx=postMediaFiles.length-1;
+    const wrap=document.createElement('div');
+    wrap.style.cssText='position:relative;width:64px;height:64px;border-radius:var(--rs);overflow:hidden;border:1px solid var(--bd)';
+    wrap.id='pmf-'+idx;
+    if(isImage){
+      const img=document.createElement('img');
+      img.style.cssText='width:100%;height:100%;object-fit:cover';
+      img.src=URL.createObjectURL(file);
+      wrap.appendChild(img);
+    }else{
+      wrap.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--al);font-size:.625rem;color:var(--t2)">VIDEO</div>';
+    }
+    const del=document.createElement('div');
+    del.style.cssText='position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer';
+    del.textContent='×';
+    del.onclick=(function(i,w){return function(e){e.stopPropagation();postMediaFiles[i]=null;w.remove();};})(idx,wrap);
+    wrap.appendChild(del);
+    preview.appendChild(wrap);
+  }
+}
+
+// Post compose zone drag-and-drop
+(function(){
+  const puz=document.getElementById('postUploadZone');
+  if(puz){
+    puz.addEventListener('dragover',e=>{e.preventDefault();puz.classList.add('dragover');});
+    puz.addEventListener('dragleave',()=>puz.classList.remove('dragover'));
+    puz.addEventListener('drop',e=>{e.preventDefault();puz.classList.remove('dragover');handlePostFiles(e.dataTransfer.files);});
+  }
+})();
+
+async function submitPost(){
+  if(!myListing)return;
+  const btn=document.getElementById('postSubmitBtn');
+  const body=document.getElementById('postBody').value.trim();
+  const editId=document.getElementById('postEditId').value;
+  const activeFiles=postMediaFiles.filter(f=>f!==null);
+
+  if(!body&&!activeFiles.length&&!editId){alert('Add a caption or photos.');return;}
+
+  btn.disabled=true;btn.textContent='Saving...';
+
+  try{
+    let postId=editId;
+
+    if(editId){
+      // Update existing post
+      await SB.from('posts').update({body:body,updated_at:new Date().toISOString()}).eq('id',editId);
+    }else{
+      // Insert new post
+      const{data:newPost,error:postErr}=await SB.from('posts').insert({listing_id:myListing.id,body:body}).select().single();
+      if(postErr)throw postErr;
+      postId=newPost.id;
+    }
+
+    // Upload new media
+    for(const file of activeFiles){
+      const isVideo=file.type.startsWith('video/');
+      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'');
+      const path='listings/'+myListing.id+'/posts/'+Date.now()+'-'+safeName;
+      const{error:upErr}=await SB.storage.from('media').upload(path,file,{contentType:file.type,upsert:false});
+      if(upErr){console.error('[POST UPLOAD]',upErr);continue;}
+      await SB.from('media').insert({listing_id:myListing.id,post_id:postId,type:isVideo?'video':'image',storage_path:path,is_placeholder:false,sort_order:0});
+    }
+
+    // Reload posts
+    const{data}=await SB.from('posts').select('*,media(*)').eq('listing_id',myListing.id).order('created_at',{ascending:false});
+    myPosts=data||[];
+    renderPosts();
+    closePostCompose();
+  }catch(err){
+    console.error('[POST]',err);
+    alert('Error saving post: '+err.message);
+  }finally{
+    btn.disabled=false;
+    btn.textContent=editId?'Save Changes':'Publish';
+  }
+}
+
+function editPost(id){
+  const p=myPosts.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('postEditId').value=id;
+  document.getElementById('postBody').value=p.body||'';
+  document.getElementById('postComposeTitle').textContent='Edit Post';
+  document.getElementById('postSubmitBtn').textContent='Save Changes';
+  postMediaFiles=[];
+  // Show existing media
+  const preview=document.getElementById('postMediaPreview');
+  preview.innerHTML=(p.media||[]).map(m=>`<div style="position:relative;width:64px;height:64px;border-radius:var(--rs);overflow:hidden;border:1px solid var(--bd)">
+    <img src="${postMediaUrl(m)}" style="width:100%;height:100%;object-fit:cover" alt="">
+    <div onclick="removePostMedia('${m.id}','${m.storage_path}',this.parentElement)" style="position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer">×</div>
+  </div>`).join('');
+  document.getElementById('postComposeOverlay').style.display='flex';
+}
+
+async function removePostMedia(mediaId,storagePath,el){
+  if(!confirm('Remove this image?'))return;
+  await SB.storage.from('media').remove([storagePath]);
+  await SB.from('media').delete().eq('id',mediaId);
+  el.remove();
+  // Update local data
+  myPosts.forEach(p=>{if(p.media)p.media=p.media.filter(m=>String(m.id)!==String(mediaId));});
+}
+
+async function deletePost(id){
+  if(!confirm('Delete this post and all its media?'))return;
+  const p=myPosts.find(x=>x.id===id);
+  if(!p)return;
+  // Delete storage files
+  const media=p.media||[];
+  if(media.length){
+    const paths=media.map(m=>m.storage_path);
+    await SB.storage.from('media').remove(paths);
+  }
+  // Delete post (cascades to media rows)
+  const{error}=await SB.from('posts').delete().eq('id',id);
+  if(error){alert('Error: '+error.message);return;}
+  myPosts=myPosts.filter(x=>x.id!==id);
+  renderPosts();
 }
 
 // ══════════════════════ TAB 4: REVIEWS ══════════════════════
@@ -1592,6 +1803,7 @@ function showTab(name){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     document.getElementById('confirmOverlay').style.display='none';
+    closePostCompose();
   }
 });
 </script>

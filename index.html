@@ -216,6 +216,7 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .skel{background:linear-gradient(90deg,var(--bd) 25%,#f0eeeb 50%,var(--bd) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r);height:220px}
+.global-feed-section{max-width:700px;margin:3rem auto;padding:0 1rem}.gf-heading{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.25rem}.gf-sub{color:var(--t2);font-size:.875rem;margin-bottom:1.5rem}.gf-feed{max-width:640px}.gf-pc{background:var(--card);border:1px solid var(--bd);border-radius:16px;margin-bottom:1.25rem;overflow:hidden}.gf-hd{display:flex;align-items:center;gap:10px;padding:14px 16px;text-decoration:none;color:inherit}.gf-av{width:36px;height:36px;overflow:hidden;background:var(--al);display:flex;align-items:center;justify-content:center;flex-shrink:0}.gf-av img{width:100%;height:100%;object-fit:cover}.gf-meta{flex:1;min-width:0}.gf-name{font-weight:600;font-size:.875rem;display:flex;align-items:center;gap:6px}.gf-loc{font-size:.75rem;color:var(--t3)}.gf-time{font-size:.75rem;color:#999;flex-shrink:0}.gf-media{position:relative}.gf-mg{display:grid;gap:3px}.gf-mg img{width:100%;height:100%;object-fit:cover;display:block}.gf-over{position:absolute;bottom:0;right:0;width:calc(50% - 1.5px);height:calc(50% - 1.5px);background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.75rem;font-weight:700}.gf-acts{display:flex;align-items:center;gap:4px;padding:8px 16px}.gf-act{background:none;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--t3);font-family:var(--f);display:inline-flex;align-items:center;gap:4px;font-size:.875rem}.gf-act:hover{background:var(--al)}.gf-cap{padding:4px 16px 14px;font-size:.875rem;line-height:1.5}.gf-cap b{font-weight:600}.gf-cap .gf-more{color:var(--ac);cursor:pointer;font-size:.8125rem}.gf-txt{padding:20px 16px;font-size:1rem;line-height:1.65;color:var(--t2)}.gf-load{display:inline-block;padding:.625rem 1.5rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;color:var(--t2);cursor:pointer;background:var(--card);font-family:var(--f)}.gf-load:hover{border-color:var(--ac);color:var(--ac)}.gf-empty{text-align:center;padding:2rem;color:var(--t3)}
 
 @media(max-width:768px){
   .masonry{columns:2;column-gap:4px}
@@ -331,6 +332,14 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   <div id="feedView" style="display:none">
     <div class="masonry" id="masonryGrid"></div>
   </div>
+</div>
+
+<!-- GLOBAL FEED -->
+<div class="global-feed-section" id="globalFeedSection">
+  <h2 class="gf-heading">Latest from SMP Artists</h2>
+  <p class="gf-sub">Fresh work and updates from professionals across the country</p>
+  <div class="gf-feed" id="globalFeed"><div style="text-align:center;padding:2rem;color:#888">Loading posts...</div></div>
+  <div style="text-align:center;margin-top:1rem" id="gfLoadMore"></div>
 </div>
 
 <!-- DETAIL PAGE (hash routed) -->
@@ -778,6 +787,60 @@ document.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight')lbNav(1);
   }
 });
+
+// ── Global Feed ──
+let gfPosts=[],gfOffset=0;const GF_LIMIT=10;
+const GF_SB_URL='https://ingorrzmoudvoknhwjjb.supabase.co';const GF_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc';
+function gfMurl(m){return GF_SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
+function gfRelTime(d){const s=Math.floor((Date.now()-new Date(d).getTime())/1000);if(s<60)return 'just now';const m=Math.floor(s/60);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<7)return dy+'d ago';const w=Math.floor(dy/7);if(w<5)return w+'w ago';return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});}
+function gfEsc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
+function gfCitySlug(c,st){return c.toLowerCase().replace(/\s+/g,'-')+'-'+st.toLowerCase();}
+
+async function loadGlobalFeed(append){
+  const feed=document.getElementById('globalFeed'),lm=document.getElementById('gfLoadMore');
+  if(!append){feed.innerHTML='<div style="text-align:center;padding:2rem;color:#888">Loading posts...</div>';}
+  try{
+    const res=await fetch(GF_SB_URL+'/rest/v1/posts?order=created_at.desc&limit='+GF_LIMIT+'&offset='+gfOffset+'&select=*,listings(id,name,slug,city,state,promoted,promoted_until),media(*)',{headers:{'apikey':GF_SB_KEY,'Authorization':'Bearer '+GF_SB_KEY}});
+    const posts=await res.json()||[];
+    if(!append)gfPosts=[];
+    gfPosts=gfPosts.concat(posts);
+    if(!gfPosts.length){feed.innerHTML='<div class="gf-empty">No posts yet \u2014 SMP artists, <a href="/for-professionals">share your latest work!</a></div>';lm.innerHTML='';return;}
+    if(!append)feed.innerHTML='';
+    posts.forEach(p=>feed.insertAdjacentHTML('beforeend',renderGfPost(p)));
+    gfOffset+=posts.length;
+    lm.innerHTML=posts.length>=GF_LIMIT?'<button class="gf-load" onclick="loadGlobalFeed(true)">Load More</button>':'';
+  }catch(e){if(!append)feed.innerHTML='<div class="gf-empty">Could not load posts</div>';}
+}
+
+function renderGfPost(p){
+  const l=p.listings;if(!l)return '';
+  const media=(p.media||[]).filter(m=>!m.is_profile&&!m.is_cover);
+  const isProm=l.promoted&&l.promoted_until&&new Date(l.promoted_until)>new Date();
+  const avR=isProm?'border-radius:12px':'border-radius:50%';
+  const cs=gfCitySlug(l.city,l.state);
+  const href='/near-me/'+cs+'/'+l.slug;
+  const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  let h='<div class="gf-pc"><a class="gf-hd" href="'+href+'">';
+  h+='<div class="gf-av" style="'+avR+'"><span style="font-family:var(--se);font-size:.875rem;color:var(--ac)">'+ini+'</span></div>';
+  h+='<div class="gf-meta"><div class="gf-name">'+gfEsc(l.name)+(isProm?' \u2B50':'')+'</div><div class="gf-loc">'+gfEsc(l.city)+', '+gfEsc(l.state)+'</div></div>';
+  h+='<span class="gf-time">'+gfRelTime(p.created_at)+'</span></a>';
+  if(media.length)h+=renderGfMedia(media);
+  else if(p.body)h+='<div class="gf-txt">'+gfEsc(p.body).replace(/\n/g,'<br>')+'</div>';
+  h+='<div class="gf-acts"><button class="gf-act">\u2665 <span>0</span></button><button class="gf-act">\uD83D\uDCAC <span>0</span></button><button class="gf-act" style="margin-left:auto">\uD83D\uDD16</button></div>';
+  if(media.length&&p.body){const body=gfEsc(p.body);h+='<div class="gf-cap"><b><a href="'+href+'" style="color:inherit;text-decoration:none">'+gfEsc(l.name)+'</a></b> ';if(body.length>200)h+='<span data-full="'+body.replace(/"/g,'&quot;')+'">'+body.substring(0,200)+'...<span class="gf-more" onclick="this.parentElement.textContent=this.parentElement.dataset.full">more</span></span>';else h+=body;h+='</div>';}
+  h+='</div>';return h;
+}
+
+function renderGfMedia(media){
+  const n=media.length;let h='<div class="gf-media">';
+  if(n===1){h+='<div class="gf-mg" style="grid-template-columns:1fr"><div style="aspect-ratio:4/5"><img src="'+gfMurl(media[0])+'" loading="lazy"></div></div>';}
+  else if(n===2){h+='<div class="gf-mg" style="grid-template-columns:1fr 1fr">';for(let i=0;i<2;i++)h+='<div style="aspect-ratio:4/5"><img src="'+gfMurl(media[i])+'" loading="lazy"></div>';h+='</div>';}
+  else if(n===3){h+='<div class="gf-mg" style="grid-template-columns:1.2fr 1fr;grid-template-rows:1fr 1fr"><div style="grid-row:1/3"><img src="'+gfMurl(media[0])+'" loading="lazy" style="height:100%"></div><div><img src="'+gfMurl(media[1])+'" loading="lazy" style="height:100%"></div><div><img src="'+gfMurl(media[2])+'" loading="lazy" style="height:100%"></div></div>';}
+  else{h+='<div class="gf-mg" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1">';for(let i=0;i<Math.min(4,n);i++){h+='<div style="position:relative"><img src="'+gfMurl(media[i])+'" loading="lazy" style="height:100%">';if(i===3&&n>4)h+='<div class="gf-over">+'+(n-3)+'</div>';h+='</div>';}h+='</div>';}
+  h+='</div>';return h;
+}
+// Load global feed on page load
+document.addEventListener('DOMContentLoaded',()=>loadGlobalFeed(false));
 </script>
 </body>
 </html>
