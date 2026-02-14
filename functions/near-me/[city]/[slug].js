@@ -8,6 +8,7 @@ function mediaUrl(m) {
 }
 
 export async function onRequestGet(context) {
+  try {
   const { params } = context;
   const slug = params.slug;
 
@@ -58,6 +59,12 @@ export async function onRequestGet(context) {
       'Cache-Control': 'public, max-age=300, s-maxage=3600'
     }
   });
+  } catch (err) {
+    return new Response(`<html><body><h1>Error</h1><pre>${err.stack || err.message}</pre></body></html>`, {
+      status: 500,
+      headers: { 'Content-Type': 'text/html' }
+    });
+  }
 }
 
 function starsHtml(n) {
@@ -271,7 +278,7 @@ ${getNav()}
   <video id="videoPub" controls playsinline style="max-width:90vw;max-height:80vh;border-radius:8px;background:#000"></video>
 </div>
 
-${getPostsHTML(l, ini, profilePhoto ? mediaUrl(profilePhoto) : '', isPromoted)}
+${getPostsHTML(l, ini, profilePhoto ? mediaUrl(profilePhoto) : '', false)}
 ${getFooter()}
 
 <script type="application/ld+json">${schema}</script>
@@ -609,7 +616,7 @@ ${getHead(title, desc, canonical, ogImage)}
   <button onclick="closeVideoLb()" style="position:absolute;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none">\u00d7</button>
   <video id="videoPub" controls playsinline style="max-width:90vw;max-height:80vh;border-radius:8px;background:#000"></video>
 </div>
-${getPostsHTML(l, ini, profilePhoto ? mediaUrl(profilePhoto) : '', isPromoted)}
+${getPostsHTML(l, ini, profilePhoto ? mediaUrl(profilePhoto) : '', true)}
 ${getFooter()}
 <script type="application/ld+json">${schema}<\/script>
 <script>
