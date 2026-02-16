@@ -346,6 +346,17 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .mp-gate{text-align:center;padding:3rem 1.5rem}
 .mp-gate h3{font-size:1rem;font-weight:700;margin-bottom:.5rem}
 .mp-gate p{font-size:.8125rem;color:var(--t2);line-height:1.5;max-width:360px;margin:0 auto .75rem}
+.mp-sell-toggle{display:flex;gap:.5rem;margin:.75rem 0}
+.mp-sell-opt{flex:1;padding:.75rem;border:2px solid var(--bd);border-radius:var(--rs);cursor:pointer;text-align:center;transition:all .15s}
+.mp-sell-opt:hover{border-color:var(--ac)}
+.mp-sell-opt.on{border-color:var(--ac);background:var(--al)}
+.mp-sell-opt h4{font-size:.8125rem;font-weight:600;margin-bottom:.125rem}
+.mp-sell-opt p{font-size:.6875rem;color:var(--t2)}
+.mp-type-badge{display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.625rem;font-weight:600;text-transform:uppercase}
+.mp-type-direct{background:#D1FAE5;color:#065F46}
+.mp-type-external{background:#DBEAFE;color:#1D4ED8}
+.mp-contact-btn{display:inline-flex;align-items:center;gap:4px;padding:.375rem .5rem;font-size:.75rem;border-radius:6px;cursor:pointer;font-family:var(--f);transition:all .15s;background:none;border:1px solid var(--bd);color:var(--t2);text-decoration:none}
+.mp-contact-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--al)}
 
 /* MOBILE MENU TOGGLE */
 .mob-toggle{display:none;position:fixed;bottom:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;z-index:99;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.2)}
@@ -905,25 +916,37 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
           <div class="fg"><label>Category</label>
             <select id="mpProdCat">
               <option value="aftercare">Aftercare</option>
-              <option value="equipment">Equipment</option>
               <option value="pigments">Pigments</option>
-              <option value="needles">Needles</option>
-              <option value="supplies">Supplies</option>
-              <option value="merch">Merch</option>
+              <option value="needles">Needles/Cartridges</option>
+              <option value="machines">Machines</option>
+              <option value="accessories">Accessories</option>
               <option value="training">Training</option>
+              <option value="merch">Merch</option>
               <option value="other">Other</option>
             </select>
           </div>
         </div>
-        <div class="form-grid full" style="margin-top:.75rem">
-          <div class="fg"><label>Amazon Affiliate Link <span style="text-transform:none;font-weight:400;color:var(--t3)">(optional — shows "Buy on Amazon" button)</span></label><input type="url" id="mpProdAffUrl" placeholder="https://www.amazon.com/dp/..."></div>
-          <div class="fg"><label>Image URL <span style="text-transform:none;font-weight:400;color:var(--t3)">(optional — use instead of uploading)</span></label><input type="url" id="mpProdImgUrl" placeholder="https://m.media-amazon.com/images/..."></div>
+        <div style="margin-top:.75rem">
+          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Sell Mode</label>
+          <div class="mp-sell-toggle">
+            <div class="mp-sell-opt on" data-sellmode="direct" onclick="setSellMode('direct')">
+              <h4>Sell on Hair Tattoo</h4>
+              <p>Customers order through us</p>
+            </div>
+            <div class="mp-sell-opt" data-sellmode="external" onclick="setSellMode('external')">
+              <h4>Link to my store</h4>
+              <p>Redirect to your own shop</p>
+            </div>
+          </div>
+          <div id="mpExternalUrlWrap" style="display:none;margin-top:.5rem">
+            <div class="fg"><label>Store URL *</label><input type="url" id="mpProdExternalUrl" placeholder="https://yourshop.com/product"></div>
+          </div>
         </div>
         <div style="margin-top:.75rem;display:flex;align-items:center;gap:.75rem">
           <label style="font-size:.8125rem;font-weight:500;display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="mpProdStock" checked> In Stock</label>
         </div>
         <div style="margin-top:1rem">
-          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Product Image <span style="text-transform:none;font-weight:400">(or use Image URL above)</span></label>
+          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Product Image</label>
           <div class="upload-zone" style="padding:1rem;margin-bottom:0" onclick="document.getElementById('mpProdFile').click()" id="mpProdImgZone">
             <div id="mpProdImgPreview"></div>
             <p style="font-size:.75rem;margin:0">Click to upload product image</p>
@@ -2410,10 +2433,17 @@ function renderProducts(){
   let h='';
   mpProducts.forEach(p=>{
     const cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
+    const isDirect=(p.sell_mode||'direct')==='direct';
+    const typeBadgeClass=isDirect?'mp-type-direct':'mp-type-external';
+    const typeBadgeText=isDirect?'Direct':'External';
     h+='<div class="mp-prod-card">';
-    h+='<div class="mp-prod-img"><div class="mp-prod-ph">📦</div></div>';
+    if(p.image_url){
+      h+='<div class="mp-prod-img"><img src="'+esc(p.image_url)+'" alt="'+esc(p.name)+'"></div>';
+    }else{
+      h+='<div class="mp-prod-img" data-prodid="'+p.id+'"><div class="mp-prod-ph">📦</div></div>';
+    }
     h+='<div class="mp-prod-body">';
-    h+='<div class="mp-prod-cat">'+esc(cat)+'</div>';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem"><div class="mp-prod-cat" style="margin-bottom:0">'+esc(cat)+'</div><span class="mp-type-badge '+typeBadgeClass+'">'+typeBadgeText+'</span></div>';
     h+='<div class="mp-prod-name">'+esc(p.name)+'</div>';
     h+='<div class="mp-prod-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
     h+='<div class="mp-prod-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
@@ -2423,25 +2453,33 @@ function renderProducts(){
     h+='</div></div></div>';
   });
   grid.innerHTML=h;
-  // Load product images async
+  // Load product images async (for cards without image_url)
   loadProductImages();
 }
 
 async function loadProductImages(){
-  const ids=mpProducts.map(p=>p.id);
-  if(!ids.length) return;
-  const{data:media}=await SB.from('media').select('*').in('product_id',ids);
+  // Only load media for products that don't already have image_url rendered
+  const idsNeedingMedia=mpProducts.filter(p=>!p.image_url).map(p=>p.id);
+  if(!idsNeedingMedia.length) return;
+  const{data:media}=await SB.from('media').select('*').in('product_id',idsNeedingMedia);
   if(!media) return;
   const grid=document.getElementById('mpProductGrid');
-  const cards=grid.querySelectorAll('.mp-prod-card');
-  mpProducts.forEach((p,i)=>{
-    const m=media.find(mm=>mm.product_id===p.id);
-    if(m&&cards[i]){
-      const imgDiv=cards[i].querySelector('.mp-prod-img');
-      const bucket=m.is_placeholder?'placeholders':'media';
-      imgDiv.innerHTML='<img src="'+SB_URL+'/storage/v1/object/public/'+bucket+'/'+m.storage_path+'" alt="'+esc(p.name)+'">';
+  idsNeedingMedia.forEach(id=>{
+    const m=media.find(mm=>mm.product_id===id);
+    if(m){
+      const imgDiv=grid.querySelector('[data-prodid="'+id+'"]');
+      if(imgDiv){
+        const p=mpProducts.find(pp=>pp.id===id);
+        const bucket=m.is_placeholder?'placeholders':'media';
+        imgDiv.innerHTML='<img src="'+SB_URL+'/storage/v1/object/public/'+bucket+'/'+m.storage_path+'" alt="'+esc(p?p.name:'')+'">';
+      }
     }
   });
+}
+
+function setSellMode(mode){
+  document.querySelectorAll('.mp-sell-opt').forEach(el=>el.classList.toggle('on',el.dataset.sellmode===mode));
+  document.getElementById('mpExternalUrlWrap').style.display=mode==='external'?'block':'none';
 }
 
 function openProductForm(editId){
@@ -2459,8 +2497,8 @@ function openProductForm(editId){
     document.getElementById('mpProdPrice').value=p.price;
     document.getElementById('mpProdCat').value=p.category||'other';
     document.getElementById('mpProdStock').checked=p.in_stock;
-    document.getElementById('mpProdAffUrl').value=p.affiliate_url||'';
-    document.getElementById('mpProdImgUrl').value=p.image_url||'';
+    setSellMode(p.sell_mode||'direct');
+    document.getElementById('mpProdExternalUrl').value=p.external_url||'';
   }else{
     document.getElementById('mpFormTitle').textContent='Add Product';
     document.getElementById('mpEditId').value='';
@@ -2469,8 +2507,8 @@ function openProductForm(editId){
     document.getElementById('mpProdPrice').value='';
     document.getElementById('mpProdCat').value='aftercare';
     document.getElementById('mpProdStock').checked=true;
-    document.getElementById('mpProdAffUrl').value='';
-    document.getElementById('mpProdImgUrl').value='';
+    setSellMode('direct');
+    document.getElementById('mpProdExternalUrl').value='';
   }
   document.getElementById('mpFormOverlay').classList.add('open');
 }
@@ -2498,8 +2536,11 @@ async function saveProduct(){
   const desc=document.getElementById('mpProdDesc').value.trim()||null;
   const cat=document.getElementById('mpProdCat').value;
   const inStock=document.getElementById('mpProdStock').checked;
-  const affUrl=document.getElementById('mpProdAffUrl').value.trim()||null;
-  const imgUrl=document.getElementById('mpProdImgUrl').value.trim()||null;
+  const sellModeEl=document.querySelector('.mp-sell-opt.on');
+  const sellMode=sellModeEl?sellModeEl.dataset.sellmode:'direct';
+  const externalUrl=sellMode==='external'?document.getElementById('mpProdExternalUrl').value.trim()||null:null;
+
+  if(sellMode==='external'&&!externalUrl){alert('Please enter your store URL.');return;}
 
   const btn=document.getElementById('mpFormSubmit');
   btn.disabled=true;btn.textContent='Saving...';
@@ -2508,12 +2549,12 @@ async function saveProduct(){
     let productId=mpEditProductId;
     if(productId){
       // Update existing
-      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,affiliate_url:affUrl,image_url:imgUrl,updated_at:new Date().toISOString()}).eq('id',productId);
+      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,updated_at:new Date().toISOString()}).eq('id',productId);
       if(error) throw error;
     }else{
       // Insert new
       const sortOrder=mpProducts.length;
-      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,affiliate_url:affUrl,image_url:imgUrl,sort_order:sortOrder}).select().single();
+      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,sort_order:sortOrder}).select().single();
       if(error) throw error;
       productId=data.id;
     }
@@ -2601,7 +2642,9 @@ function renderOrders(){
     if(o.shipping_street) h+='<div style="font-size:.75rem;color:var(--t3);margin-bottom:.375rem">📦 '+esc(o.shipping_street)+', '+esc(o.shipping_city||'')+', '+esc(o.shipping_state||'')+' '+esc(o.shipping_zip||'')+'</div>';
     h+='<div style="display:flex;align-items:center;justify-content:space-between">';
     h+='<span class="mp-ord-status '+statusClass+'">'+(o.status||'new')+'</span>';
-    h+='<div class="mp-ord-actions"><select onchange="updateOrderStatus(\''+o.id+'\',this.value)">';
+    h+='<div class="mp-ord-actions">';
+    h+='<a class="mp-contact-btn" href="mailto:'+esc(o.customer_email)+'?subject='+encodeURIComponent('Your order: '+prodName)+'" title="Email buyer">&#9993; Contact</a>';
+    h+='<select onchange="updateOrderStatus(\''+o.id+'\',this.value)">';
     ['new','confirmed','shipped','completed','cancelled'].forEach(s=>{
       h+='<option value="'+s+'"'+(o.status===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>';
     });

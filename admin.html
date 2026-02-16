@@ -226,6 +226,7 @@ a{color:var(--ac);text-decoration:none}
     <div class="tab" data-tab="leads" onclick="showTab('leads')">Leads <span class="badge" id="cntLeads">0</span></div>
     <div class="tab" data-tab="signups" onclick="showTab('signups')">Signups <span class="badge" id="cntSignups">0</span></div>
     <div class="tab" data-tab="reviews" onclick="showTab('reviews')">Reviews <span class="badge" id="cntReviews">0</span></div>
+    <div class="tab" data-tab="curated" onclick="showTab('curated')">Curated <span class="badge" id="cntCurated">0</span></div>
   </div>
 
   <div class="container">
@@ -293,6 +294,24 @@ a{color:var(--ac);text-decoration:none}
         </table>
       </div>
       <div id="reviewEmpty"></div>
+    </div>
+
+    <!-- CURATED PRODUCTS -->
+    <div class="section" id="sec-curated">
+      <div class="toolbar">
+        <input type="text" class="search" id="curatedSearch" placeholder="Search curated products..." oninput="renderCurated()">
+        <button style="padding:.5rem 1rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.8125rem;font-weight:500;cursor:pointer" onclick="openCuratedForm()">+ Add Product</button>
+      </div>
+      <div class="tbl-wrap"><table class="tbl" id="curatedTable">
+        <thead><tr>
+          <th style="width:45%">Product</th>
+          <th style="width:12%">Price</th>
+          <th style="width:15%">Category</th>
+          <th style="width:18%">Affiliate URL</th>
+          <th style="width:10%">Actions</th>
+        </tr></thead>
+        <tbody id="curatedBody"></tbody>
+      </table></div>
     </div>
   </div>
 </div>
@@ -385,6 +404,29 @@ a{color:var(--ac);text-decoration:none}
   </div>
 </div>
 
+<!-- CURATED PRODUCT FORM -->
+<div id="curatedOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);align-items:center;justify-content:center" onclick="if(event.target===this)closeCuratedForm()">
+  <div style="background:var(--card);border-radius:var(--r);padding:1.5rem;max-width:520px;width:calc(100% - 2rem);max-height:90vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 style="font-size:1rem;font-weight:600" id="curFormTitle">Add Curated Product</h3>
+      <button onclick="closeCuratedForm()" style="font-size:1.25rem;color:var(--t3);background:none;border:none;cursor:pointer">&times;</button>
+    </div>
+    <input type="hidden" id="curEditId" value="">
+    <div style="margin-bottom:.75rem"><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Product Name *</label><input type="text" id="curName" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem" placeholder="e.g. DermiMatch Zero Shine"></div>
+    <div style="margin-bottom:.75rem"><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Description</label><textarea id="curDesc" rows="3" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem;resize:vertical" placeholder="Product description..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+      <div><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Price ($)</label><input type="number" id="curPrice" step="0.01" min="0" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem" placeholder="0.00"></div>
+      <div><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Category</label><select id="curCat" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem"><option value="aftercare">Aftercare</option><option value="pigments">Pigments</option><option value="needles">Needles/Cartridges</option><option value="machines">Machines</option><option value="accessories">Accessories</option><option value="training">Training</option><option value="merch">Merch</option><option value="supplies">Supplies</option><option value="other">Other</option></select></div>
+    </div>
+    <div style="margin-bottom:.75rem"><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Affiliate URL *</label><input type="url" id="curAffUrl" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem" placeholder="https://www.amazon.com/dp/...?tag=hairtattoo-20"></div>
+    <div style="margin-bottom:.75rem"><label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;display:block;margin-bottom:.25rem">Image URL</label><input type="url" id="curImgUrl" style="width:100%;padding:.5rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem" placeholder="https://m.media-amazon.com/images/..."></div>
+    <div style="display:flex;gap:.75rem;margin-top:1rem">
+      <button style="flex:1;padding:.625rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:var(--f);font-size:.875rem;font-weight:500;cursor:pointer" id="curFormSubmit" onclick="saveCurated()">Save Product</button>
+      <button style="padding:.625rem 1rem;border:1px solid var(--bd);border-radius:var(--rs);font-family:var(--f);font-size:.875rem;cursor:pointer;background:none" onclick="closeCuratedForm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB=window.supabase.createClient('https://ingorrzmoudvoknhwjjb.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc');
@@ -468,6 +510,7 @@ async function loadAll(){
   renderLeads();
   renderSignups();
   renderReviews();
+  loadCurated();
 }
 
 // ── LISTINGS ──
@@ -893,12 +936,122 @@ async function rejectReview(id,listingId){
   renderReviews();
 }
 
+// ── CURATED PRODUCTS ──
+let curatedProducts = [];
+
+async function loadCurated() {
+  const { data, error } = await SB.from('products').select('*').eq('source', 'curated').order('created_at', { ascending: false });
+  if (error) { console.warn('Curated error:', error); return; }
+  curatedProducts = data || [];
+  document.getElementById('cntCurated').textContent = curatedProducts.length;
+  renderCurated();
+}
+
+function renderCurated() {
+  const q = (document.getElementById('curatedSearch').value || '').toLowerCase();
+  const filtered = curatedProducts.filter(p => !q || p.name.toLowerCase().includes(q) || (p.category || '').includes(q));
+  const tbody = document.getElementById('curatedBody');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--t3)">No curated products yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(p => {
+    const cat = (p.category || 'other').charAt(0).toUpperCase() + (p.category || 'other').slice(1);
+    const imgThumb = p.image_url ? '<img src="' + esc(p.image_url) + '" style="width:32px;height:32px;border-radius:4px;object-fit:cover;margin-right:8px;vertical-align:middle">' : '';
+    return '<tr>' +
+      '<td>' + imgThumb + esc(p.name) + '</td>' +
+      '<td>$' + parseFloat(p.price || 0).toFixed(2) + '</td>' +
+      '<td>' + esc(cat) + '</td>' +
+      '<td style="font-size:.75rem;overflow:hidden;text-overflow:ellipsis">' + esc((p.affiliate_url || '').substring(0, 40)) + '</td>' +
+      '<td><button class="act-btn" onclick="editCurated(\'' + p.id + '\')" title="Edit">✏️</button> <button class="act-btn" onclick="deleteCurated(\'' + p.id + '\')" title="Delete" style="color:#DC2626">🗑</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function openCuratedForm(editId) {
+  document.getElementById('curEditId').value = '';
+  document.getElementById('curName').value = '';
+  document.getElementById('curDesc').value = '';
+  document.getElementById('curPrice').value = '';
+  document.getElementById('curCat').value = 'aftercare';
+  document.getElementById('curAffUrl').value = '';
+  document.getElementById('curImgUrl').value = '';
+  document.getElementById('curFormTitle').textContent = 'Add Curated Product';
+  if (editId) {
+    const p = curatedProducts.find(pp => pp.id === editId);
+    if (p) {
+      document.getElementById('curEditId').value = editId;
+      document.getElementById('curName').value = p.name || '';
+      document.getElementById('curDesc').value = p.description || '';
+      document.getElementById('curPrice').value = p.price || '';
+      document.getElementById('curCat').value = p.category || 'aftercare';
+      document.getElementById('curAffUrl').value = p.affiliate_url || '';
+      document.getElementById('curImgUrl').value = p.image_url || '';
+      document.getElementById('curFormTitle').textContent = 'Edit Curated Product';
+    }
+  }
+  document.getElementById('curatedOverlay').style.display = 'flex';
+}
+
+function closeCuratedForm() {
+  document.getElementById('curatedOverlay').style.display = 'none';
+}
+
+function editCurated(id) { openCuratedForm(id); }
+
+async function saveCurated() {
+  const name = document.getElementById('curName').value.trim();
+  const affUrl = document.getElementById('curAffUrl').value.trim();
+  if (!name) { alert('Product name required.'); return; }
+  if (!affUrl) { alert('Affiliate URL required.'); return; }
+  const btn = document.getElementById('curFormSubmit');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  const slug = name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+  const payload = {
+    name,
+    description: document.getElementById('curDesc').value.trim() || null,
+    price: parseFloat(document.getElementById('curPrice').value) || 0,
+    category: document.getElementById('curCat').value,
+    affiliate_url: affUrl,
+    image_url: document.getElementById('curImgUrl').value.trim() || null,
+    source: 'curated',
+    sell_mode: 'external',
+    in_stock: true,
+    slug
+  };
+  const editId = document.getElementById('curEditId').value;
+  try {
+    if (editId) {
+      const { error } = await SB.from('products').update(payload).eq('id', editId);
+      if (error) throw error;
+    } else {
+      payload.sort_order = curatedProducts.length;
+      const { error } = await SB.from('products').insert(payload);
+      if (error) throw error;
+    }
+    closeCuratedForm();
+    await loadCurated();
+  } catch (e) {
+    console.error('Save curated error:', e);
+    alert('Error saving: ' + e.message);
+  }
+  btn.disabled = false; btn.textContent = 'Save Product';
+}
+
+async function deleteCurated(id) {
+  if (!confirm('Delete this curated product?')) return;
+  try {
+    await SB.from('products').delete().eq('id', id);
+    await loadCurated();
+  } catch (e) { alert('Error: ' + e.message); }
+}
+
 // ── UTILS ──
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 // Close on Escape
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closePanel();closeConfirm();closeMenus();}
+  if(e.key==='Escape'){closePanel();closeConfirm();closeMenus();closeCuratedForm();}
 });
 </script>
 </body>

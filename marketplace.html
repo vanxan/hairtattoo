@@ -119,6 +119,19 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .mk-m-view{padding:14px 20px;background:#fff;color:var(--ac);border:2px solid var(--ac);border-radius:12px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--f);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .15s}
 .mk-m-view:hover{background:var(--al)}
 
+/* SECTION TOGGLE */
+.mk-sec-btn{padding:.5rem 1.25rem;border:2px solid var(--bd);border-radius:var(--rs);font-size:.875rem;font-weight:600;cursor:pointer;background:var(--card);color:var(--t2);transition:all .15s;font-family:var(--f)}
+.mk-sec-btn:hover{border-color:var(--ac);color:var(--ac)}
+.mk-sec-btn.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+
+/* CARD BADGE */
+.mk-card-badge{display:inline-block;font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--al);color:var(--ac);padding:2px 8px;border-radius:4px;margin-top:4px}
+
+/* EXTERNAL SHOP BUTTON */
+.mk-m-ext{flex:1;padding:14px;background:#4A6CF7;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);transition:background .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.mk-m-ext:hover{background:#3B5DE7;color:#fff}
+.mk-m-ext-note{font-size:.6875rem;color:var(--t3);text-align:center;margin-top:6px}
+
 /* ORDER FORM */
 .mk-form{padding:1.5rem}
 .mk-form h3{font-size:1.125rem;font-weight:700;margin-bottom:1rem}
@@ -179,7 +192,7 @@ footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem
 
 <div class="mk-hero">
   <h1>SMP <span>Marketplace</span></h1>
-  <p>Shop aftercare products, equipment, and supplies from trusted SMP professionals.</p>
+  <p>Shop products from SMP professionals and our recommended supplies.</p>
 </div>
 
 <div class="mk-controls">
@@ -197,6 +210,11 @@ footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem
     <button class="mk-cat" data-cat="merch" onclick="selectCat('merch')">Merch</button>
     <button class="mk-cat" data-cat="training" onclick="selectCat('training')">Training</button>
   </div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:1rem 1.5rem 0;display:flex;gap:.5rem">
+  <button class="mk-sec-btn on" data-sec="pros" onclick="selectSection('pros')">From SMP Professionals</button>
+  <button class="mk-sec-btn" data-sec="picks" onclick="selectSection('picks')">Hair Tattoo Picks</button>
 </div>
 
 <div class="mk-grid" id="mkGrid">
@@ -225,6 +243,7 @@ let allProducts=[];
 let allMedia=[];
 let allListings={};
 let currentCat='all';
+let currentSection='pros';
 
 function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function mediaUrl(m){return SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
@@ -260,6 +279,12 @@ function selectCat(cat){
   filterProducts();
 }
 
+function selectSection(sec){
+  currentSection=sec;
+  document.querySelectorAll('.mk-sec-btn').forEach(function(b){b.classList.toggle('on',b.dataset.sec===sec);});
+  filterProducts();
+}
+
 function filterProducts(){
   renderGrid();
 }
@@ -267,6 +292,9 @@ function filterProducts(){
 function renderGrid(){
   var q=document.getElementById('mkSearch').value.trim().toLowerCase();
   var filtered=allProducts.filter(function(p){
+    // Filter by section
+    if(currentSection==='pros'&&p.source==='curated') return false;
+    if(currentSection==='picks'&&p.source!=='curated') return false;
     if(currentCat!=='all'&&p.category!==currentCat) return false;
     if(q&&p.name.toLowerCase().indexOf(q)<0&&(p.description||'').toLowerCase().indexOf(q)<0) return false;
     return true;
@@ -283,7 +311,9 @@ function renderGrid(){
     var imgSrc=prodImg(p);
     var listing=allListings[p.listing_id];
     var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
-    h+='<div class="mk-card" onclick="openModal(\''+p.id+'\')">';
+    var isCurated=p.source==='curated';
+    var slug=p.slug||p.id;
+    h+='<a href="/marketplace/'+slug+'" class="mk-card" onclick="event.preventDefault();openModal(\''+p.id+'\')" style="text-decoration:none;color:inherit">';
     h+='<div class="mk-card-img">';
     if(imgSrc) h+='<img src="'+imgSrc+'" alt="'+esc(p.name)+'" loading="lazy">';
     else h+='<div class="mk-ph">\uD83D\uDCE6</div>';
@@ -291,11 +321,14 @@ function renderGrid(){
     h+='<div class="mk-card-cat">'+esc(cat)+'</div>';
     h+='<div class="mk-card-name">'+esc(p.name)+'</div>';
     h+='<div class="mk-card-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
-    if(listing){
+    if(isCurated){
+      h+='<div class="mk-card-seller">\u2705 Recommended by Hair Tattoo</div>';
+      h+='<div class="mk-card-badge">Hair Tattoo Pick</div>';
+    }else if(listing){
       h+='<div class="mk-card-seller">\uD83D\uDC64 <a href="/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug+'" onclick="event.stopPropagation()">'+esc(listing.name)+'</a></div>';
     }
     h+='<div class="mk-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
-    h+='</div></div>';
+    h+='</div></a>';
   });
   grid.innerHTML=h;
 }
@@ -307,6 +340,7 @@ function openModal(productId){
   var listing=allListings[p.listing_id];
   var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
   var ini=listing?listing.name.split(' ').map(function(w){return w[0];}).slice(0,2).join(''):'';
+  var isCurated=p.source==='curated';
 
   var h='<button class="mk-close" onclick="closeModal()">&times;</button>';
   h+='<div class="mk-m-img">';
@@ -317,21 +351,40 @@ function openModal(productId){
   h+='<h2 class="mk-m-name">'+esc(p.name)+'</h2>';
   h+='<div class="mk-m-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
   if(p.description) h+='<p class="mk-m-desc">'+esc(p.description).replace(/\n/g,'<br>')+'</p>';
-  if(listing){
+
+  // Seller section
+  if(isCurated){
+    h+='<div class="mk-m-seller"><div class="mk-m-seller-av" style="background:var(--ac)">\u2705</div><div class="mk-m-seller-info"><div class="mk-m-seller-name">Recommended by Hair Tattoo</div><div class="mk-m-seller-loc">Curated pick for SMP professionals</div></div></div>';
+  }else if(listing){
     var listingUrl='/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug;
     h+='<div class="mk-m-seller"><div class="mk-m-seller-av">'+ini+'</div><div class="mk-m-seller-info"><div class="mk-m-seller-name">'+esc(listing.name)+'</div><div class="mk-m-seller-loc">\uD83D\uDCCD '+esc(listing.city)+', '+esc(listing.state)+'</div><a href="'+listingUrl+'">View Profile &rarr;</a></div></div>';
   }
+
   h+='<div class="mk-m-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
   h+='<div class="mk-m-actions">';
-  if(p.affiliate_url){
-    h+='<a class="mk-m-amazon" href="'+affUrl(p.affiliate_url)+'" target="_blank" rel="noopener">\uD83D\uDED2 Buy on Amazon</a>';
+
+  if(isCurated){
+    // Curated products: Buy on Amazon button
+    h+='<a class="mk-m-amazon" href="'+affUrl(p.affiliate_url||p.external_url||'')+'" target="_blank" rel="noopener">\uD83D\uDED2 Buy on Amazon &rarr;</a>';
+  }else if(p.sell_mode==='external'&&p.external_url){
+    // Artist products with external store
+    h+='<a class="mk-m-ext" href="'+esc(p.external_url)+'" target="_blank" rel="noopener">\uD83D\uDED2 Shop Now &rarr;</a>';
   }else{
+    // Artist products with direct ordering (default)
     h+='<button class="mk-m-buy" onclick="showOrderForm(\''+p.id+'\')"'+(p.in_stock?'':' disabled')+'>'+(p.in_stock?'\uD83D\uDED2 Order Now':'Out of Stock')+'</button>';
   }
-  if(listing){
+
+  if(!isCurated&&listing){
     h+='<a href="/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug+'" class="mk-m-view">\uD83D\uDC64 Seller</a>';
   }
-  h+='</div></div>';
+  h+='</div>';
+
+  // Redirect note for external sell_mode
+  if(!isCurated&&p.sell_mode==='external'&&p.external_url){
+    h+='<div class="mk-m-ext-note">You\'ll be redirected to the seller\'s store</div>';
+  }
+
+  h+='</div>';
   document.getElementById('mkModal').innerHTML=h;
   document.getElementById('mkOverlay').classList.add('open');
   document.body.style.overflow='hidden';
