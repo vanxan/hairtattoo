@@ -1,8 +1,7 @@
 {
   "version": 1,
-  "include": ["/near-me/*/*", "/*"],
+  "include": ["/*"],
   "exclude": [
-    "/near-me/*/index.html",
     "/index.html",
     "/dashboard.html",
     "/signup.html",
@@ -20,6 +19,7 @@
     "/_redirects",
     "/assets/*",
     "/near-me/index.html",
+    "/near-me/*/index.html",
     "/*.css",
     "/*.js",
     "/*.png",
