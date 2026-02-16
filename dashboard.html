@@ -248,6 +248,10 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .pro-banner-active h3{font-size:.875rem;font-weight:700;color:#059669}
 .pro-banner-active p{font-size:.8125rem;color:#047857}
 
+/* SIDEBAR DIVIDER */
+.sb-divider{padding:.75rem 1.25rem .375rem;font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);border-top:1px solid var(--bd);margin-top:.5rem}
+.sb-divider span{color:#7C3AED}
+
 /* SIDEBAR UPGRADE LINK */
 .sb-upgrade{display:flex;align-items:center;gap:.625rem;padding:.625rem 1.25rem;margin:.5rem .75rem;font-size:.8125rem;font-weight:600;color:#7C3AED;background:linear-gradient(135deg,#F3E8FF,#EDE9FE);border:1px solid #DDD6FE;border-radius:var(--rs);cursor:pointer;transition:all .15s}
 .sb-upgrade:hover{background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border-color:#C4B5FD}
@@ -443,6 +447,8 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       Upgrade to Pro
     </a>
+
+    <!-- FREE FEATURES -->
     <a class="sb-link on" data-tab="overview" onclick="showTab('overview')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Overview
@@ -460,11 +466,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Posts
     </a>
-    <a class="sb-link" data-tab="linkpage" onclick="showTab('linkpage')" id="sbLinkPage">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      Link Page
-      <span class="sb-pro">PRO</span>
-    </a>
     <a class="sb-link" data-tab="reviews" onclick="showTab('reviews')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       Reviews
@@ -477,9 +478,24 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Settings
     </a>
-    <a class="sb-link" data-tab="booking" onclick="showTab('booking')">
+
+    <!-- PRO FEATURES DIVIDER -->
+    <div class="sb-divider"><span>Pro Features</span></div>
+
+    <a class="sb-link sb-lock" data-tab="booking" onclick="showTab('booking')" id="sbBooking">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Booking
+      <span class="sb-pro">PRO</span>
+    </a>
+    <a class="sb-link sb-lock" data-tab="smsleads" onclick="showTab('smsleads')" id="sbSmsLeads">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      SMS Leads
+      <span class="sb-pro">PRO</span>
+    </a>
+    <a class="sb-link sb-lock" data-tab="linkpage" onclick="showTab('linkpage')" id="sbLinkPage">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      Link Page
+      <span class="sb-pro">PRO</span>
     </a>
     <a class="sb-link sb-lock" data-tab="marketplace" onclick="showTab('marketplace')" id="sbMarketplace">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -532,14 +548,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <!-- TAB 2: LEADS -->
     <div id="dtab-leads" class="dtab">
       <h2>Leads</h2>
-      <div class="sms-banner" id="smsBanner">
-        <div class="sms-banner-icon">📱</div>
-        <div class="sms-banner-text">
-          <strong>Get instant SMS notifications for new leads</strong>
-          <span>Pro members receive real-time text alerts when a new lead comes in. Never miss a client again.</span>
-        </div>
-        <button class="btn-upgrade" style="font-size:.75rem;padding:.375rem .875rem" onclick="upgradeToPro()">Upgrade</button>
-      </div>
+      <!-- SMS leads moved to dedicated Pro tab -->
       <div class="leads-layout">
         <div class="leads-list">
           <div class="leads-filters">
@@ -764,6 +773,17 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <!-- TAB 7: BOOKING -->
     <div id="dtab-booking" class="dtab">
       <h2>Booking</h2>
+
+      <!-- Pro gate -->
+      <div id="bookingGate" class="mp-gate" style="display:none">
+        <div style="font-size:2.5rem;margin-bottom:.75rem">📅</div>
+        <h3>Booking & Calendar</h3>
+        <p>Set up online booking, connect external scheduling tools, and sync with Google Calendar, Apple Calendar, or Outlook. Let clients book directly from your listing.</p>
+        <button class="gate-upgrade-btn" onclick="upgradeToPro()">Upgrade to Pro &mdash; $29/mo</button>
+      </div>
+
+      <!-- Pro content -->
+      <div id="bookingContent" style="display:none">
       <div class="booking-stat" id="bookingStat">
         <div>
           <div class="stat-label">Booking Clicks This Month</div>
@@ -771,7 +791,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         </div>
       </div>
 
-      <div class="booking-setup" id="bookingContent">
+      <div class="booking-setup" id="bookingSetup">
         <h3>Booking Method</h3>
         <div class="booking-type" id="bookingTypeInline">
           <div class="bt-option on" data-type="message" onclick="selectBookingTypeInline('message')">
@@ -805,6 +825,47 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       </div>
 
       <!-- Promote section moved to persistent top banner -->
+      </div><!-- /bookingContent -->
+    </div>
+
+    <!-- TAB: SMS LEADS -->
+    <div id="dtab-smsleads" class="dtab">
+      <h2>SMS Leads</h2>
+
+      <!-- Pro gate -->
+      <div id="smsGate" class="mp-gate">
+        <div style="font-size:2.5rem;margin-bottom:.75rem">📱</div>
+        <h3>Instant SMS Lead Alerts</h3>
+        <p>Get a text message the moment a new lead contacts you through your listing. Never miss a potential client again — respond faster and book more appointments.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin:1.25rem 0;max-width:400px">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Instant text alerts</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Lead name &amp; message</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Unlimited SMS included</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Works with any phone</div>
+        </div>
+        <button class="gate-upgrade-btn" onclick="upgradeToPro()">Upgrade to Pro &mdash; $29/mo</button>
+      </div>
+
+      <!-- Pro content -->
+      <div id="smsContent" style="display:none">
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem">
+          <h3 style="font-size:.875rem;font-weight:600;margin-bottom:.75rem">Your SMS Number</h3>
+          <p style="font-size:.8125rem;color:var(--t2);margin-bottom:1rem">Enter your mobile number to receive instant text alerts when new leads come in.</p>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input type="tel" id="smsPhone" placeholder="(555) 123-4567" style="flex:1;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;background:#fff">
+            <button class="btn btn-p btn-sm" onclick="saveSmsPhone()">Save</button>
+          </div>
+          <span class="saved" id="smsSaved" style="display:none;font-size:.8125rem;color:var(--ac);font-weight:500;margin-top:.5rem">Saved!</span>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem">
+          <h3 style="font-size:.875rem;font-weight:600;margin-bottom:.5rem">How it works</h3>
+          <div style="font-size:.8125rem;color:var(--t2);line-height:1.7">
+            <p>1. A potential client fills out your contact form</p>
+            <p>2. You get an instant text with their name, phone, and message</p>
+            <p>3. Reply directly from your phone to book the appointment</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TAB: LINK PAGE -->
@@ -1256,6 +1317,7 @@ async function loadDashboard(user){
   renderLinkPage();
   renderMarketplace();
   loadReferrals();
+  renderSmsLeads();
   renderPromoSection();
   checkUpgradeSuccess();
   console.log('[DASH] Dashboard fully loaded!');
@@ -2135,6 +2197,20 @@ async function confirmArchive(){
 
 // ══════════════════════ TAB 7: BOOKING ══════════════════════
 function renderBooking(){
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const gate=document.getElementById('bookingGate');
+  const content=document.getElementById('bookingContent');
+  const sbBooking=document.getElementById('sbBooking');
+  if(!isPro){
+    gate.style.display='';
+    content.style.display='none';
+    if(sbBooking) sbBooking.classList.add('sb-lock');
+    return;
+  }
+  gate.style.display='none';
+  content.style.display='';
+  if(sbBooking) sbBooking.classList.remove('sb-lock');
+
   const type=myListing.booking_type||'message';
   const url=myListing.booking_url||'';
 
@@ -2844,28 +2920,60 @@ function renderPromoSection(){
   const activeBanner=document.getElementById('proBannerActive');
   // Sidebar upgrade CTA
   const sbUpgrade=document.getElementById('sbUpgrade');
-  // SMS banner in leads
-  const smsBanner=document.getElementById('smsBanner');
+
+  // Pro sidebar links
+  const proSbLinks=['sbBooking','sbSmsLeads','sbLinkPage','sbMarketplace','sbReferrals'];
 
   if(isPro){
     // Hide free upgrade CTAs
     if(freeBanner) freeBanner.style.display='none';
     if(sbUpgrade) sbUpgrade.style.display='none';
-    if(smsBanner) smsBanner.style.display='none';
     // Show active banner
     if(activeBanner){
       activeBanner.style.display='flex';
       const exp=new Date(myListing.promoted_until);
       document.getElementById('bannerExpiry').textContent='Renews '+exp.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     }
+    // Unlock all pro sidebar links
+    proSbLinks.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('sb-lock');});
   }else{
     // Show free upgrade CTAs everywhere
     if(freeBanner) freeBanner.style.display='flex';
     if(sbUpgrade) sbUpgrade.style.display='flex';
-    if(smsBanner) smsBanner.style.display='flex';
     // Hide active banner
     if(activeBanner) activeBanner.style.display='none';
+    // Lock all pro sidebar links
+    proSbLinks.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('sb-lock');});
   }
+}
+
+function renderSmsLeads(){
+  if(!myListing) return;
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const gate=document.getElementById('smsGate');
+  const content=document.getElementById('smsContent');
+  const sbSms=document.getElementById('sbSmsLeads');
+  if(!isPro){
+    gate.style.display='';
+    content.style.display='none';
+    if(sbSms) sbSms.classList.add('sb-lock');
+    return;
+  }
+  gate.style.display='none';
+  content.style.display='';
+  if(sbSms) sbSms.classList.remove('sb-lock');
+  // Populate saved phone
+  const phone=myListing.sms_phone||'';
+  document.getElementById('smsPhone').value=phone;
+}
+
+async function saveSmsPhone(){
+  const phone=document.getElementById('smsPhone').value.trim();
+  await SB.from('listings').update({sms_phone:phone||null}).eq('id',myListing.id);
+  myListing.sms_phone=phone||null;
+  const msg=document.getElementById('smsSaved');
+  msg.style.display='block';
+  setTimeout(()=>{msg.style.display='none';},2500);
 }
 
 async function upgradeToPro(){
