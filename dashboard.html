@@ -2542,6 +2542,7 @@ async function saveProduct(){
 
   if(sellMode==='external'&&!externalUrl){alert('Please enter your store URL.');return;}
 
+  const slug=name.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-');
   const btn=document.getElementById('mpFormSubmit');
   btn.disabled=true;btn.textContent='Saving...';
 
@@ -2549,12 +2550,12 @@ async function saveProduct(){
     let productId=mpEditProductId;
     if(productId){
       // Update existing
-      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,updated_at:new Date().toISOString()}).eq('id',productId);
+      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,slug,updated_at:new Date().toISOString()}).eq('id',productId);
       if(error) throw error;
     }else{
       // Insert new
       const sortOrder=mpProducts.length;
-      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,sort_order:sortOrder}).select().single();
+      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,source:'artist',sell_mode:sellMode,external_url:externalUrl,slug,sort_order:sortOrder}).select().single();
       if(error) throw error;
       productId=data.id;
     }
