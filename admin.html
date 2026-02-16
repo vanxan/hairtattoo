@@ -227,6 +227,7 @@ a{color:var(--ac);text-decoration:none}
     <div class="tab" data-tab="signups" onclick="showTab('signups')">Signups <span class="badge" id="cntSignups">0</span></div>
     <div class="tab" data-tab="reviews" onclick="showTab('reviews')">Reviews <span class="badge" id="cntReviews">0</span></div>
     <div class="tab" data-tab="curated" onclick="showTab('curated')">Curated <span class="badge" id="cntCurated">0</span></div>
+    <div class="tab" data-tab="referrals" onclick="showTab('referrals')">Referrals <span class="badge" id="cntReferrals">0</span></div>
   </div>
 
   <div class="container">
@@ -311,6 +312,38 @@ a{color:var(--ac);text-decoration:none}
           <th style="width:10%">Actions</th>
         </tr></thead>
         <tbody id="curatedBody"></tbody>
+      </table></div>
+    </div>
+
+    <!-- REFERRALS -->
+    <div class="section" id="sec-referrals">
+      <div class="toolbar">
+        <div class="filters" id="refFilters">
+          <span class="chip active" data-filter="all" onclick="setRefFilter(this)">All</span>
+          <span class="chip" data-filter="clicked" onclick="setRefFilter(this)">Clicked</span>
+          <span class="chip" data-filter="signed_up" onclick="setRefFilter(this)">Signed Up</span>
+          <span class="chip" data-filter="converted" onclick="setRefFilter(this)">Converted</span>
+          <span class="chip" data-filter="paid" onclick="setRefFilter(this)">Paid Out</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1rem" id="refAdminStats">
+        <div class="stat"><div class="stat-label">Total Referrals</div><div class="stat-num" id="sRefTotal">0</div></div>
+        <div class="stat"><div class="stat-label">Conversions</div><div class="stat-num" id="sRefConv">0</div></div>
+        <div class="stat"><div class="stat-label">Commissions Owed</div><div class="stat-num" id="sRefOwed">$0</div></div>
+        <div class="stat"><div class="stat-label">Total Paid Out</div><div class="stat-num" id="sRefPaid">$0</div></div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl" id="refTable">
+        <thead><tr>
+          <th style="width:10%">Date</th>
+          <th style="width:18%">Referrer</th>
+          <th style="width:18%">Referred</th>
+          <th style="width:10%">Status</th>
+          <th style="width:10%">Commission %</th>
+          <th style="width:12%">Commission $</th>
+          <th style="width:10%">Paid</th>
+          <th style="width:12%">Actions</th>
+        </tr></thead>
+        <tbody id="refBody"></tbody>
       </table></div>
     </div>
   </div>
@@ -511,6 +544,7 @@ async function loadAll(){
   renderSignups();
   renderReviews();
   loadCurated();
+  loadReferrals();
 }
 
 // ── LISTINGS ──
@@ -934,6 +968,82 @@ async function rejectReview(id,listingId){
   }
   document.getElementById('cntReviews').textContent=allReviews.filter(x=>x.status==='pending').length;
   renderReviews();
+}
+
+// ── REFERRALS ──
+let allReferrals = [];
+let refFilter = 'all';
+
+async function loadReferrals() {
+  const { data, error } = await SB.from('referrals').select('*,referrer:referrer_listing_id(name),referred:referred_listing_id(name)').order('created_at', { ascending: false });
+  if (error) { console.warn('Referrals error:', error); return; }
+  allReferrals = data || [];
+  document.getElementById('cntReferrals').textContent = allReferrals.length;
+
+  // Stats
+  const convs = allReferrals.filter(r => r.status === 'converted');
+  const paid = allReferrals.filter(r => r.paid_out);
+  const owed = convs.filter(r => !r.paid_out).reduce((s, r) => s + (parseFloat(r.commission_amount) || 0), 0);
+  const paidTotal = paid.reduce((s, r) => s + (parseFloat(r.commission_amount) || 0), 0);
+  document.getElementById('sRefTotal').textContent = allReferrals.length;
+  document.getElementById('sRefConv').textContent = convs.length;
+  document.getElementById('sRefOwed').textContent = '$' + owed.toFixed(2);
+  document.getElementById('sRefPaid').textContent = '$' + paidTotal.toFixed(2);
+
+  renderReferrals();
+}
+
+function setRefFilter(el) {
+  document.querySelectorAll('#refFilters .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  refFilter = el.dataset.filter;
+  renderReferrals();
+}
+
+function renderReferrals() {
+  let filtered = allReferrals;
+  if (refFilter === 'paid') filtered = allReferrals.filter(r => r.paid_out);
+  else if (refFilter !== 'all') filtered = allReferrals.filter(r => r.status === refFilter);
+
+  const tbody = document.getElementById('refBody');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--t3)">No referrals found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(r => {
+    const date = new Date(r.created_at).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
+    const referrer = r.referrer ? esc(r.referrer.name) : esc(r.referral_code);
+    const referred = r.referred ? esc(r.referred.name) : '<span style="color:var(--t3)">—</span>';
+    const statusMap = { clicked: 'b-hidden', signed_up: 'b-read', converted: 'b-active' };
+    const statusLabel = { clicked: 'Clicked', signed_up: 'Signed Up', converted: 'Converted' };
+    const badge = '<span class="badge-s ' + (statusMap[r.status] || 'b-hidden') + '">' + (statusLabel[r.status] || r.status) + '</span>';
+    const comm = r.commission_amount ? '$' + parseFloat(r.commission_amount).toFixed(2) : '—';
+    const paidBadge = r.paid_out ? '<span class="badge-s b-active">Paid</span>' : (r.status === 'converted' ? '<span class="badge-s b-pending">Unpaid</span>' : '—');
+    let actions = '';
+    if (r.status === 'signed_up') {
+      actions += '<button class="act-btn" onclick="markConverted(\'' + r.id + '\')" title="Mark Converted" style="font-size:.625rem;width:auto;padding:0 .5rem">Convert</button>';
+    }
+    if (r.status === 'converted' && !r.paid_out) {
+      actions += '<button class="act-btn" onclick="markPaid(\'' + r.id + '\')" title="Mark Paid" style="font-size:.625rem;width:auto;padding:0 .5rem;margin-left:4px">Pay</button>';
+    }
+    if (!actions) actions = '—';
+    return '<tr><td>' + date + '</td><td>' + referrer + '</td><td>' + referred + '</td><td>' + badge + '</td><td>' + (r.commission_percent || 20) + '%</td><td style="font-weight:600">' + comm + '</td><td>' + paidBadge + '</td><td>' + actions + '</td></tr>';
+  }).join('');
+}
+
+async function markConverted(id) {
+  const commissionAmount = prompt('Enter commission amount in $:', '0.00');
+  if (commissionAmount === null) return;
+  const { error } = await SB.from('referrals').update({ status: 'converted', converted_at: new Date().toISOString(), commission_amount: parseFloat(commissionAmount) || 0 }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  await loadReferrals();
+}
+
+async function markPaid(id) {
+  if (!confirm('Mark this referral commission as paid?')) return;
+  const { error } = await SB.from('referrals').update({ paid_out: true, paid_at: new Date().toISOString() }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  await loadReferrals();
 }
 
 // ── CURATED PRODUCTS ──

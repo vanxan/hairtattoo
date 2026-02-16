@@ -3,7 +3,7 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 
 const RESERVED = new Set([
   'near-me','signup','dashboard','admin','contact','privacy','terms',
-  'for-professionals','review','marketplace','sitemap.xml','robots.txt','favicon.ico',
+  'for-professionals','review','marketplace','join','sitemap.xml','robots.txt','favicon.ico',
   '_headers','_redirects','api','functions'
 ]);
 

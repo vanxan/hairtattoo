@@ -422,6 +422,22 @@ async function publish(){
     return;
   }
 
+  // Track referral signup if ht_ref cookie exists
+  try{
+    const refMatch=document.cookie.match(/(?:^|;\s*)ht_ref=([^;]+)/);
+    if(refMatch&&result.data&&result.data.length){
+      const refCode=decodeURIComponent(refMatch[1]);
+      const newListingId=result.data[0].id;
+      // Update the most recent clicked referral for this code to signed_up
+      const{data:refs}=await SB.from('referrals').select('id').eq('referral_code',refCode).eq('status','clicked').order('created_at',{ascending:false}).limit(1);
+      if(refs&&refs.length){
+        await SB.from('referrals').update({referred_listing_id:newListingId,status:'signed_up'}).eq('id',refs[0].id);
+      }
+      // Clear the cookie
+      document.cookie='ht_ref=;Path=/;Max-Age=0';
+    }
+  }catch(e){console.error('Referral tracking error:',e);}
+
   goStep(4);
 }
 

@@ -451,6 +451,11 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       Shop
       <span class="sb-pro">PRO</span>
     </a>
+    <a class="sb-link sb-lock" data-tab="referrals" onclick="showTab('referrals')" id="sbReferrals">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      Referrals
+      <span class="sb-pro">PRO</span>
+    </a>
   </aside>
 
   <main class="dash-main">
@@ -902,6 +907,60 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       </div>
     </div>
 
+    <!-- TAB 9: REFERRALS -->
+    <div id="dtab-referrals" class="dtab">
+      <h2>Referrals</h2>
+
+      <!-- Pro gate -->
+      <div class="mp-gate" id="refGate">
+        <h3>Earn with Referrals</h3>
+        <p>Upgrade to Pro to earn 20% commission when you refer other SMP artists who upgrade to Pro.</p>
+        <span class="upgrade-banner btn-pro">Pro Feature</span>
+      </div>
+
+      <!-- Pro content -->
+      <div id="refContent" style="display:none">
+
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem">
+          <h3 style="font-size:.875rem;font-weight:600;margin-bottom:.75rem">Your Referral Link</h3>
+          <div style="display:flex;align-items:center;gap:.5rem;background:var(--bg);padding:.75rem;border-radius:var(--rs)">
+            <span style="flex:1;font-size:.8125rem;font-weight:500;color:var(--ac);word-break:break-all" id="refLink"></span>
+            <button class="btn btn-p btn-sm" onclick="copyRefLink()" id="refCopyBtn">Copy</button>
+          </div>
+          <p style="font-size:.75rem;color:var(--t3);margin-top:.5rem">Share this link with SMP artists. You earn 20% commission when they upgrade to Pro.</p>
+        </div>
+
+        <div class="stats" id="refStats">
+          <div class="stat"><div class="stat-label">LINK CLICKS</div><div class="stat-val" id="refClicks">0</div></div>
+          <div class="stat"><div class="stat-label">SIGNUPS</div><div class="stat-val" id="refSignups">0</div></div>
+          <div class="stat"><div class="stat-label">CONVERSIONS</div><div class="stat-val" id="refConversions">0</div></div>
+          <div class="stat"><div class="stat-label">EARNINGS</div><div class="stat-val" id="refEarnings">$0</div></div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:1.25rem">
+          <table style="width:100%;border-collapse:collapse;font-size:.8125rem">
+            <thead><tr style="background:var(--bg)">
+              <th style="text-align:left;padding:.625rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;color:var(--t3)">Date</th>
+              <th style="text-align:left;padding:.625rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;color:var(--t3)">Referred Artist</th>
+              <th style="text-align:left;padding:.625rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;color:var(--t3)">Status</th>
+              <th style="text-align:right;padding:.625rem .75rem;font-size:.6875rem;font-weight:600;text-transform:uppercase;color:var(--t3)">Commission</th>
+            </tr></thead>
+            <tbody id="refTableBody"><tr><td colspan="4" style="padding:2rem;text-align:center;color:var(--t3)">No referrals yet. Share your link to get started!</td></tr></tbody>
+          </table>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem">
+          <h3 style="font-size:.875rem;font-weight:600;margin-bottom:.75rem">Earnings</h3>
+          <div style="display:flex;gap:1.5rem;margin-bottom:.75rem">
+            <div><div style="font-size:.6875rem;text-transform:uppercase;color:var(--t3);font-weight:600">Total Earned</div><div style="font-size:1.25rem;font-weight:700" id="refTotalEarned">$0.00</div></div>
+            <div><div style="font-size:.6875rem;text-transform:uppercase;color:var(--t3);font-weight:600">Pending Payout</div><div style="font-size:1.25rem;font-weight:700;color:var(--ac)" id="refPending">$0.00</div></div>
+          </div>
+          <p style="font-size:.75rem;color:var(--t3)">Payouts are processed monthly. Contact us if you have questions about your earnings.</p>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Product add/edit form overlay -->
     <div class="mp-form-overlay" id="mpFormOverlay" onclick="if(event.target===this)closeProductForm()">
       <div class="mp-form-card">
@@ -1158,6 +1217,7 @@ async function loadDashboard(user){
   renderCoverImage();
   renderLinkPage();
   renderMarketplace();
+  loadReferrals();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -2667,6 +2727,71 @@ async function updateOrderStatus(orderId,status){
     else{badge.style.display='none';}
     renderOrders();
   }catch(e){console.error('[MP] Status update error:',e);alert('Error updating order status.');}
+}
+
+// ══════════════════════ REFERRALS ══════════════════════
+let myReferrals=[];
+
+async function loadReferrals(){
+  const isPro=myListing&&myListing.promoted&&myListing.promoted_until&&new Date(myListing.promoted_until)>new Date();
+  if(!isPro||!myListing) return;
+  document.getElementById('refGate').style.display='none';
+  document.getElementById('refContent').style.display='block';
+  document.getElementById('sbReferrals').classList.remove('sb-lock');
+
+  // Set referral link
+  const code=myListing.referral_code||myListing.slug;
+  document.getElementById('refLink').textContent='hairtattoo.com/join?ref='+code;
+
+  // Ensure referral_code is set on listing
+  if(!myListing.referral_code&&myListing.slug){
+    await SB.from('listings').update({referral_code:myListing.slug}).eq('id',myListing.id);
+    myListing.referral_code=myListing.slug;
+  }
+
+  // Fetch referrals
+  const{data}=await SB.from('referrals').select('*,referred:referred_listing_id(name)').eq('referrer_listing_id',myListing.id).order('created_at',{ascending:false});
+  myReferrals=data||[];
+
+  // Stats
+  const clicks=myReferrals.length;
+  const signups=myReferrals.filter(r=>r.status==='signed_up'||r.status==='converted').length;
+  const conversions=myReferrals.filter(r=>r.status==='converted').length;
+  const earnings=myReferrals.filter(r=>r.status==='converted').reduce((sum,r)=>sum+(parseFloat(r.commission_amount)||0),0);
+
+  document.getElementById('refClicks').textContent=clicks;
+  document.getElementById('refSignups').textContent=signups;
+  document.getElementById('refConversions').textContent=conversions;
+  document.getElementById('refEarnings').textContent='$'+earnings.toFixed(0);
+
+  // Table
+  const tbody=document.getElementById('refTableBody');
+  if(!myReferrals.length){
+    tbody.innerHTML='<tr><td colspan="4" style="padding:2rem;text-align:center;color:var(--t3)">No referrals yet. Share your link to get started!</td></tr>';
+  }else{
+    tbody.innerHTML=myReferrals.map(r=>{
+      const date=new Date(r.created_at).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+      const name=r.referred&&r.referred.name?esc(r.referred.name):'<span style="color:var(--t3)">Pending signup</span>';
+      const statusMap={clicked:{label:'Clicked',bg:'var(--bg)',color:'var(--t3)'},signed_up:{label:'Signed Up',bg:'#DBEAFE',color:'#1D4ED8'},converted:{label:'Converted',bg:'#D1FAE5',color:'#065F46'}};
+      const st=statusMap[r.status]||statusMap.clicked;
+      const comm=r.status==='converted'&&r.commission_amount?'$'+parseFloat(r.commission_amount).toFixed(2):'—';
+      return '<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.625rem .75rem">'+date+'</td><td style="padding:.625rem .75rem">'+name+'</td><td style="padding:.625rem .75rem"><span style="display:inline-block;padding:.125rem .5rem;border-radius:4px;font-size:.6875rem;font-weight:600;background:'+st.bg+';color:'+st.color+'">'+st.label+'</span></td><td style="padding:.625rem .75rem;text-align:right;font-weight:600">'+comm+'</td></tr>';
+    }).join('');
+  }
+
+  // Earnings
+  const totalEarned=myReferrals.filter(r=>r.status==='converted').reduce((s,r)=>s+(parseFloat(r.commission_amount)||0),0);
+  const pending=myReferrals.filter(r=>r.status==='converted'&&!r.paid_out).reduce((s,r)=>s+(parseFloat(r.commission_amount)||0),0);
+  document.getElementById('refTotalEarned').textContent='$'+totalEarned.toFixed(2);
+  document.getElementById('refPending').textContent='$'+pending.toFixed(2);
+}
+
+function copyRefLink(){
+  const code=myListing.referral_code||myListing.slug;
+  navigator.clipboard.writeText('https://hairtattoo.com/join?ref='+code);
+  const btn=document.getElementById('refCopyBtn');
+  btn.textContent='Copied!';
+  setTimeout(()=>{btn.textContent='Copy';},2000);
 }
 
 // ══════════════════════ TAB SWITCHING ══════════════════════
