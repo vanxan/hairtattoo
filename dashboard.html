@@ -702,15 +702,26 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         </div>
       </div>
 
-      <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.25rem">
+      <div id="coverImageSection" style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.25rem;position:relative;overflow:hidden">
+        <!-- Pro lock overlay -->
+        <div id="coverProLock" style="display:none;position:absolute;inset:0;z-index:2;background:rgba(250,250,248,.85);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;gap:.75rem;padding:1rem">
+          <div style="text-align:center">
+            <span class="sb-pro" style="font-size:.6875rem;padding:.1875rem .625rem">PRO</span>
+            <p style="font-size:.8125rem;font-weight:600;color:var(--text);margin-top:.375rem">Cover images are a Pro feature</p>
+            <button class="gate-upgrade-btn" style="margin-top:.5rem;font-size:.75rem;padding:.375rem 1rem" onclick="upgradeToPro()">Upgrade to Pro</button>
+          </div>
+        </div>
         <div id="coverImagePreview" style="width:120px;height:90px;border-radius:8px;background:var(--al);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--t3);flex-shrink:0;overflow:hidden">
           <span id="coverPlaceholderText">No cover</span>
         </div>
         <div style="flex:1">
-          <div style="font-size:.875rem;font-weight:600;margin-bottom:.375rem">Cover Image</div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.375rem">
+            <div style="font-size:.875rem;font-weight:600">Cover Image</div>
+            <span class="sb-pro" style="font-size:.5625rem">PRO</span>
+          </div>
           <p style="font-size:.75rem;color:var(--t2);margin-bottom:.625rem">Used as the card thumbnail in search results and city pages. Recommended: 800×600px landscape.</p>
           <div style="display:flex;gap:.5rem">
-            <button class="btn btn-o btn-sm" onclick="document.getElementById('coverImageInput').click()">Upload Cover</button>
+            <button class="btn btn-o btn-sm" id="coverUploadBtn" onclick="document.getElementById('coverImageInput').click()">Upload Cover</button>
             <button class="btn btn-sm" id="removeCoverImage" style="color:#DC2626;border:1px solid #FCA5A5;display:none" onclick="removeCoverImage()">Remove</button>
             <input type="file" id="coverImageInput" style="display:none" accept="image/jpeg,image/png,image/webp" onchange="uploadCoverImage(this.files)">
           </div>
@@ -2136,6 +2147,14 @@ async function removeProfilePhoto(){
 }
 
 function renderCoverImage(){
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const lock=document.getElementById('coverProLock');
+  if(!isPro){
+    lock.style.display='flex';
+  }else{
+    lock.style.display='none';
+  }
+
   const preview=document.getElementById('coverImagePreview');
   const placeholder=document.getElementById('coverPlaceholderText');
   const removeBtn=document.getElementById('removeCoverImage');
