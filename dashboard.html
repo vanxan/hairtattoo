@@ -296,6 +296,57 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .lp-order-btn{width:22px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;color:var(--t3);font-size:.625rem;transition:all .1s;background:none;border:none;padding:0}
 .lp-order-btn:hover{background:var(--al);color:var(--ac)}
 
+/* MARKETPLACE / SHOP TAB */
+.mp-subtabs{display:flex;gap:0;border-bottom:1px solid var(--bd);margin-bottom:1.25rem}
+.mp-subtab{padding:.625rem 1rem;font-size:.8125rem;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--f)}
+.mp-subtab:hover{color:var(--text)}
+.mp-subtab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
+.mp-panel{display:none}.mp-panel.active{display:block}
+.mp-empty{text-align:center;padding:3rem 1.5rem;color:var(--t3);font-size:.875rem}
+.mp-prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
+.mp-prod-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:box-shadow .15s}
+.mp-prod-card:hover{box-shadow:var(--sh)}
+.mp-prod-img{aspect-ratio:1;overflow:hidden;background:#F5F4F0;position:relative}
+.mp-prod-img img{width:100%;height:100%;object-fit:cover}
+.mp-prod-img .mp-prod-ph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:2rem;color:#ccc}
+.mp-prod-body{padding:.75rem}
+.mp-prod-name{font-size:.875rem;font-weight:600;margin-bottom:.25rem}
+.mp-prod-price{font-size:.9375rem;font-weight:700;color:var(--ac);margin-bottom:.25rem}
+.mp-prod-cat{font-size:.6875rem;text-transform:uppercase;color:var(--t3);letter-spacing:.04em;margin-bottom:.375rem}
+.mp-prod-stock{font-size:.6875rem;display:flex;align-items:center;gap:4px}
+.mp-prod-stock .dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+.mp-prod-actions{display:flex;gap:.375rem;margin-top:.5rem}
+.mp-prod-actions button{flex:1;padding:.375rem;font-size:.75rem;border-radius:6px;cursor:pointer;font-family:var(--f);transition:all .15s}
+.mp-prod-edit{background:var(--al);color:var(--ac);border:none}
+.mp-prod-edit:hover{background:var(--ac);color:#fff}
+.mp-prod-del{background:none;border:1px solid var(--bd);color:var(--t3)}
+.mp-prod-del:hover{border-color:#DC2626;color:#DC2626;background:#FEE2E2}
+.mp-add-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.625rem 1.25rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f);margin-bottom:1.25rem}
+.mp-add-btn:hover{background:var(--ac2)}
+.mp-form-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);align-items:center;justify-content:center}
+.mp-form-overlay.open{display:flex}
+.mp-form-card{background:var(--card);border-radius:var(--r);width:90vw;max-width:520px;max-height:85vh;overflow-y:auto;padding:1.5rem}
+.mp-form-card h3{font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.mp-form-card h3 button{font-size:1.25rem;color:var(--t3);cursor:pointer;background:none;border:none}
+.mp-ord-list{display:flex;flex-direction:column;gap:.75rem}
+.mp-ord-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;transition:box-shadow .15s}
+.mp-ord-card:hover{box-shadow:var(--sh)}
+.mp-ord-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
+.mp-ord-product{font-weight:600;font-size:.875rem}
+.mp-ord-date{font-size:.6875rem;color:var(--t3)}
+.mp-ord-customer{font-size:.8125rem;color:var(--t2);margin-bottom:.375rem}
+.mp-ord-status{display:inline-flex;font-size:.625rem;padding:.125rem .375rem;border-radius:4px;font-weight:600;text-transform:uppercase}
+.os-new{background:#DBEAFE;color:#1D4ED8}
+.os-confirmed{background:#D1FAE5;color:#065F46}
+.os-shipped{background:#FEF3C7;color:#92400E}
+.os-completed{background:var(--al);color:var(--ac)}
+.os-cancelled{background:#FEE2E2;color:#DC2626}
+.mp-ord-actions{display:flex;gap:.375rem;margin-top:.5rem}
+.mp-ord-actions select{padding:.375rem .5rem;font-size:.75rem;border:1px solid var(--bd);border-radius:6px;font-family:var(--f);background:#fff;cursor:pointer}
+.mp-gate{text-align:center;padding:3rem 1.5rem}
+.mp-gate h3{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.mp-gate p{font-size:.8125rem;color:var(--t2);line-height:1.5;max-width:360px;margin:0 auto .75rem}
+
 /* MOBILE MENU TOGGLE */
 .mob-toggle{display:none;position:fixed;bottom:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;z-index:99;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
@@ -384,9 +435,9 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Booking
     </a>
-    <a class="sb-link sb-lock" data-tab="marketplace" onclick="showTab('marketplace')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      Marketplace
+    <a class="sb-link sb-lock" data-tab="marketplace" onclick="showTab('marketplace')" id="sbMarketplace">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Shop
       <span class="sb-pro">PRO</span>
     </a>
   </aside>
@@ -801,22 +852,81 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       </div>
     </div>
 
-    <!-- TAB 8: MARKETPLACE -->
+    <!-- TAB 8: MARKETPLACE / SHOP -->
     <div id="dtab-marketplace" class="dtab">
-      <h2>SMP Marketplace</h2>
-      <div class="upgrade-banner">
-        <h3>SMP Products Marketplace</h3>
-        <p>Buy and sell SMP equipment, pigments, needles, and supplies directly with other professionals. Available exclusively for Pro members.</p>
-        <button class="btn-pro" disabled>Upgrade to Pro — Coming Soon</button>
+      <h2>Shop</h2>
+
+      <!-- Pro gate -->
+      <div id="mpGate" class="mp-gate">
+        <span class="sb-pro" style="font-size:.75rem;padding:.25rem .75rem">PRO FEATURE</span>
+        <h3 style="margin-top:.75rem">Sell Products on Your Page</h3>
+        <p>List aftercare products, equipment, and supplies directly on your listing page. Customers can browse and order right from your profile.</p>
+        <button class="btn btn-p" onclick="location.href='/for-professionals.html'">Upgrade to Pro</button>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;opacity:.5">
-          <h4 style="font-size:.8125rem;font-weight:600;margin-bottom:.25rem">Buy Equipment</h4>
-          <p style="font-size:.75rem;color:var(--t2)">Browse SMP machines, pigments, needles, and aftercare products from trusted sellers.</p>
+
+      <!-- Pro content -->
+      <div id="mpContent" style="display:none">
+        <div class="mp-subtabs">
+          <button class="mp-subtab on" data-mptab="products" onclick="showMpTab('products')">Products</button>
+          <button class="mp-subtab" data-mptab="orders" onclick="showMpTab('orders')">Orders <span id="mpOrderBadge" style="display:none;background:#DC2626;color:#fff;font-size:.5625rem;padding:1px 5px;border-radius:10px;margin-left:4px"></span></button>
         </div>
-        <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;opacity:.5">
-          <h4 style="font-size:.8125rem;font-weight:600;margin-bottom:.25rem">Sell Your Products</h4>
-          <p style="font-size:.75rem;color:var(--t2)">List your products for sale to the Hair Tattoo community of SMP professionals.</p>
+
+        <!-- Products panel -->
+        <div class="mp-panel active" id="mpPanelProducts">
+          <button class="mp-add-btn" onclick="openProductForm()">+ Add Product</button>
+          <div id="mpProductGrid" class="mp-prod-grid"></div>
+        </div>
+
+        <!-- Orders panel -->
+        <div class="mp-panel" id="mpPanelOrders">
+          <div class="date-range" style="margin-bottom:1rem">
+            <button class="dr-btn on" data-ofilter="all" onclick="filterOrders('all')">All</button>
+            <button class="dr-btn" data-ofilter="new" onclick="filterOrders('new')">New</button>
+            <button class="dr-btn" data-ofilter="confirmed" onclick="filterOrders('confirmed')">Confirmed</button>
+            <button class="dr-btn" data-ofilter="shipped" onclick="filterOrders('shipped')">Shipped</button>
+            <button class="dr-btn" data-ofilter="completed" onclick="filterOrders('completed')">Completed</button>
+          </div>
+          <div id="mpOrdersList" class="mp-ord-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product add/edit form overlay -->
+    <div class="mp-form-overlay" id="mpFormOverlay" onclick="if(event.target===this)closeProductForm()">
+      <div class="mp-form-card">
+        <h3><span id="mpFormTitle">Add Product</span> <button onclick="closeProductForm()">&times;</button></h3>
+        <input type="hidden" id="mpEditId" value="">
+        <div class="form-grid full">
+          <div class="fg"><label>Product Name *</label><input type="text" id="mpProdName" placeholder="e.g. Signature Aftercare Kit"></div>
+          <div class="fg"><label>Description</label><textarea id="mpProdDesc" placeholder="Describe the product..." rows="3"></textarea></div>
+        </div>
+        <div class="form-grid" style="margin-top:.75rem">
+          <div class="fg"><label>Price ($) *</label><input type="number" id="mpProdPrice" min="0" step="0.01" placeholder="0.00"></div>
+          <div class="fg"><label>Category</label>
+            <select id="mpProdCat">
+              <option value="aftercare">Aftercare</option>
+              <option value="equipment">Equipment</option>
+              <option value="pigments">Pigments</option>
+              <option value="needles">Needles</option>
+              <option value="supplies">Supplies</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:.75rem;display:flex;align-items:center;gap:.75rem">
+          <label style="font-size:.8125rem;font-weight:500;display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="mpProdStock" checked> In Stock</label>
+        </div>
+        <div style="margin-top:1rem">
+          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Product Image</label>
+          <div class="upload-zone" style="padding:1rem;margin-bottom:0" onclick="document.getElementById('mpProdFile').click()" id="mpProdImgZone">
+            <div id="mpProdImgPreview"></div>
+            <p style="font-size:.75rem;margin:0">Click to upload product image</p>
+          </div>
+          <input type="file" id="mpProdFile" accept=".jpg,.jpeg,.png,.webp,.heic" style="display:none" onchange="previewProductImage(this)">
+        </div>
+        <div class="form-actions" style="margin-top:1rem">
+          <button class="btn btn-p" id="mpFormSubmit" onclick="saveProduct()">Save Product</button>
+          <button class="btn btn-o" onclick="closeProductForm()">Cancel</button>
         </div>
       </div>
     </div>
@@ -1018,6 +1128,7 @@ async function loadDashboard(user){
   renderProfilePhoto();
   renderCoverImage();
   renderLinkPage();
+  renderMarketplace();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -2244,6 +2355,264 @@ async function loadLpStats(){
   container.innerHTML=h;
 }
 
+// ══════════════════════ MARKETPLACE / SHOP TAB ══════════════════════
+let mpProducts=[];
+let mpOrders=[];
+let mpOrderFilter='all';
+let mpProductFile=null;
+let mpEditProductId=null;
+
+function renderMarketplace(){
+  if(!myListing) return;
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const sbLink=document.getElementById('sbMarketplace');
+
+  if(!isPro){
+    if(sbLink) sbLink.classList.add('sb-lock');
+    document.getElementById('mpGate').style.display='';
+    document.getElementById('mpContent').style.display='none';
+    return;
+  }
+
+  if(sbLink) sbLink.classList.remove('sb-lock');
+  document.getElementById('mpGate').style.display='none';
+  document.getElementById('mpContent').style.display='';
+
+  loadProducts();
+  loadOrders();
+}
+
+function showMpTab(name){
+  document.querySelectorAll('.mp-subtab').forEach(b=>b.classList.toggle('on',b.dataset.mptab===name));
+  document.querySelectorAll('.mp-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mpPanel'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');
+}
+
+async function loadProducts(){
+  const{data,error}=await SB.from('products').select('*').eq('listing_id',myListing.id).order('sort_order',{ascending:true});
+  if(error){console.warn('[MP] Products error:',error);return;}
+  mpProducts=data||[];
+  renderProducts();
+}
+
+function renderProducts(){
+  const grid=document.getElementById('mpProductGrid');
+  if(!mpProducts.length){
+    grid.innerHTML='<div class="mp-empty" style="grid-column:1/-1">No products yet. Add your first product to start selling on your listing page.</div>';
+    return;
+  }
+  let h='';
+  mpProducts.forEach(p=>{
+    const cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
+    h+='<div class="mp-prod-card">';
+    h+='<div class="mp-prod-img"><div class="mp-prod-ph">📦</div></div>';
+    h+='<div class="mp-prod-body">';
+    h+='<div class="mp-prod-cat">'+esc(cat)+'</div>';
+    h+='<div class="mp-prod-name">'+esc(p.name)+'</div>';
+    h+='<div class="mp-prod-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
+    h+='<div class="mp-prod-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
+    h+='<div class="mp-prod-actions">';
+    h+='<button class="mp-prod-edit" onclick="editProduct(\''+p.id+'\')">Edit</button>';
+    h+='<button class="mp-prod-del" onclick="deleteProduct(\''+p.id+'\')">Delete</button>';
+    h+='</div></div></div>';
+  });
+  grid.innerHTML=h;
+  // Load product images async
+  loadProductImages();
+}
+
+async function loadProductImages(){
+  const ids=mpProducts.map(p=>p.id);
+  if(!ids.length) return;
+  const{data:media}=await SB.from('media').select('*').in('product_id',ids);
+  if(!media) return;
+  const grid=document.getElementById('mpProductGrid');
+  const cards=grid.querySelectorAll('.mp-prod-card');
+  mpProducts.forEach((p,i)=>{
+    const m=media.find(mm=>mm.product_id===p.id);
+    if(m&&cards[i]){
+      const imgDiv=cards[i].querySelector('.mp-prod-img');
+      const bucket=m.is_placeholder?'placeholders':'media';
+      imgDiv.innerHTML='<img src="'+SB_URL+'/storage/v1/object/public/'+bucket+'/'+m.storage_path+'" alt="'+esc(p.name)+'">';
+    }
+  });
+}
+
+function openProductForm(editId){
+  mpEditProductId=editId||null;
+  mpProductFile=null;
+  document.getElementById('mpProdImgPreview').innerHTML='';
+  document.getElementById('mpProdFile').value='';
+  if(editId){
+    const p=mpProducts.find(pp=>pp.id===editId);
+    if(!p) return;
+    document.getElementById('mpFormTitle').textContent='Edit Product';
+    document.getElementById('mpEditId').value=editId;
+    document.getElementById('mpProdName').value=p.name;
+    document.getElementById('mpProdDesc').value=p.description||'';
+    document.getElementById('mpProdPrice').value=p.price;
+    document.getElementById('mpProdCat').value=p.category||'other';
+    document.getElementById('mpProdStock').checked=p.in_stock;
+  }else{
+    document.getElementById('mpFormTitle').textContent='Add Product';
+    document.getElementById('mpEditId').value='';
+    document.getElementById('mpProdName').value='';
+    document.getElementById('mpProdDesc').value='';
+    document.getElementById('mpProdPrice').value='';
+    document.getElementById('mpProdCat').value='aftercare';
+    document.getElementById('mpProdStock').checked=true;
+  }
+  document.getElementById('mpFormOverlay').classList.add('open');
+}
+
+function editProduct(id){openProductForm(id);}
+
+function closeProductForm(){
+  document.getElementById('mpFormOverlay').classList.remove('open');
+  mpProductFile=null;
+  mpEditProductId=null;
+}
+
+function previewProductImage(input){
+  if(!input.files||!input.files[0]) return;
+  mpProductFile=input.files[0];
+  const url=URL.createObjectURL(mpProductFile);
+  document.getElementById('mpProdImgPreview').innerHTML='<img src="'+url+'" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:.5rem">';
+}
+
+async function saveProduct(){
+  const name=document.getElementById('mpProdName').value.trim();
+  const price=parseFloat(document.getElementById('mpProdPrice').value);
+  if(!name){alert('Please enter a product name.');return;}
+  if(isNaN(price)||price<0){alert('Please enter a valid price.');return;}
+  const desc=document.getElementById('mpProdDesc').value.trim()||null;
+  const cat=document.getElementById('mpProdCat').value;
+  const inStock=document.getElementById('mpProdStock').checked;
+
+  const btn=document.getElementById('mpFormSubmit');
+  btn.disabled=true;btn.textContent='Saving...';
+
+  try{
+    let productId=mpEditProductId;
+    if(productId){
+      // Update existing
+      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,updated_at:new Date().toISOString()}).eq('id',productId);
+      if(error) throw error;
+    }else{
+      // Insert new
+      const sortOrder=mpProducts.length;
+      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,sort_order:sortOrder}).select().single();
+      if(error) throw error;
+      productId=data.id;
+    }
+
+    // Upload image if selected
+    if(mpProductFile){
+      const safe=mpProductFile.name.replace(/[^a-zA-Z0-9._-]/g,'');
+      const path='listings/'+myListing.id+'/products/'+productId+'/'+Date.now()+'-'+safe;
+      const{error:ue}=await SB.storage.from('media').upload(path,mpProductFile);
+      if(!ue){
+        // Delete old product media if editing
+        if(mpEditProductId){
+          const{data:oldMedia}=await SB.from('media').select('id,storage_path').eq('product_id',productId);
+          if(oldMedia){
+            for(const om of oldMedia){
+              await SB.storage.from('media').remove([om.storage_path]);
+              await SB.from('media').delete().eq('id',om.id);
+            }
+          }
+        }
+        // Insert new media record
+        await SB.from('media').insert({listing_id:myListing.id,product_id:productId,storage_path:path,type:'image',is_placeholder:false,is_profile:false,is_cover:false,sort_order:0});
+      }else{console.warn('[MP] Image upload error:',ue);}
+    }
+
+    closeProductForm();
+    await loadProducts();
+  }catch(e){
+    console.error('[MP] Save error:',e);
+    alert('Error saving product. Please try again.');
+  }
+  btn.disabled=false;btn.textContent='Save Product';
+}
+
+async function deleteProduct(id){
+  if(!confirm('Delete this product? This cannot be undone.')) return;
+  try{
+    // Delete associated media
+    const{data:media}=await SB.from('media').select('id,storage_path').eq('product_id',id);
+    if(media){
+      for(const m of media){
+        await SB.storage.from('media').remove([m.storage_path]);
+        await SB.from('media').delete().eq('id',m.id);
+      }
+    }
+    await SB.from('products').delete().eq('id',id);
+    await loadProducts();
+  }catch(e){console.error('[MP] Delete error:',e);alert('Error deleting product.');}
+}
+
+async function loadOrders(){
+  const{data,error}=await SB.from('product_orders').select('*,products(name,price)').eq('listing_id',myListing.id).order('created_at',{ascending:false});
+  if(error){console.warn('[MP] Orders error:',error);return;}
+  mpOrders=data||[];
+  // Count new orders for badge
+  const newCount=mpOrders.filter(o=>o.status==='new').length;
+  const badge=document.getElementById('mpOrderBadge');
+  if(newCount>0){badge.textContent=newCount;badge.style.display='inline';}
+  else{badge.style.display='none';}
+  renderOrders();
+}
+
+function filterOrders(status){
+  mpOrderFilter=status;
+  document.querySelectorAll('[data-ofilter]').forEach(b=>b.classList.toggle('on',b.dataset.ofilter===status));
+  renderOrders();
+}
+
+function renderOrders(){
+  const list=document.getElementById('mpOrdersList');
+  const filtered=mpOrderFilter==='all'?mpOrders:mpOrders.filter(o=>o.status===mpOrderFilter);
+  if(!filtered.length){
+    list.innerHTML='<div class="mp-empty">'+(mpOrderFilter==='all'?'No orders yet. Orders will appear here when customers purchase your products.':'No '+mpOrderFilter+' orders.')+'</div>';
+    return;
+  }
+  let h='';
+  filtered.forEach(o=>{
+    const prodName=o.products?o.products.name:'Product';
+    const prodPrice=o.products?'$'+parseFloat(o.products.price).toFixed(2):'';
+    const date=new Date(o.created_at).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+    const statusClass='os-'+(o.status||'new');
+    h+='<div class="mp-ord-card">';
+    h+='<div class="mp-ord-header"><div><span class="mp-ord-product">'+esc(prodName)+'</span> <span style="color:var(--ac);font-weight:700;font-size:.8125rem">'+prodPrice+'</span></div><span class="mp-ord-date">'+date+'</span></div>';
+    h+='<div class="mp-ord-customer">'+esc(o.customer_name)+' &middot; '+esc(o.customer_email)+(o.customer_phone?' &middot; '+esc(o.customer_phone):'')+'</div>';
+    if(o.shipping_street) h+='<div style="font-size:.75rem;color:var(--t3);margin-bottom:.375rem">📦 '+esc(o.shipping_street)+', '+esc(o.shipping_city||'')+', '+esc(o.shipping_state||'')+' '+esc(o.shipping_zip||'')+'</div>';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between">';
+    h+='<span class="mp-ord-status '+statusClass+'">'+(o.status||'new')+'</span>';
+    h+='<div class="mp-ord-actions"><select onchange="updateOrderStatus(\''+o.id+'\',this.value)">';
+    ['new','confirmed','shipped','completed','cancelled'].forEach(s=>{
+      h+='<option value="'+s+'"'+(o.status===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>';
+    });
+    h+='</select></div>';
+    h+='</div></div>';
+  });
+  list.innerHTML=h;
+}
+
+async function updateOrderStatus(orderId,status){
+  try{
+    await SB.from('product_orders').update({status,updated_at:new Date().toISOString()}).eq('id',orderId);
+    const ord=mpOrders.find(o=>o.id===orderId);
+    if(ord) ord.status=status;
+    // Update badge
+    const newCount=mpOrders.filter(o=>o.status==='new').length;
+    const badge=document.getElementById('mpOrderBadge');
+    if(newCount>0){badge.textContent=newCount;badge.style.display='inline';}
+    else{badge.style.display='none';}
+    renderOrders();
+  }catch(e){console.error('[MP] Status update error:',e);alert('Error updating order status.');}
+}
+
 // ══════════════════════ TAB SWITCHING ══════════════════════
 function showTab(name){
   document.querySelectorAll('.sb-link').forEach(el=>{
@@ -2257,6 +2626,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     document.getElementById('confirmOverlay').style.display='none';
     closePostCompose();
+    closeProductForm();
   }
 });
 </script>

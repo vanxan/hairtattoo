@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SMP Marketplace — Shop Aftercare, Equipment & Supplies | Hair Tattoo</title>
+<meta name="description" content="Browse SMP aftercare products, equipment, pigments, and supplies from trusted scalp micropigmentation professionals across the US.">
+<link rel="canonical" href="https://hairtattoo.com/marketplace.html">
+<meta property="og:title" content="SMP Marketplace — Hair Tattoo">
+<meta property="og:description" content="Shop aftercare, equipment & supplies from SMP professionals.">
+<meta property="og:url" content="https://hairtattoo.com/marketplace.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF8;--card:#FFF;--text:#1A1A1A;--t2:#555;--t3:#888;--ac:#2D5A3D;--ac2:#3A7350;--al:#E8F0EB;--bd:#E8E6E3;--sh:0 1px 3px rgba(0,0,0,.06);--r:12px;--rs:8px;--f:'DM Sans',system-ui,sans-serif;--se:'Instrument Serif',Georgia,serif}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100vh}
+a{color:var(--ac);text-decoration:none}
+button{font-family:var(--f);cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:var(--f);font-size:1rem}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 1rem}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--se);font-size:1.5rem;color:var(--text);letter-spacing:-.02em}
+.logo span{color:var(--ac)}
+.nav-r{display:flex;gap:.75rem;align-items:center}
+.nav-r a{color:var(--t2);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-r a:hover{color:var(--ac)}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;background:var(--ac);color:#fff;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}
+.nav-dd-btn:hover{background:var(--ac2)}
+.nav-dd-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.nav-dd.open .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:200px;padding:.375rem;z-index:110}
+.nav-dd.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.5rem .75rem;border-radius:6px;font-size:.875rem;color:var(--text);font-weight:400;transition:background .1s}
+.nav-menu a:hover{background:var(--al)}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--rs);transition:background .15s}
+.hamburger:hover{background:var(--al)}
+.hamburger svg{width:20px;height:20px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+.mob-menu{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.4)}
+.mob-menu.open{display:block}
+.mob-drawer{position:fixed;top:0;right:-300px;width:280px;max-width:85vw;height:100vh;background:var(--card);z-index:151;box-shadow:-4px 0 20px rgba(0,0,0,.1);transition:right .3s ease;padding:1.25rem}
+.mob-menu.open .mob-drawer{right:0}
+.mob-drawer .mob-close{float:right;font-size:1.25rem;color:var(--t3);cursor:pointer;line-height:1}
+.mob-drawer nav{clear:both;padding-top:1rem}
+.mob-drawer nav a{display:block;padding:.75rem 0;font-size:1rem;color:var(--text);border-bottom:1px solid var(--bd)}
+.mob-drawer nav a:last-child{border-bottom:none}
+@media(max-width:768px){.nav-r .hm,.nav-dd{display:none}.hamburger{display:flex}}
+
+/* HERO */
+.mk-hero{padding:3rem 1.5rem;text-align:center;background:linear-gradient(135deg,#F0F5F0,#FAFAF8);border-bottom:1px solid var(--bd)}
+.mk-hero h1{font-family:var(--se);font-size:2.5rem;margin-bottom:.5rem}
+.mk-hero h1 span{color:var(--ac)}
+.mk-hero p{color:var(--t2);font-size:1.0625rem;max-width:520px;margin:0 auto}
+@media(max-width:480px){.mk-hero h1{font-size:1.75rem}.mk-hero p{font-size:.9375rem}}
+
+/* CONTROLS */
+.mk-controls{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 0;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.mk-search{flex:1;min-width:200px;position:relative}
+.mk-search input{width:100%;padding:.625rem 1rem .625rem 2.5rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;outline:none;background:var(--card);transition:border-color .15s}
+.mk-search input:focus{border-color:var(--ac)}
+.mk-search svg{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--t3);fill:none;stroke-width:2}
+.mk-cats{display:flex;gap:.375rem;flex-wrap:wrap}
+.mk-cat{padding:.375rem .875rem;border:1px solid var(--bd);border-radius:20px;font-size:.8125rem;font-weight:500;cursor:pointer;background:var(--card);color:var(--t2);transition:all .15s}
+.mk-cat:hover{border-color:var(--ac);color:var(--ac)}
+.mk-cat.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+
+/* PRODUCT GRID */
+.mk-grid{max-width:1200px;margin:0 auto;padding:1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.mk-card{background:var(--card);border:1px solid var(--bd);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s}
+.mk-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+.mk-card-img{aspect-ratio:1;overflow:hidden;background:#F5F4F0}
+.mk-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.mk-card:hover .mk-card-img img{transform:scale(1.05)}
+.mk-card-img .mk-ph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#ccc;font-size:2.5rem}
+.mk-card-body{padding:14px}
+.mk-card-cat{font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:4px}
+.mk-card-name{font-size:.9375rem;font-weight:600;margin-bottom:4px;line-height:1.3}
+.mk-card-price{font-size:1.0625rem;font-weight:700;color:var(--ac);margin-bottom:6px}
+.mk-card-seller{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--t3)}
+.mk-card-seller a{color:var(--ac);font-weight:500}
+.mk-stock{display:flex;align-items:center;gap:4px;font-size:.6875rem;color:var(--t3);margin-top:4px}
+.mk-stock .dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+.mk-empty{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--t3)}
+.mk-loading{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--t3)}
+@media(max-width:900px){.mk-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.mk-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:1rem}.mk-card-body{padding:10px}.mk-card-name{font-size:.8125rem}}
+
+/* PRODUCT MODAL */
+.mk-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:1rem}
+.mk-overlay.open{display:flex}
+.mk-modal{background:#fff;border-radius:20px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.mk-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.05);border:none;font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;color:#555;transition:background .15s}
+.mk-close:hover{background:rgba(0,0,0,.1)}
+.mk-m-img{width:100%;aspect-ratio:1;overflow:hidden;border-radius:20px 20px 0 0}
+.mk-m-img img{width:100%;height:100%;object-fit:cover}
+.mk-m-img .mk-ph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#F5F4F0;color:#ccc;font-size:4rem}
+.mk-m-body{padding:1.5rem}
+.mk-m-cat{font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:6px}
+.mk-m-name{font-size:1.5rem;font-weight:700;margin-bottom:8px;font-family:var(--se)}
+.mk-m-price{font-size:1.375rem;font-weight:700;color:var(--ac);margin-bottom:12px}
+.mk-m-desc{font-size:.9375rem;color:#555;line-height:1.65;margin-bottom:1.25rem}
+.mk-m-seller{display:flex;align-items:center;gap:.75rem;padding:1rem;background:#F5F4F0;border-radius:12px;margin-bottom:1.25rem}
+.mk-m-seller-av{width:40px;height:40px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8125rem;font-weight:700;flex-shrink:0}
+.mk-m-seller-info{flex:1}
+.mk-m-seller-name{font-weight:600;font-size:.875rem}
+.mk-m-seller-loc{font-size:.75rem;color:var(--t3)}
+.mk-m-seller a{font-size:.75rem;font-weight:600}
+.mk-m-stock{display:flex;align-items:center;gap:8px;font-size:.875rem;margin-bottom:1.5rem}
+.mk-m-stock .dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.mk-m-actions{display:flex;gap:.75rem}
+.mk-m-buy{flex:1;padding:14px;background:var(--ac);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);transition:background .15s}
+.mk-m-buy:hover{background:var(--ac2)}
+.mk-m-buy:disabled{opacity:.5;cursor:not-allowed}
+.mk-m-view{padding:14px 20px;background:#fff;color:var(--ac);border:2px solid var(--ac);border-radius:12px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--f);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .15s}
+.mk-m-view:hover{background:var(--al)}
+
+/* ORDER FORM */
+.mk-form{padding:1.5rem}
+.mk-form h3{font-size:1.125rem;font-weight:700;margin-bottom:1rem}
+.mk-form .sf-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.mk-form label{display:block;font-size:.75rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem}
+.mk-form input{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:8px;font-size:.875rem;outline:none;font-family:var(--f);transition:border-color .15s}
+.mk-form input:focus{border-color:var(--ac)}
+.mk-form-submit{width:100%;padding:14px;background:var(--ac);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);margin-top:.75rem;transition:background .15s}
+.mk-form-submit:hover{background:var(--ac2)}
+.mk-form-submit:disabled{opacity:.5;cursor:not-allowed}
+.mk-success{text-align:center;padding:3rem 1.5rem}
+.mk-success h3{font-size:1.25rem;color:var(--ac);margin-bottom:.5rem}
+.mk-success p{color:#555;font-size:.9375rem;margin-bottom:1.5rem}
+@media(max-width:640px){.mk-form .sf-row{grid-template-columns:1fr}}
+
+/* FOOTER */
+footer{background:#1A1A1A;color:#bbb;padding:2.5rem 1.5rem;margin-top:auto;font-size:.875rem}
+footer h4{font-family:var(--se);font-size:1.25rem;color:#fff;margin-bottom:.5rem}
+.fc-wrap{margin-top:1.25rem}.fc-label{font-size:.6875rem;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:.5rem}
+.fc-grid{display:flex;flex-wrap:wrap;gap:.25rem .5rem}
+.fc-link{font-size:.75rem;color:#888;transition:color .15s}.fc-link:hover{color:#fff}
+.f-links{display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
+.f-links a{font-size:.75rem;color:#888;transition:color .15s}.f-links a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="logo" title="Hair Tattoo - SMP Artist Directory">Hair<span>Tattoo</span></a>
+  <div class="nav-r">
+    <a href="/near-me/" class="hm" title="Find SMP artists near you">Near Me</a>
+    <a href="/marketplace.html" class="hm" style="color:var(--ac);font-weight:600" title="SMP Marketplace">Marketplace</a>
+    <div class="nav-dd" id="navDD">
+      <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-menu">
+        <a href="/for-professionals">Why Hair Tattoo?</a>
+        <a href="/signup.html">Create Your Page</a>
+        <div class="nm-sep"></div>
+        <a href="/signup.html?mode=signin">Sign In</a>
+      </div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobMenu').classList.add('open')"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</div></nav>
+<div class="mob-menu" id="mobMenu" onclick="this.classList.remove('open')">
+  <div class="mob-drawer" onclick="event.stopPropagation()">
+    <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
+    <nav>
+      <a href="/near-me/">Near Me</a>
+      <a href="/marketplace.html">Marketplace</a>
+      <a href="/for-professionals">Why Hair Tattoo?</a>
+      <a href="/signup.html?mode=signin">Sign In</a>
+      <a href="/signup.html">Create Your Page</a>
+    </nav>
+  </div>
+</div>
+<script>document.addEventListener('click',function(e){var d=document.getElementById('navDD');if(d&&!d.contains(e.target))d.classList.remove('open')})</script>
+
+<div class="mk-hero">
+  <h1>SMP <span>Marketplace</span></h1>
+  <p>Shop aftercare products, equipment, and supplies from trusted SMP professionals.</p>
+</div>
+
+<div class="mk-controls">
+  <div class="mk-search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="mkSearch" placeholder="Search products..." oninput="filterProducts()">
+  </div>
+  <div class="mk-cats">
+    <button class="mk-cat on" data-cat="all" onclick="selectCat('all')">All</button>
+    <button class="mk-cat" data-cat="aftercare" onclick="selectCat('aftercare')">Aftercare</button>
+    <button class="mk-cat" data-cat="equipment" onclick="selectCat('equipment')">Equipment</button>
+    <button class="mk-cat" data-cat="pigments" onclick="selectCat('pigments')">Pigments</button>
+    <button class="mk-cat" data-cat="needles" onclick="selectCat('needles')">Needles</button>
+    <button class="mk-cat" data-cat="supplies" onclick="selectCat('supplies')">Supplies</button>
+  </div>
+</div>
+
+<div class="mk-grid" id="mkGrid">
+  <div class="mk-loading">Loading products...</div>
+</div>
+
+<div class="mk-overlay" id="mkOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="mk-modal" id="mkModal"></div>
+</div>
+
+<footer>
+  <h4>Hair<span style="color:var(--al)">Tattoo</span></h4>
+  <p>The #1 directory for scalp micropigmentation professionals in the United States.</p>
+  <p style="font-size:.75rem;margin-top:1rem">&copy; 2025 Hair Tattoo. All rights reserved.</p>
+  <div class="f-links">
+    <a href="/for-professionals">For Professionals</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+const SB_URL='https://ingorrzmoudvoknhwjjb.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc';
+const hdrs={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+
+let allProducts=[];
+let allMedia=[];
+let allListings={};
+let currentCat='all';
+
+function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function mediaUrl(m){return SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
+function citySlug(city,state){return city.toLowerCase().replace(/\s+/g,'-')+'-'+state.toLowerCase();}
+
+async function init(){
+  try{
+    // Fetch all products with their listing info
+    const[prodRes,mediaRes]=await Promise.all([
+      fetch(SB_URL+'/rest/v1/products?select=*,listings(id,name,slug,city,state)&in_stock=eq.true&order=created_at.desc',{headers:hdrs}),
+      fetch(SB_URL+'/rest/v1/media?product_id=not.is.null&select=*',{headers:hdrs})
+    ]);
+    allProducts=await prodRes.json()||[];
+    allMedia=await mediaRes.json()||[];
+
+    // Index listings by product
+    allProducts.forEach(function(p){
+      if(p.listings) allListings[p.listing_id]=p.listings;
+    });
+
+    renderGrid();
+  }catch(e){
+    console.error('Init error:',e);
+    document.getElementById('mkGrid').innerHTML='<div class="mk-empty">Unable to load products. Please try again later.</div>';
+  }
+}
+
+function selectCat(cat){
+  currentCat=cat;
+  document.querySelectorAll('.mk-cat').forEach(function(b){b.classList.toggle('on',b.dataset.cat===cat);});
+  filterProducts();
+}
+
+function filterProducts(){
+  renderGrid();
+}
+
+function renderGrid(){
+  var q=document.getElementById('mkSearch').value.trim().toLowerCase();
+  var filtered=allProducts.filter(function(p){
+    if(currentCat!=='all'&&p.category!==currentCat) return false;
+    if(q&&p.name.toLowerCase().indexOf(q)<0&&(p.description||'').toLowerCase().indexOf(q)<0) return false;
+    return true;
+  });
+
+  var grid=document.getElementById('mkGrid');
+  if(!filtered.length){
+    grid.innerHTML='<div class="mk-empty">No products found'+(q?' for "'+esc(q)+'"':'')+(currentCat!=='all'?' in '+currentCat:'')+'.</div>';
+    return;
+  }
+
+  var h='';
+  filtered.forEach(function(p,i){
+    var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+    var listing=allListings[p.listing_id];
+    var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
+    h+='<div class="mk-card" onclick="openModal(\''+p.id+'\')">';
+    h+='<div class="mk-card-img">';
+    if(m) h+='<img src="'+mediaUrl(m)+'" alt="'+esc(p.name)+'" loading="lazy">';
+    else h+='<div class="mk-ph">\uD83D\uDCE6</div>';
+    h+='</div><div class="mk-card-body">';
+    h+='<div class="mk-card-cat">'+esc(cat)+'</div>';
+    h+='<div class="mk-card-name">'+esc(p.name)+'</div>';
+    h+='<div class="mk-card-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
+    if(listing){
+      h+='<div class="mk-card-seller">\uD83D\uDC64 <a href="/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug+'" onclick="event.stopPropagation()">'+esc(listing.name)+'</a></div>';
+    }
+    h+='<div class="mk-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
+    h+='</div></div>';
+  });
+  grid.innerHTML=h;
+}
+
+function openModal(productId){
+  var p=allProducts.find(function(pp){return pp.id===productId;});
+  if(!p) return;
+  var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+  var listing=allListings[p.listing_id];
+  var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
+  var ini=listing?listing.name.split(' ').map(function(w){return w[0];}).slice(0,2).join(''):'';
+
+  var h='<button class="mk-close" onclick="closeModal()">&times;</button>';
+  h+='<div class="mk-m-img">';
+  if(m) h+='<img src="'+mediaUrl(m)+'" alt="'+esc(p.name)+'">';
+  else h+='<div class="mk-ph">\uD83D\uDCE6</div>';
+  h+='</div><div class="mk-m-body">';
+  h+='<div class="mk-m-cat">'+esc(cat)+'</div>';
+  h+='<h2 class="mk-m-name">'+esc(p.name)+'</h2>';
+  h+='<div class="mk-m-price">$'+parseFloat(p.price).toFixed(2)+'</div>';
+  if(p.description) h+='<p class="mk-m-desc">'+esc(p.description).replace(/\n/g,'<br>')+'</p>';
+  if(listing){
+    var listingUrl='/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug;
+    h+='<div class="mk-m-seller"><div class="mk-m-seller-av">'+ini+'</div><div class="mk-m-seller-info"><div class="mk-m-seller-name">'+esc(listing.name)+'</div><div class="mk-m-seller-loc">\uD83D\uDCCD '+esc(listing.city)+', '+esc(listing.state)+'</div><a href="'+listingUrl+'">View Profile &rarr;</a></div></div>';
+  }
+  h+='<div class="mk-m-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
+  h+='<div class="mk-m-actions">';
+  h+='<button class="mk-m-buy" onclick="showOrderForm(\''+p.id+'\')"'+(p.in_stock?'':' disabled')+'>'+(p.in_stock?'\uD83D\uDED2 Order Now':'Out of Stock')+'</button>';
+  if(listing){
+    h+='<a href="/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug+'" class="mk-m-view">\uD83D\uDC64 Seller</a>';
+  }
+  h+='</div></div>';
+  document.getElementById('mkModal').innerHTML=h;
+  document.getElementById('mkOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('mkOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function showOrderForm(productId){
+  var p=allProducts.find(function(pp){return pp.id===productId;});
+  if(!p) return;
+  var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+  var modal=document.getElementById('mkModal');
+  var h='<button class="mk-close" onclick="closeModal()">&times;</button>';
+  h+='<div class="mk-form">';
+  h+='<h3>\uD83D\uDED2 Order '+esc(p.name)+'</h3>';
+  h+='<div style="background:var(--al);border-radius:8px;padding:.75rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem">';
+  if(m) h+='<img src="'+mediaUrl(m)+'" style="width:48px;height:48px;border-radius:8px;object-fit:cover">';
+  h+='<div><strong>'+esc(p.name)+'</strong><div style="color:var(--ac);font-weight:700">$'+parseFloat(p.price).toFixed(2)+'</div></div></div>';
+  h+='<div class="sf-row"><div><label>Name *</label><input type="text" id="mkName" placeholder="Your full name"></div>';
+  h+='<div><label>Email *</label><input type="email" id="mkEmail" placeholder="your@email.com"></div></div>';
+  h+='<div class="sf-row"><div><label>Phone</label><input type="tel" id="mkPhone" placeholder="(555) 123-4567"></div>';
+  h+='<div><label>Street Address</label><input type="text" id="mkStreet" placeholder="123 Main St"></div></div>';
+  h+='<div class="sf-row"><div><label>City</label><input type="text" id="mkCity" placeholder="City"></div>';
+  h+='<div><label>State</label><input type="text" id="mkState" placeholder="State"></div></div>';
+  h+='<div class="sf-row"><div><label>ZIP Code</label><input type="text" id="mkZip" placeholder="12345"></div><div></div></div>';
+  h+='<button class="mk-form-submit" id="mkSubmitBtn" onclick="submitOrder(\''+p.id+'\')">Place Order</button>';
+  h+='</div>';
+  modal.innerHTML=h;
+}
+
+async function submitOrder(productId){
+  var p=allProducts.find(function(pp){return pp.id===productId;});
+  if(!p) return;
+  var name=document.getElementById('mkName').value.trim();
+  var email=document.getElementById('mkEmail').value.trim();
+  if(!name||!email){alert('Please enter your name and email.');return;}
+  var btn=document.getElementById('mkSubmitBtn');
+  btn.disabled=true;btn.textContent='Placing order...';
+  try{
+    var listing=allListings[p.listing_id];
+    var res=await fetch(SB_URL+'/rest/v1/product_orders',{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({product_id:p.id,listing_id:p.listing_id,customer_name:name,customer_email:email,customer_phone:document.getElementById('mkPhone').value.trim()||null,shipping_street:document.getElementById('mkStreet').value.trim()||null,shipping_city:document.getElementById('mkCity').value.trim()||null,shipping_state:document.getElementById('mkState').value.trim()||null,shipping_zip:document.getElementById('mkZip').value.trim()||null,status:'new'})});
+    if(!res.ok) throw new Error('Order failed');
+    var modal=document.getElementById('mkModal');
+    modal.innerHTML='<button class="mk-close" onclick="closeModal()">&times;</button><div class="mk-success"><div style="font-size:3rem;margin-bottom:.5rem">\u2705</div><h3>Order Placed!</h3><p>'+(listing?esc(listing.name):' The seller')+' has received your order for <strong>'+esc(p.name)+'</strong>. They\'ll be in touch shortly to confirm details and arrange payment.</p><button class="mk-m-buy" onclick="closeModal()">Done</button></div>';
+  }catch(e){console.error(e);alert('Something went wrong. Please try again.');btn.disabled=false;btn.textContent='Place Order';}
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeModal();
+});
+
+init();
+</script>
+</body>
+</html>
