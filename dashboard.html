@@ -913,11 +913,15 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
             </select>
           </div>
         </div>
+        <div class="form-grid full" style="margin-top:.75rem">
+          <div class="fg"><label>Amazon Affiliate Link <span style="text-transform:none;font-weight:400;color:var(--t3)">(optional — shows "Buy on Amazon" button)</span></label><input type="url" id="mpProdAffUrl" placeholder="https://www.amazon.com/dp/..."></div>
+          <div class="fg"><label>Image URL <span style="text-transform:none;font-weight:400;color:var(--t3)">(optional — use instead of uploading)</span></label><input type="url" id="mpProdImgUrl" placeholder="https://m.media-amazon.com/images/..."></div>
+        </div>
         <div style="margin-top:.75rem;display:flex;align-items:center;gap:.75rem">
           <label style="font-size:.8125rem;font-weight:500;display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="mpProdStock" checked> In Stock</label>
         </div>
         <div style="margin-top:1rem">
-          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Product Image</label>
+          <label style="font-size:.75rem;font-weight:600;color:var(--t3);text-transform:uppercase;margin-bottom:.25rem;display:block">Product Image <span style="text-transform:none;font-weight:400">(or use Image URL above)</span></label>
           <div class="upload-zone" style="padding:1rem;margin-bottom:0" onclick="document.getElementById('mpProdFile').click()" id="mpProdImgZone">
             <div id="mpProdImgPreview"></div>
             <p style="font-size:.75rem;margin:0">Click to upload product image</p>
@@ -2453,6 +2457,8 @@ function openProductForm(editId){
     document.getElementById('mpProdPrice').value=p.price;
     document.getElementById('mpProdCat').value=p.category||'other';
     document.getElementById('mpProdStock').checked=p.in_stock;
+    document.getElementById('mpProdAffUrl').value=p.affiliate_url||'';
+    document.getElementById('mpProdImgUrl').value=p.image_url||'';
   }else{
     document.getElementById('mpFormTitle').textContent='Add Product';
     document.getElementById('mpEditId').value='';
@@ -2461,6 +2467,8 @@ function openProductForm(editId){
     document.getElementById('mpProdPrice').value='';
     document.getElementById('mpProdCat').value='aftercare';
     document.getElementById('mpProdStock').checked=true;
+    document.getElementById('mpProdAffUrl').value='';
+    document.getElementById('mpProdImgUrl').value='';
   }
   document.getElementById('mpFormOverlay').classList.add('open');
 }
@@ -2488,6 +2496,8 @@ async function saveProduct(){
   const desc=document.getElementById('mpProdDesc').value.trim()||null;
   const cat=document.getElementById('mpProdCat').value;
   const inStock=document.getElementById('mpProdStock').checked;
+  const affUrl=document.getElementById('mpProdAffUrl').value.trim()||null;
+  const imgUrl=document.getElementById('mpProdImgUrl').value.trim()||null;
 
   const btn=document.getElementById('mpFormSubmit');
   btn.disabled=true;btn.textContent='Saving...';
@@ -2496,12 +2506,12 @@ async function saveProduct(){
     let productId=mpEditProductId;
     if(productId){
       // Update existing
-      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,updated_at:new Date().toISOString()}).eq('id',productId);
+      const{error}=await SB.from('products').update({name,description:desc,price,category:cat,in_stock:inStock,affiliate_url:affUrl,image_url:imgUrl,updated_at:new Date().toISOString()}).eq('id',productId);
       if(error) throw error;
     }else{
       // Insert new
       const sortOrder=mpProducts.length;
-      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,sort_order:sortOrder}).select().single();
+      const{data,error}=await SB.from('products').insert({listing_id:myListing.id,name,description:desc,price,category:cat,in_stock:inStock,affiliate_url:affUrl,image_url:imgUrl,sort_order:sortOrder}).select().single();
       if(error) throw error;
       productId=data.id;
     }

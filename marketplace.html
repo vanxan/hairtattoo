@@ -115,7 +115,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .mk-m-actions{display:flex;gap:.75rem}
 .mk-m-buy{flex:1;padding:14px;background:var(--ac);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);transition:background .15s}
 .mk-m-buy:hover{background:var(--ac2)}
-.mk-m-buy:disabled{opacity:.5;cursor:not-allowed}
+.mk-m-buy:disabled{opacity:.5;cursor:not-allowed}.mk-m-amazon{flex:1;padding:14px;background:#FF9900;color:#111;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);transition:background .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}.mk-m-amazon:hover{background:#E88B00;color:#111}
 .mk-m-view{padding:14px 20px;background:#fff;color:var(--ac);border:2px solid var(--ac);border-radius:12px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--f);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .15s}
 .mk-m-view:hover{background:var(--al)}
 
@@ -227,6 +227,8 @@ let currentCat='all';
 function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function mediaUrl(m){return SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
 function citySlug(city,state){return city.toLowerCase().replace(/\s+/g,'-')+'-'+state.toLowerCase();}
+function prodImg(p){if(p.image_url)return p.image_url;var m=allMedia.find(function(mm){return mm.product_id===p.id;});return m?mediaUrl(m):'';}
+function affUrl(url){if(!url)return url;try{var u=new URL(url);if(u.hostname.includes('amazon.com')&&!u.searchParams.has('tag'))u.searchParams.set('tag','hairtattoo-20');return u.toString();}catch(e){return url;}}
 
 async function init(){
   try{
@@ -276,12 +278,12 @@ function renderGrid(){
 
   var h='';
   filtered.forEach(function(p,i){
-    var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+    var imgSrc=prodImg(p);
     var listing=allListings[p.listing_id];
     var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
     h+='<div class="mk-card" onclick="openModal(\''+p.id+'\')">';
     h+='<div class="mk-card-img">';
-    if(m) h+='<img src="'+mediaUrl(m)+'" alt="'+esc(p.name)+'" loading="lazy">';
+    if(imgSrc) h+='<img src="'+imgSrc+'" alt="'+esc(p.name)+'" loading="lazy">';
     else h+='<div class="mk-ph">\uD83D\uDCE6</div>';
     h+='</div><div class="mk-card-body">';
     h+='<div class="mk-card-cat">'+esc(cat)+'</div>';
@@ -299,14 +301,14 @@ function renderGrid(){
 function openModal(productId){
   var p=allProducts.find(function(pp){return pp.id===productId;});
   if(!p) return;
-  var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+  var imgSrc=prodImg(p);
   var listing=allListings[p.listing_id];
   var cat=(p.category||'other').charAt(0).toUpperCase()+(p.category||'other').slice(1);
   var ini=listing?listing.name.split(' ').map(function(w){return w[0];}).slice(0,2).join(''):'';
 
   var h='<button class="mk-close" onclick="closeModal()">&times;</button>';
   h+='<div class="mk-m-img">';
-  if(m) h+='<img src="'+mediaUrl(m)+'" alt="'+esc(p.name)+'">';
+  if(imgSrc) h+='<img src="'+imgSrc+'" alt="'+esc(p.name)+'">';
   else h+='<div class="mk-ph">\uD83D\uDCE6</div>';
   h+='</div><div class="mk-m-body">';
   h+='<div class="mk-m-cat">'+esc(cat)+'</div>';
@@ -319,7 +321,11 @@ function openModal(productId){
   }
   h+='<div class="mk-m-stock"><span class="dot" style="background:'+(p.in_stock?'#059669':'#DC2626')+'"></span>'+(p.in_stock?'In Stock':'Out of Stock')+'</div>';
   h+='<div class="mk-m-actions">';
-  h+='<button class="mk-m-buy" onclick="showOrderForm(\''+p.id+'\')"'+(p.in_stock?'':' disabled')+'>'+(p.in_stock?'\uD83D\uDED2 Order Now':'Out of Stock')+'</button>';
+  if(p.affiliate_url){
+    h+='<a class="mk-m-amazon" href="'+affUrl(p.affiliate_url)+'" target="_blank" rel="noopener">\uD83D\uDED2 Buy on Amazon</a>';
+  }else{
+    h+='<button class="mk-m-buy" onclick="showOrderForm(\''+p.id+'\')"'+(p.in_stock?'':' disabled')+'>'+(p.in_stock?'\uD83D\uDED2 Order Now':'Out of Stock')+'</button>';
+  }
   if(listing){
     h+='<a href="/near-me/'+citySlug(listing.city,listing.state)+'/'+listing.slug+'" class="mk-m-view">\uD83D\uDC64 Seller</a>';
   }
@@ -337,13 +343,13 @@ function closeModal(){
 function showOrderForm(productId){
   var p=allProducts.find(function(pp){return pp.id===productId;});
   if(!p) return;
-  var m=allMedia.find(function(mm){return mm.product_id===p.id;});
+  var imgSrc=prodImg(p);
   var modal=document.getElementById('mkModal');
   var h='<button class="mk-close" onclick="closeModal()">&times;</button>';
   h+='<div class="mk-form">';
   h+='<h3>\uD83D\uDED2 Order '+esc(p.name)+'</h3>';
   h+='<div style="background:var(--al);border-radius:8px;padding:.75rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem">';
-  if(m) h+='<img src="'+mediaUrl(m)+'" style="width:48px;height:48px;border-radius:8px;object-fit:cover">';
+  if(imgSrc) h+='<img src="'+imgSrc+'" style="width:48px;height:48px;border-radius:8px;object-fit:cover">';
   h+='<div><strong>'+esc(p.name)+'</strong><div style="color:var(--ac);font-weight:700">$'+parseFloat(p.price).toFixed(2)+'</div></div></div>';
   h+='<div class="sf-row"><div><label>Name *</label><input type="text" id="mkName" placeholder="Your full name"></div>';
   h+='<div><label>Email *</label><input type="email" id="mkEmail" placeholder="your@email.com"></div></div>';
