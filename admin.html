@@ -586,7 +586,7 @@ function renderListings(){
         <td style="font-weight:600" title="${esc(l.name)}">${esc(l.name)}</td>
         <td>${esc(l.city)}, ${esc(l.state)}</td>
         <td><span class="badge-s b-${st}">${st}</span></td>
-        <td>${l.promoted?'<span class="badge-s b-promoted">Promoted</span>':'-'}</td>
+        <td>${l.promoted?(l.stripe_subscription_id?'<span class="badge-s b-promoted" title="Stripe sub: '+esc(l.stripe_subscription_id)+'">Pro (Stripe)</span>':'<span class="badge-s b-promoted">Promoted</span>'):'-'}</td>
         <td>${l._views||0}</td>
         <td>${l._leads||0}</td>
         <td><button class="act-btn" data-menu-id="${l.id}" onclick="event.stopPropagation();toggleMenu(${l.id},this)">&#8943;</button></td>

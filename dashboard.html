@@ -227,7 +227,13 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .upgrade-banner{background:linear-gradient(135deg,#F3E8FF,#EDE9FE);border:1px solid #DDD6FE;border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;text-align:center}
 .upgrade-banner h3{font-size:.9375rem;font-weight:700;color:#5B21B6;margin-bottom:.375rem}
 .upgrade-banner p{font-size:.8125rem;color:#6D28D9;margin-bottom:1rem;line-height:1.5}
-.upgrade-banner .btn-pro{display:inline-flex;align-items:center;gap:.375rem;padding:.625rem 1.5rem;border-radius:var(--rs);font-size:.875rem;font-weight:600;background:var(--bd);color:var(--t3);cursor:default;border:none}
+.upgrade-banner .btn-pro{display:inline-flex;align-items:center;gap:.375rem;padding:.625rem 1.5rem;border-radius:var(--rs);font-size:.875rem;font-weight:600;background:#7C3AED;color:#fff;cursor:pointer;border:none;transition:background .15s}
+.upgrade-banner .btn-pro:hover{background:#6D28D9}
+.upgrade-banner .btn-pro:disabled{background:var(--bd);color:var(--t3);cursor:default}
+.btn-manage{display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1.25rem;border-radius:var(--rs);font-size:.8125rem;font-weight:600;background:var(--card);color:var(--ac);border:1px solid var(--bd);cursor:pointer;transition:all .15s}
+.btn-manage:hover{border-color:var(--ac);background:var(--al)}
+.toast{position:fixed;top:1rem;right:1rem;z-index:999;background:#059669;color:#fff;padding:.75rem 1.25rem;border-radius:var(--rs);font-size:.875rem;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(-20px);opacity:0;transition:all .3s ease}
+.toast.show{transform:translateY(0);opacity:1}
 .sms-banner{background:#FFF7ED;border:1px solid #FED7AA;border-radius:var(--r);padding:1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
 .sms-banner-icon{font-size:1.25rem;flex-shrink:0}
 .sms-banner-text{flex:1}
@@ -390,6 +396,8 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <button class="btn btn-o" id="logoutBtn" onclick="doLogout()" style="display:none">Log Out</button>
   </div>
 </div></nav>
+
+<div class="toast" id="toast"></div>
 
 <div class="dash-loading" id="dashLoading">Loading your dashboard...</div>
 
@@ -751,22 +759,34 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         <button class="btn" style="background:var(--bd);color:var(--t3);cursor:default;padding:.5rem 1.25rem;border-radius:var(--rs);font-size:.8125rem;font-weight:600" disabled>Coming Soon</button>
       </div>
 
-      <!-- PROMOTE YOUR LISTING — Coming Soon -->
-      <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden">
+      <!-- PROMOTE YOUR LISTING -->
+      <div id="promoSection" style="margin-top:1.5rem;background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#D4A853,#E8C97A,#D4A853)"></div>
-        <div style="display:flex;align-items:flex-start;gap:.375rem;margin-bottom:.75rem">
-          <h3 style="font-size:1rem;font-weight:700">Promote Your Listing</h3>
-          <span style="font-size:.6875rem;font-weight:600;padding:.125rem .5rem;border-radius:10px;background:#FEF3C7;color:#92400E">Coming Soon</span>
+        <!-- Free state -->
+        <div id="promoFree">
+          <div style="display:flex;align-items:flex-start;gap:.375rem;margin-bottom:.75rem">
+            <h3 style="font-size:1rem;font-weight:700">Upgrade to Pro</h3>
+            <span style="font-size:.6875rem;font-weight:600;padding:.125rem .5rem;border-radius:10px;background:#F3E8FF;color:#7C3AED">$29/month</span>
+          </div>
+          <p style="font-size:.875rem;color:var(--t2);margin-bottom:1.25rem">Get featured at the top of search results in your city. Featured artists get <strong>3x more profile views</strong>.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.25rem">
+            <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Top placement in your city</div>
+            <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Featured Artist badge</div>
+            <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Priority in city results</div>
+            <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Gold border &amp; featured pill</div>
+          </div>
+          <button class="btn btn-p" style="padding:.625rem 1.5rem;font-weight:600" onclick="upgradeToPro()">Upgrade to Pro &mdash; $29/mo</button>
         </div>
-        <p style="font-size:.875rem;color:var(--t2);margin-bottom:1.25rem">Get featured at the top of search results in your city. Featured artists get <strong>3x more profile views</strong>.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.25rem">
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Top placement in your city</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Featured Artist badge</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Priority in city results</div>
-          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#D4A853">&#9733;</span> Gold border &amp; featured pill</div>
+        <!-- Pro state -->
+        <div id="promoActive" style="display:none">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+            <h3 style="font-size:1rem;font-weight:700;color:#059669">Pro Active</h3>
+            <span style="font-size:.6875rem;font-weight:600;padding:.125rem .5rem;border-radius:10px;background:#D1FAE5;color:#059669">Active</span>
+          </div>
+          <p style="font-size:.875rem;color:var(--t2);margin-bottom:.5rem">Your listing is promoted and featured in your city.</p>
+          <p style="font-size:.75rem;color:var(--t3);margin-bottom:1rem" id="promoExpiry"></p>
+          <button class="btn-manage" onclick="manageSubscription()">Manage Subscription</button>
         </div>
-        <button class="btn" style="background:var(--bd);color:var(--t3);cursor:default;padding:.625rem 1.5rem;border-radius:var(--rs);font-weight:600" disabled>Coming Soon — $29/month</button>
-        <p style="font-size:.75rem;color:var(--t3);margin-top:.75rem">We're launching promoted listings soon. You'll be the first to know.</p>
       </div>
     </div>
 
@@ -877,7 +897,7 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
         <span class="sb-pro" style="font-size:.75rem;padding:.25rem .75rem">PRO FEATURE</span>
         <h3 style="margin-top:.75rem">Sell Products on Your Page</h3>
         <p>List aftercare products, equipment, and supplies directly on your listing page. Customers can browse and order right from your profile.</p>
-        <button class="btn btn-p" onclick="location.href='/for-professionals.html'">Upgrade to Pro</button>
+        <button class="btn btn-p" onclick="upgradeToPro()">Upgrade to Pro</button>
       </div>
 
       <!-- Pro content -->
@@ -1218,6 +1238,8 @@ async function loadDashboard(user){
   renderLinkPage();
   renderMarketplace();
   loadReferrals();
+  renderPromoSection();
+  checkUpgradeSuccess();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -2792,6 +2814,82 @@ function copyRefLink(){
   const btn=document.getElementById('refCopyBtn');
   btn.textContent='Copied!';
   setTimeout(()=>{btn.textContent='Copy';},2000);
+}
+
+// ══════════════════════ STRIPE PRO ══════════════════════
+function renderPromoSection(){
+  if(!myListing) return;
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  if(isPro){
+    document.getElementById('promoFree').style.display='none';
+    document.getElementById('promoActive').style.display='';
+    const exp=new Date(myListing.promoted_until);
+    document.getElementById('promoExpiry').textContent='Renews '+exp.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }else{
+    document.getElementById('promoFree').style.display='';
+    document.getElementById('promoActive').style.display='none';
+  }
+}
+
+async function upgradeToPro(){
+  if(!myListing) return;
+  const btn=event.target;
+  btn.disabled=true;btn.textContent='Redirecting...';
+  try{
+    const res=await fetch('/api/create-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({listing_id:myListing.id})
+    });
+    const data=await res.json();
+    if(data.url){
+      window.location.href=data.url;
+    }else{
+      alert(data.error||'Could not start checkout. Please try again.');
+      btn.disabled=false;btn.textContent='Upgrade to Pro \u2014 $29/mo';
+    }
+  }catch(err){
+    alert('Network error. Please try again.');
+    btn.disabled=false;btn.textContent='Upgrade to Pro \u2014 $29/mo';
+  }
+}
+
+async function manageSubscription(){
+  if(!myListing) return;
+  const btn=event.target;
+  btn.disabled=true;btn.textContent='Loading...';
+  try{
+    const res=await fetch('/api/create-portal',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({listing_id:myListing.id})
+    });
+    const data=await res.json();
+    if(data.url){
+      window.location.href=data.url;
+    }else{
+      alert(data.error||'Could not open billing portal.');
+      btn.disabled=false;btn.textContent='Manage Subscription';
+    }
+  }catch(err){
+    alert('Network error. Please try again.');
+    btn.disabled=false;btn.textContent='Manage Subscription';
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+function checkUpgradeSuccess(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('upgraded')==='1'){
+    showToast('Welcome to Pro! Your listing is now promoted.');
+    window.history.replaceState({},'','/dashboard.html');
+  }
 }
 
 // ══════════════════════ TAB SWITCHING ══════════════════════
