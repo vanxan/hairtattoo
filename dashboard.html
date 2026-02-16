@@ -1521,7 +1521,7 @@ async function saveSettings(){
     city:document.getElementById('fCity').value.trim(),
     state:document.getElementById('fState').value.trim(),
     zip:document.getElementById('fZip').value.trim(),
-    phone:document.getElementById('fPhone').value.trim(),
+    phone:document.getElementById('fPhone').value.trim().replace(/\D/g,''),
     email:document.getElementById('fEmail').value.trim(),
     website:document.getElementById('fWebsite').value.trim(),
     instagram:document.getElementById('fInstagram').value.trim().replace('@',''),
