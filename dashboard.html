@@ -234,6 +234,68 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .sms-banner-text strong{font-size:.8125rem;display:block;color:#9A3412;margin-bottom:.125rem}
 .sms-banner-text span{font-size:.75rem;color:#C2410C}
 
+/* LINK PAGE TAB */
+.lp-header{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem}
+.lp-header h3{font-size:.875rem;font-weight:600;margin-bottom:.75rem}
+.lp-url-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
+.lp-url{flex:1;font-size:.8125rem;color:var(--ac);font-weight:500;word-break:break-all}
+.lp-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-top:1px solid var(--bd)}
+.lp-toggle-label{font-size:.8125rem;font-weight:500}
+.lp-switch{position:relative;width:44px;height:24px;cursor:pointer}
+.lp-switch input{opacity:0;width:0;height:0}
+.lp-switch .slider{position:absolute;inset:0;background:var(--bd);border-radius:12px;transition:.2s}
+.lp-switch .slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.lp-switch input:checked+.slider{background:var(--ac)}
+.lp-switch input:checked+.slider:before{transform:translateX(20px)}
+.lp-bio-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem}
+.lp-bio-section h3{font-size:.875rem;font-weight:600;margin-bottom:.5rem}
+.lp-bio-section textarea{width:100%;padding:.625rem .75rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.8125rem;resize:vertical;min-height:70px;outline:none;font-family:var(--f)}
+.lp-bio-section textarea:focus{border-color:var(--ac)}
+.lp-bio-footer{display:flex;justify-content:space-between;align-items:center;margin-top:.375rem}
+.lp-bio-footer span{font-size:.6875rem;color:var(--t3)}
+.lp-accent-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem}
+.lp-accent-section h3{font-size:.875rem;font-weight:600;margin-bottom:.75rem}
+.lp-swatches{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.lp-swatch{width:32px;height:32px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.lp-swatch:hover{transform:scale(1.1)}
+.lp-swatch.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--text)}
+.lp-color-input{width:40px;height:32px;border:1px solid var(--bd);border-radius:8px;cursor:pointer;padding:0;overflow:hidden}
+.lp-color-input input{width:100%;height:100%;border:none;cursor:pointer;padding:0}
+.lp-preview-strip{margin-top:.75rem;display:flex;gap:.5rem}
+.lp-preview-btn{padding:.5rem 1rem;border-radius:8px;font-size:.75rem;font-weight:600}
+.lp-links-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem}
+.lp-links-section h3{font-size:.875rem;font-weight:600;margin-bottom:.75rem}
+.lp-link-row{display:flex;align-items:center;gap:.5rem;padding:.625rem .5rem;border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:.5rem;background:#fff;transition:border-color .15s}
+.lp-link-row:hover{border-color:var(--ac)}
+.lp-link-drag{cursor:grab;color:var(--t3);font-size:1rem;flex-shrink:0;width:20px;text-align:center}
+.lp-link-icon{font-size:1rem;flex-shrink:0;width:24px;text-align:center}
+.lp-link-fields{flex:1;display:flex;flex-direction:column;gap:.25rem;min-width:0}
+.lp-link-fields input{border:none;outline:none;font-family:var(--f);font-size:.8125rem;padding:.125rem 0;background:transparent;width:100%}
+.lp-link-fields input:first-child{font-weight:600}
+.lp-link-fields input:last-child{color:var(--t2);font-size:.75rem}
+.lp-link-default{font-size:.5625rem;font-weight:700;padding:.0625rem .375rem;border-radius:4px;background:#E8F0EB;color:#2D5A3D;text-transform:uppercase;flex-shrink:0}
+.lp-link-toggle{flex-shrink:0}
+.lp-link-del{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--t3);cursor:pointer;transition:all .15s;font-size:.875rem}
+.lp-link-del:hover{background:#FEE2E2;color:#DC2626}
+.lp-add-btn{display:flex;align-items:center;gap:.375rem;padding:.5rem .75rem;border:1px dashed var(--bd);border-radius:var(--rs);font-size:.8125rem;font-weight:500;color:var(--t2);cursor:pointer;width:100%;justify-content:center;transition:all .15s;background:none}
+.lp-add-btn:hover{border-color:var(--ac);color:var(--ac)}
+.lp-add-form{border:1px solid var(--ac);border-radius:var(--rs);padding:.75rem;margin-top:.5rem;background:#FAFAF8;display:none}
+.lp-add-form .fg{margin-bottom:.5rem}
+.lp-add-form .fg label{font-size:.6875rem}
+.lp-add-form .fg input{padding:.5rem .625rem;font-size:.8125rem}
+.lp-stats-section{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem}
+.lp-stats-section h3{font-size:.875rem;font-weight:600;margin-bottom:.75rem}
+.lp-stat-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--bd);font-size:.8125rem}
+.lp-stat-row:last-child{border-bottom:none}
+.lp-stat-label{color:var(--t2);display:flex;align-items:center;gap:.375rem}
+.lp-stat-count{font-weight:700;color:var(--text)}
+.lp-gate{text-align:center;padding:3rem 1.5rem}
+.lp-gate h3{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.lp-gate p{font-size:.8125rem;color:var(--t2);line-height:1.5;max-width:360px;margin:0 auto .75rem}
+.lp-order-btns{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+.lp-order-btn{width:22px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;color:var(--t3);font-size:.625rem;transition:all .1s;background:none;border:none;padding:0}
+.lp-order-btn:hover{background:var(--al);color:var(--ac)}
+
 /* MOBILE MENU TOGGLE */
 .mob-toggle{display:none;position:fixed;bottom:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:var(--ac);color:#fff;z-index:99;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
@@ -300,6 +362,11 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <a class="sb-link" data-tab="posts" onclick="showTab('posts')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Posts
+    </a>
+    <a class="sb-link" data-tab="linkpage" onclick="showTab('linkpage')" id="sbLinkPage">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      Link Page
+      <span class="sb-pro">PRO</span>
     </a>
     <a class="sb-link" data-tab="reviews" onclick="showTab('reviews')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -636,6 +703,104 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       </div>
     </div>
 
+    <!-- TAB: LINK PAGE -->
+    <div id="dtab-linkpage" class="dtab">
+      <!-- Gated view for free accounts -->
+      <div id="lpGate" class="lp-gate" style="display:none">
+        <div style="font-size:2.5rem;margin-bottom:.75rem">🔗</div>
+        <h3>Branded Link Page</h3>
+        <p>Get your own hairtattoo.com/your-name link-in-bio page. Share one link that showcases your profile, booking, socials, and reviews. Available exclusively for Pro members.</p>
+        <span class="sb-pro" style="font-size:.75rem;padding:.25rem .75rem">PRO FEATURE</span>
+      </div>
+
+      <!-- Pro view -->
+      <div id="lpContent" style="display:none">
+        <h2>Link Page</h2>
+
+        <!-- Header: URL + Preview + Toggle -->
+        <div class="lp-header">
+          <h3>Your Link Page</h3>
+          <div class="lp-url-row">
+            <span class="lp-url" id="lpUrl"></span>
+            <button class="btn btn-o btn-sm" onclick="copyLpUrl()">Copy</button>
+            <a class="btn btn-o btn-sm" id="lpPreviewLink" href="#" target="_blank">Preview</a>
+          </div>
+          <div class="lp-toggle-row">
+            <span class="lp-toggle-label">Enable Link Page</span>
+            <label class="lp-switch">
+              <input type="checkbox" id="lpEnabled" onchange="saveLpEnabled()">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="lp-bio-section">
+          <h3>Link Page Bio</h3>
+          <textarea id="lpBio" maxlength="150" placeholder="Short bio shown on your link page. Defaults to your About text if empty." oninput="updateLpBioCount()"></textarea>
+          <div class="lp-bio-footer">
+            <span>Short bio shown on your link page. Defaults to your About text if empty.</span>
+            <span id="lpBioCount">0/150</span>
+          </div>
+          <div style="margin-top:.5rem;display:flex;align-items:center;gap:.5rem">
+            <button class="btn btn-p btn-sm" onclick="saveLpBio()">Save Bio</button>
+            <span class="saved" id="lpBioSaved" style="display:none">Saved!</span>
+          </div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="lp-accent-section">
+          <h3>Accent Color</h3>
+          <div class="lp-swatches">
+            <div class="lp-swatch on" style="background:#2D5A3D" data-color="#2D5A3D" onclick="pickLpAccent(this)"></div>
+            <div class="lp-swatch" style="background:#1A1A1A" data-color="#1A1A1A" onclick="pickLpAccent(this)"></div>
+            <div class="lp-swatch" style="background:#2563EB" data-color="#2563EB" onclick="pickLpAccent(this)"></div>
+            <div class="lp-swatch" style="background:#DC2626" data-color="#DC2626" onclick="pickLpAccent(this)"></div>
+            <div class="lp-swatch" style="background:#7C3AED" data-color="#7C3AED" onclick="pickLpAccent(this)"></div>
+            <div class="lp-swatch" style="background:#D97706" data-color="#D97706" onclick="pickLpAccent(this)"></div>
+            <div class="lp-color-input">
+              <input type="color" id="lpAccentPicker" value="#2D5A3D" onchange="pickLpAccentCustom(this.value)">
+            </div>
+          </div>
+          <div class="lp-preview-strip" id="lpAccentPreview">
+            <span class="lp-preview-btn" id="lpPreviewFilled" style="background:#2D5A3D;color:#fff">Filled</span>
+            <span class="lp-preview-btn" id="lpPreviewOutline" style="background:transparent;color:#2D5A3D;border:2px solid #2D5A3D">Outline</span>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div class="lp-links-section">
+          <h3>Your Links</h3>
+          <div id="lpLinksList"></div>
+          <button class="lp-add-btn" onclick="showLpAddForm()">+ Add Custom Link</button>
+          <div class="lp-add-form" id="lpAddForm">
+            <div class="fg">
+              <label>Icon (emoji)</label>
+              <input type="text" id="lpNewIcon" value="🔗" maxlength="4" style="width:60px">
+            </div>
+            <div class="fg">
+              <label>Label</label>
+              <input type="text" id="lpNewLabel" placeholder="My Link">
+            </div>
+            <div class="fg">
+              <label>URL</label>
+              <input type="url" id="lpNewUrl" placeholder="https://...">
+            </div>
+            <div style="display:flex;gap:.5rem;margin-top:.5rem">
+              <button class="btn btn-p btn-sm" onclick="addLpLink()">Add Link</button>
+              <button class="btn btn-o btn-sm" onclick="hideLpAddForm()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="lp-stats-section">
+          <h3>Link Click Stats <span style="font-size:.6875rem;color:var(--t3);font-weight:400">(Last 30 days)</span></h3>
+          <div id="lpStats"><div style="font-size:.8125rem;color:var(--t3);padding:.5rem 0">Loading...</div></div>
+        </div>
+      </div>
+    </div>
+
     <!-- TAB 8: MARKETPLACE -->
     <div id="dtab-marketplace" class="dtab">
       <h2>SMP Marketplace</h2>
@@ -852,6 +1017,7 @@ async function loadDashboard(user){
   renderBooking();
   renderProfilePhoto();
   renderCoverImage();
+  renderLinkPage();
   console.log('[DASH] Dashboard fully loaded!');
 }
 
@@ -1789,6 +1955,293 @@ async function saveBooking(){
   setTimeout(()=>msg.style.display='none',3000);
   renderBooking();
   renderOverview();
+}
+
+// ══════════════════════ LINK PAGE TAB ══════════════════════
+let lpItems=[];
+let lpAccent='#2D5A3D';
+
+function renderLinkPage(){
+  if(!myListing) return;
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const sbLink=document.getElementById('sbLinkPage');
+
+  if(!isPro){
+    // Gray out sidebar link for free accounts
+    if(sbLink) sbLink.classList.add('sb-lock');
+    document.getElementById('lpGate').style.display='';
+    document.getElementById('lpContent').style.display='none';
+    return;
+  }
+
+  // Pro account — show full link page tab
+  if(sbLink) sbLink.classList.remove('sb-lock');
+  document.getElementById('lpGate').style.display='none';
+  document.getElementById('lpContent').style.display='';
+
+  // Set URL
+  const lpUrl='https://hairtattoo.com/'+myListing.slug;
+  document.getElementById('lpUrl').textContent=lpUrl;
+  document.getElementById('lpPreviewLink').href='/'+myListing.slug;
+
+  // Set enabled toggle
+  document.getElementById('lpEnabled').checked=myListing.link_page_enabled!==false;
+
+  // Set bio
+  const bio=myListing.link_page_bio||'';
+  document.getElementById('lpBio').value=bio;
+  updateLpBioCount();
+
+  // Set accent color
+  lpAccent=myListing.link_page_accent||'#2D5A3D';
+  document.getElementById('lpAccentPicker').value=lpAccent;
+  updateLpAccentUI(lpAccent);
+
+  // Load link items
+  loadLpItems();
+  loadLpStats();
+}
+
+async function loadLpItems(){
+  const{data,error}=await SB.from('link_page_items').select('*').eq('listing_id',myListing.id).order('sort_order',{ascending:true});
+  if(error){console.warn('[LP] Error loading items:',error);return;}
+  lpItems=data||[];
+
+  // If no saved items, generate defaults from listing data
+  if(!lpItems.length){
+    lpItems=generateDefaultLpItems();
+  }
+  renderLpLinks();
+}
+
+function generateDefaultLpItems(){
+  const l=myListing;
+  const cs=l.city.toLowerCase().replace(/\s+/g,'-')+'-'+l.state.toLowerCase();
+  const items=[];
+  let i=0;
+  items.push({id:null,label:'View My Full Profile',url:'/near-me/'+cs+'/'+l.slug,icon:'👤',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  if(l.booking_url) items.push({id:null,label:'Book a Consultation',url:l.booking_url,icon:'📅',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  items.push({id:null,label:'Leave a Review',url:'/review.html?listing='+l.slug,icon:'⭐',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  if(l.phone) items.push({id:null,label:'Call Us',url:'tel:'+l.phone.replace(/\D/g,''),icon:'📞',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  if(l.instagram){
+    const ig=l.instagram.startsWith('http')?l.instagram:'https://instagram.com/'+l.instagram;
+    items.push({id:null,label:'Instagram',url:ig,icon:'📸',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  }
+  if(l.tiktok){
+    const tt=l.tiktok.startsWith('http')?l.tiktok:'https://tiktok.com/@'+l.tiktok;
+    items.push({id:null,label:'TikTok',url:tt,icon:'🎵',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  }
+  if(l.facebook){
+    const fb=l.facebook.startsWith('http')?l.facebook:'https://facebook.com/'+l.facebook;
+    items.push({id:null,label:'Facebook',url:fb,icon:'👍',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  }
+  if(l.website) items.push({id:null,label:'Website',url:l.website,icon:'🌐',sort_order:i++,is_active:true,is_default:true,_unsaved:true});
+  return items;
+}
+
+function renderLpLinks(){
+  const list=document.getElementById('lpLinksList');
+  if(!lpItems.length){list.innerHTML='<div style="font-size:.8125rem;color:var(--t3);padding:.5rem 0">No links yet. Add your first link below.</div>';return;}
+  let h='';
+  lpItems.forEach((item,idx)=>{
+    const checked=item.is_active!==false?'checked':'';
+    const isDefault=item.is_default;
+    h+='<div class="lp-link-row" data-idx="'+idx+'">';
+    h+='<span class="lp-link-drag">⠿</span>';
+    h+='<span class="lp-link-icon">'+esc(item.icon||'🔗')+'</span>';
+    h+='<div class="lp-link-fields">';
+    h+='<input type="text" value="'+esc(item.label)+'" onblur="updateLpItem('+idx+',\'label\',this.value)"'+(isDefault&&!item.id?' readonly style="cursor:default"':'')+'>';
+    h+='<input type="text" value="'+esc(item.url)+'" onblur="updateLpItem('+idx+',\'url\',this.value)"'+(isDefault&&!item.id?' readonly style="cursor:default"':'')+'>';
+    h+='</div>';
+    if(isDefault) h+='<span class="lp-link-default">Default</span>';
+    h+='<div class="lp-order-btns">';
+    h+='<button class="lp-order-btn" onclick="moveLpItem('+idx+',-1)" title="Move up">&#9650;</button>';
+    h+='<button class="lp-order-btn" onclick="moveLpItem('+idx+',1)" title="Move down">&#9660;</button>';
+    h+='</div>';
+    h+='<label class="lp-switch lp-link-toggle"><input type="checkbox" '+checked+' onchange="toggleLpItem('+idx+',this.checked)"><span class="slider"></span></label>';
+    if(!isDefault) h+='<button class="lp-link-del" onclick="deleteLpItem('+idx+')" title="Delete">&times;</button>';
+    h+='</div>';
+  });
+  list.innerHTML=h;
+}
+
+async function updateLpItem(idx,field,value){
+  const item=lpItems[idx];
+  if(!item)return;
+  item[field]=value;
+  if(item.id){
+    await SB.from('link_page_items').update({[field]:value}).eq('id',item.id);
+  }else if(item._unsaved){
+    // Save all unsaved defaults when first edited
+    await saveDefaultItems();
+  }
+}
+
+async function toggleLpItem(idx,active){
+  const item=lpItems[idx];
+  if(!item)return;
+  item.is_active=active;
+  if(item.id){
+    await SB.from('link_page_items').update({is_active:active}).eq('id',item.id);
+  }else if(item._unsaved){
+    await saveDefaultItems();
+    // Now re-toggle since IDs are assigned
+    const saved=lpItems[idx];
+    if(saved&&saved.id) await SB.from('link_page_items').update({is_active:active}).eq('id',saved.id);
+  }
+}
+
+async function moveLpItem(idx,dir){
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=lpItems.length)return;
+  // Swap
+  const tmp=lpItems[idx];
+  lpItems[idx]=lpItems[newIdx];
+  lpItems[newIdx]=tmp;
+  // Update sort orders
+  lpItems.forEach((item,i)=>{item.sort_order=i;});
+  renderLpLinks();
+  // Persist if items have IDs
+  for(const item of lpItems){
+    if(item.id){
+      await SB.from('link_page_items').update({sort_order:item.sort_order}).eq('id',item.id);
+    }
+  }
+  // If any unsaved, save them all
+  if(lpItems.some(it=>it._unsaved)) await saveDefaultItems();
+}
+
+async function deleteLpItem(idx){
+  const item=lpItems[idx];
+  if(!item)return;
+  if(item.id){
+    await SB.from('link_page_items').delete().eq('id',item.id);
+  }
+  lpItems.splice(idx,1);
+  lpItems.forEach((it,i)=>{it.sort_order=i;});
+  renderLpLinks();
+}
+
+async function saveDefaultItems(){
+  // Save all unsaved default items to the database
+  const unsaved=lpItems.filter(it=>it._unsaved);
+  if(!unsaved.length)return;
+  const rows=unsaved.map(it=>({listing_id:myListing.id,label:it.label,url:it.url,icon:it.icon,sort_order:it.sort_order,is_active:it.is_active,is_default:it.is_default}));
+  const{data,error}=await SB.from('link_page_items').insert(rows).select();
+  if(error){console.warn('[LP] Error saving defaults:',error);return;}
+  // Map returned IDs back
+  if(data){
+    data.forEach((saved,i)=>{
+      const match=lpItems.find(it=>it._unsaved&&it.sort_order===saved.sort_order);
+      if(match){match.id=saved.id;delete match._unsaved;}
+    });
+  }
+}
+
+function showLpAddForm(){
+  document.getElementById('lpAddForm').style.display='';
+  document.getElementById('lpNewLabel').value='';
+  document.getElementById('lpNewUrl').value='';
+  document.getElementById('lpNewIcon').value='🔗';
+  document.getElementById('lpNewLabel').focus();
+}
+function hideLpAddForm(){document.getElementById('lpAddForm').style.display='none';}
+
+async function addLpLink(){
+  const icon=document.getElementById('lpNewIcon').value||'🔗';
+  const label=document.getElementById('lpNewLabel').value.trim();
+  const url=document.getElementById('lpNewUrl').value.trim();
+  if(!label||!url){alert('Please enter both label and URL');return;}
+
+  // If there are unsaved defaults, save them first
+  if(lpItems.some(it=>it._unsaved)) await saveDefaultItems();
+
+  const sortOrder=lpItems.length;
+  const{data,error}=await SB.from('link_page_items').insert({listing_id:myListing.id,label,url,icon,sort_order:sortOrder,is_active:true,is_default:false}).select().single();
+  if(error){alert('Error adding link');console.warn(error);return;}
+  lpItems.push(data);
+  renderLpLinks();
+  hideLpAddForm();
+}
+
+function copyLpUrl(){
+  const url='https://hairtattoo.com/'+myListing.slug;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.querySelector('.lp-url-row .btn');
+    if(btn){btn.textContent='Copied!';setTimeout(()=>{btn.textContent='Copy';},1500);}
+  });
+}
+
+async function saveLpEnabled(){
+  const enabled=document.getElementById('lpEnabled').checked;
+  await SB.from('listings').update({link_page_enabled:enabled}).eq('id',myListing.id);
+  myListing.link_page_enabled=enabled;
+}
+
+function updateLpBioCount(){
+  const bio=document.getElementById('lpBio').value;
+  document.getElementById('lpBioCount').textContent=bio.length+'/150';
+}
+
+async function saveLpBio(){
+  const bio=document.getElementById('lpBio').value.trim();
+  await SB.from('listings').update({link_page_bio:bio||null}).eq('id',myListing.id);
+  myListing.link_page_bio=bio;
+  const saved=document.getElementById('lpBioSaved');
+  saved.style.display='';
+  setTimeout(()=>{saved.style.display='none';},2000);
+}
+
+function updateLpAccentUI(color){
+  lpAccent=color;
+  // Update swatch selection
+  document.querySelectorAll('.lp-swatch').forEach(s=>{
+    s.classList.toggle('on',s.dataset.color===color);
+  });
+  document.getElementById('lpAccentPicker').value=color;
+  // Update preview
+  document.getElementById('lpPreviewFilled').style.background=color;
+  document.getElementById('lpPreviewFilled').style.color='#fff';
+  document.getElementById('lpPreviewOutline').style.color=color;
+  document.getElementById('lpPreviewOutline').style.borderColor=color;
+}
+
+async function pickLpAccent(el){
+  const color=el.dataset.color;
+  updateLpAccentUI(color);
+  await SB.from('listings').update({link_page_accent:color}).eq('id',myListing.id);
+  myListing.link_page_accent=color;
+}
+
+async function pickLpAccentCustom(color){
+  updateLpAccentUI(color);
+  await SB.from('listings').update({link_page_accent:color}).eq('id',myListing.id);
+  myListing.link_page_accent=color;
+}
+
+async function loadLpStats(){
+  const{data,error}=await SB.from('link_clicks').select('link_item_id').eq('listing_id',myListing.id).gte('clicked_at',new Date(Date.now()-30*24*60*60*1000).toISOString());
+  if(error){console.warn('[LP] Stats error:',error);return;}
+  const counts={};
+  (data||[]).forEach(r=>{
+    const k=r.link_item_id||'_direct';
+    counts[k]=(counts[k]||0)+1;
+  });
+
+  const container=document.getElementById('lpStats');
+  if(!data||!data.length){
+    container.innerHTML='<div style="font-size:.8125rem;color:var(--t3);padding:.5rem 0">No clicks recorded yet. Share your link page to start tracking!</div>';
+    return;
+  }
+
+  let total=data.length;
+  let h='<div class="lp-stat-row"><span class="lp-stat-label">📊 Total clicks</span><span class="lp-stat-count">'+total+'</span></div>';
+  lpItems.forEach(item=>{
+    if(item.id&&counts[item.id]){
+      h+='<div class="lp-stat-row"><span class="lp-stat-label">'+(item.icon||'🔗')+' '+esc(item.label)+'</span><span class="lp-stat-count">'+counts[item.id]+'</span></div>';
+    }
+  });
+  container.innerHTML=h;
 }
 
 // ══════════════════════ TAB SWITCHING ══════════════════════

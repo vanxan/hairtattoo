@@ -1,5 +1,32 @@
 {
   "version": 1,
-  "include": ["/near-me/*/*"],
-  "exclude": ["/near-me/*/index.html"]
+  "include": ["/near-me/*/*", "/*"],
+  "exclude": [
+    "/near-me/*/index.html",
+    "/index.html",
+    "/dashboard.html",
+    "/signup.html",
+    "/admin.html",
+    "/contact.html",
+    "/review.html",
+    "/for-professionals.html",
+    "/privacy.html",
+    "/terms.html",
+    "/404.html",
+    "/sitemap.xml",
+    "/robots.txt",
+    "/favicon.ico",
+    "/_headers",
+    "/_redirects",
+    "/assets/*",
+    "/near-me/index.html",
+    "/*.css",
+    "/*.js",
+    "/*.png",
+    "/*.jpg",
+    "/*.svg",
+    "/*.ico",
+    "/*.webp",
+    "/*.woff2"
+  ]
 }
