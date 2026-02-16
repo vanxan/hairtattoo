@@ -462,10 +462,6 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
       Portfolio
     </a>
-    <a class="sb-link" data-tab="posts" onclick="showTab('posts')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      Posts
-    </a>
     <a class="sb-link" data-tab="reviews" onclick="showTab('reviews')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       Reviews
@@ -485,6 +481,11 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
     <a class="sb-link sb-lock" data-tab="booking" onclick="showTab('booking')" id="sbBooking">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Booking
+      <span class="sb-pro">PRO</span>
+    </a>
+    <a class="sb-link sb-lock" data-tab="posts" onclick="showTab('posts')" id="sbPosts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Posts
       <span class="sb-pro">PRO</span>
     </a>
     <a class="sb-link sb-lock" data-tab="smsleads" onclick="showTab('smsleads')" id="sbSmsLeads">
@@ -591,12 +592,28 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 
     <!-- TAB: POSTS -->
     <div id="dtab-posts" class="dtab">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <h2 style="margin-bottom:0">Posts</h2>
-        <button class="btn btn-p" onclick="openPostCompose()">+ New Post</button>
+      <!-- Pro gate -->
+      <div id="postsGate" class="mp-gate" style="display:none">
+        <div style="font-size:2.5rem;margin-bottom:.75rem">&#9998;</div>
+        <h3>Posts & Social Feed</h3>
+        <p>Create rich posts with photos and captions that appear on your business page and in the global Hair Tattoo feed. Showcase your latest work and attract new clients.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin:1.25rem 0;max-width:400px">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Photo &amp; video posts</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Appear in global feed</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Rich post layouts</div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8125rem;color:var(--t2)"><span style="color:#7C3AED">&#10003;</span> Engage with clients</div>
+        </div>
+        <button class="gate-upgrade-btn" onclick="upgradeToPro()">Upgrade to Pro &mdash; $29/mo</button>
       </div>
-      <p style="font-size:.8125rem;color:var(--t2);margin-bottom:1.25rem">Share your latest SMP work. Posts appear on your business page and the global feed.</p>
-      <div id="postsList"><div class="chart-none">Loading posts...</div></div>
+      <!-- Pro content -->
+      <div id="postsContent" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+          <h2 style="margin-bottom:0">Posts</h2>
+          <button class="btn btn-p" onclick="openPostCompose()">+ New Post</button>
+        </div>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:1.25rem">Share your latest SMP work. Posts appear on your business page and the global feed.</p>
+        <div id="postsList"><div class="chart-none">Loading posts...</div></div>
+      </div>
     </div>
 
     <!-- Post compose modal -->
@@ -1622,6 +1639,20 @@ function postMediaUrl(m){
 }
 
 function renderPosts(){
+  const isPro=myListing.promoted && myListing.promoted_until && new Date(myListing.promoted_until)>new Date();
+  const gate=document.getElementById('postsGate');
+  const content=document.getElementById('postsContent');
+  const sbPosts=document.getElementById('sbPosts');
+  if(!isPro){
+    gate.style.display='';
+    content.style.display='none';
+    if(sbPosts) sbPosts.classList.add('sb-lock');
+    return;
+  }
+  gate.style.display='none';
+  content.style.display='';
+  if(sbPosts) sbPosts.classList.remove('sb-lock');
+
   const el=document.getElementById('postsList');
   if(!myPosts.length){
     el.innerHTML='<div class="chart-none">No posts yet. Share your latest SMP work!</div>';
@@ -2922,7 +2953,7 @@ function renderPromoSection(){
   const sbUpgrade=document.getElementById('sbUpgrade');
 
   // Pro sidebar links
-  const proSbLinks=['sbBooking','sbSmsLeads','sbLinkPage','sbMarketplace','sbReferrals'];
+  const proSbLinks=['sbPosts','sbBooking','sbSmsLeads','sbLinkPage','sbMarketplace','sbReferrals'];
 
   if(isPro){
     // Hide free upgrade CTAs
