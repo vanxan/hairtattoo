@@ -79,32 +79,11 @@ a{color:var(--ac);text-decoration:none}
 .resend a{color:var(--ac);cursor:pointer}
 
 /* PHOTOS */
-.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
-.photo-box{aspect-ratio:1;border:2px dashed var(--bd);border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);overflow:hidden;position:relative}
-.photo-box:hover{border-color:var(--ac);background:var(--al)}
-.photo-box svg{color:var(--t3);margin-bottom:.25rem}
-.photo-box span{font-size:.6875rem;color:var(--t3)}
-.photo-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.photo-box .remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;cursor:pointer;display:none}
-.photo-box:hover .remove{display:flex}
-.avatar-wrap{width:100px;height:100px;margin:0 auto 1rem;position:relative}
-.avatar-box{width:100px;height:100px;border-radius:50%;border:2px dashed var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);overflow:hidden}
+.avatar-wrap{width:150px;height:150px;margin:0 auto 1rem;position:relative}
+.avatar-box{width:150px;height:150px;border-radius:var(--r);border:2px dashed var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);max-width:150px;max-height:150px;overflow:hidden}
 .avatar-box:hover{border-color:var(--ac)}
 .avatar-box img{width:100%;height:100%;object-fit:cover}
 
-/* PREVIEW CARD */
-.preview{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
-.pv-head{padding:1.25rem;display:flex;gap:.75rem;align-items:flex-start}
-.pv-av{width:48px;height:48px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-family:var(--se);font-size:1.125rem;color:var(--ac);flex-shrink:0;overflow:hidden}
-.pv-av img{width:100%;height:100%;object-fit:cover}
-.pv-info{flex:1}
-.pv-name{font-weight:700;font-size:1rem}
-.pv-loc{font-size:.8125rem;color:var(--t2);margin-top:2px}
-.pv-price{font-size:.8125rem;font-weight:600;color:var(--ac)}
-.pv-about{padding:0 1.25rem .75rem;font-size:.8125rem;color:var(--t2)}
-.pv-tags{padding:0 1.25rem 1rem;display:flex;flex-wrap:wrap;gap:.25rem}
-.pv-tag{font-size:.6875rem;padding:.125rem .5rem;background:var(--al);color:var(--ac);border-radius:4px}
-.pv-links{padding:.75rem 1.25rem;border-top:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:.75rem;font-size:.8125rem}
 
 /* SUCCESS */
 .success{text-align:center;padding:2rem 0}
@@ -120,7 +99,7 @@ a{color:var(--ac);text-decoration:none}
 .toggle-link{text-align:center;font-size:.8125rem;color:var(--t3);margin-top:1.25rem}
 .toggle-link a{color:var(--ac);font-weight:500}
 
-@media(max-width:480px){.row{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.photo-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.row{grid-template-columns:1fr}.checks{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -130,7 +109,7 @@ a{color:var(--ac);text-decoration:none}
   <a href="/" class="close">&times; Close</a>
 </div></nav>
 
-<div class="progress"><div class="prog-bar"><div class="prog-fill" id="progFill" style="width:20%"></div></div><div class="prog-label" id="progLabel">Step 1 of 5</div></div>
+<div class="progress"><div class="prog-bar"><div class="prog-fill" id="progFill" style="width:25%"></div></div><div class="prog-label" id="progLabel">Step 1 of 4</div></div>
 
 <div class="wrap">
 
@@ -210,80 +189,36 @@ a{color:var(--ac);text-decoration:none}
   </div>
 </div>
 
-<!-- STEP 3: PHOTOS -->
+<!-- STEP 3: PROFILE PHOTO -->
 <div class="step" id="step3">
   <div class="step-head">
-    <h1>Add Photos</h1>
-    <p>Show off your work with before & after photos</p>
+    <h1>Profile Photo</h1>
+    <p>Upload a photo or logo for your listing</p>
   </div>
   <div class="field">
     <label>Profile Photo / Logo</label>
     <div class="avatar-wrap">
-      <div class="avatar-box" onclick="document.getElementById('avatarInput').click()">
+      <div class="avatar-box" id="avatarBox" onclick="document.getElementById('avatarInput').click()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--t3)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         <span style="font-size:.6875rem;color:var(--t3);margin-top:.25rem">Upload</span>
       </div>
       <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)">
     </div>
   </div>
-  <div class="field">
-    <label>Gallery (up to 6 images)</label>
-    <div class="photo-grid" id="galleryGrid"></div>
-  </div>
   <div class="actions">
-    <button class="btn btn-p" onclick="goStep(4)">Continue</button>
-    <a class="btn-skip" onclick="goStep(4)">Skip for now</a>
+    <button class="btn btn-p" id="publishBtn" onclick="publish()">Finish &amp; Save</button>
+    <a class="btn-skip" onclick="publish()">Skip for now</a>
     <button class="btn-back" onclick="goStep(2)">Back</button>
   </div>
 </div>
 
-<!-- STEP 4: LINKS -->
+<!-- STEP 4: SUCCESS -->
 <div class="step" id="step4">
-  <div class="step-head">
-    <h1>Online Presence</h1>
-    <p>Help clients find you online</p>
-  </div>
-  <div class="field">
-    <label>Website</label>
-    <input type="url" id="fWebsite" placeholder="https://yourbusiness.com">
-  </div>
-  <div class="field">
-    <label>Instagram</label>
-    <input type="text" id="fInstagram" placeholder="@yourhandle">
-  </div>
-  <div class="field">
-    <label>Facebook</label>
-    <input type="text" id="fFacebook" placeholder="https://facebook.com/yourpage">
-  </div>
-  <div class="field">
-    <label>TikTok</label>
-    <input type="text" id="fTiktok" placeholder="@yourhandle">
-  </div>
-  <div class="actions">
-    <button class="btn btn-p" onclick="goStep(5)">Preview Listing</button>
-    <button class="btn-back" onclick="goStep(3)">Back</button>
-  </div>
-</div>
-
-<!-- STEP 5: PREVIEW & PUBLISH -->
-<div class="step" id="step5">
-  <div class="step-head">
-    <h1>Preview & Publish</h1>
-    <p>Here's how your listing will appear</p>
-  </div>
-  <div id="previewCard"></div>
-  <div class="actions">
-    <button class="btn btn-p" id="publishBtn" onclick="publish()">Publish Listing</button>
-    <button class="btn-back" onclick="goStep(4)">Back</button>
-  </div>
-
-  <div id="successView" style="display:none">
-    <div class="success">
-      <div class="success-icon">🎉</div>
-      <h2>Your listing is live!</h2>
-      <p>Clients can now find you on Hair Tattoo</p>
-      <a href="/" class="btn btn-p" id="viewListingBtn" style="width:auto;padding:.625rem 1.5rem">View Your Listing</a>
-    </div>
+  <div class="success">
+    <div class="success-icon">🎉</div>
+    <h2>You're all set!</h2>
+    <p>Your listing is live. Now create your first post to showcase your work.</p>
+    <a href="/dashboard.html" class="btn btn-p" style="width:auto;padding:.625rem 1.5rem">Create Your First Post &rarr;</a>
   </div>
 </div>
 
@@ -324,7 +259,7 @@ let claimSlug=new URLSearchParams(location.search).get('claim');
 let claimData=null;
 let userEmail='';
 let avatarData=null;
-let galleryData=[];
+let avatarFile=null;
 
 // --- SIGN IN MODE ---
 if(isSignIn){
@@ -334,53 +269,16 @@ if(isSignIn){
   document.title='Sign In | Hair Tattoo';
 }
 
-// --- GALLERY INIT ---
-function initGallery(){
-  const g=document.getElementById('galleryGrid');
-  g.innerHTML='';
-  for(let i=0;i<6;i++){
-    const box=document.createElement('div');
-    box.className='photo-box';
-    box.innerHTML=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add photo</span>`;
-    const inp=document.createElement('input');
-    inp.type='file';inp.accept='image/*';inp.style.display='none';
-    inp.onchange=function(){previewGallery(this,i);};
-    box.onclick=function(){inp.click();};
-    box.appendChild(inp);
-    g.appendChild(box);
-  }
-}
-
 function previewAvatar(inp){
   if(!inp.files[0])return;
+  avatarFile=inp.files[0];
   const reader=new FileReader();
   reader.onload=function(e){
     avatarData=e.target.result;
-    inp.parentElement.innerHTML=`<img src="${avatarData}">`;
+    const box=document.getElementById('avatarBox');
+    box.innerHTML=`<img src="${avatarData}">`;
   };
   reader.readAsDataURL(inp.files[0]);
-}
-
-function previewGallery(inp,idx){
-  if(!inp.files[0])return;
-  const reader=new FileReader();
-  reader.onload=function(e){
-    galleryData[idx]=e.target.result;
-    const box=inp.parentElement;
-    box.innerHTML=`<img src="${e.target.result}"><div class="remove" onclick="event.stopPropagation();removeGallery(${idx})">×</div>`;
-  };
-  reader.readAsDataURL(inp.files[0]);
-}
-
-function removeGallery(idx){
-  galleryData[idx]=null;
-  initGallery();
-  galleryData.forEach((d,i)=>{
-    if(d){
-      const box=document.getElementById('galleryGrid').children[i];
-      box.innerHTML=`<img src="${d}"><div class="remove" onclick="event.stopPropagation();removeGallery(${i})">×</div>`;
-    }
-  });
 }
 
 // --- NAVIGATION ---
@@ -391,11 +289,9 @@ function goStep(n){
   currentStep=n;
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
   document.getElementById('step'+n).classList.add('active');
-  document.getElementById('progFill').style.width=(n*20)+'%';
-  document.getElementById('progLabel').textContent='Step '+n+' of 5';
+  document.getElementById('progFill').style.width=(n*25)+'%';
+  document.getElementById('progLabel').textContent=n<4?'Step '+n+' of 4':'Complete';
   window.scrollTo(0,0);
-  if(n===3)initGallery();
-  if(n===5)renderPreview();
 }
 
 function pickRadio(el){
@@ -450,10 +346,6 @@ async function prefillClaim(){
   document.getElementById('fZip').value=data.zip||'';
   document.getElementById('fPhone').value=data.phone||'';
   document.getElementById('fAbout').value=data.about||'';
-  document.getElementById('fWebsite').value=data.website||'';
-  document.getElementById('fInstagram').value=data.instagram?'@'+data.instagram:'';
-  document.getElementById('fFacebook').value=data.facebook||'';
-  document.getElementById('fTiktok').value=data.tiktok?'@'+data.tiktok:'';
   // Services
   (data.services||[]).forEach(svc=>{
     const cb=document.querySelector('#svcChecks input[value="'+svc+'"]');
@@ -468,13 +360,11 @@ async function prefillClaim(){
   });
 }
 
-// --- PREVIEW ---
+// --- FORM DATA ---
 function getFormData(){
   const name=document.getElementById('fName').value.trim();
   const svcs=[];document.querySelectorAll('#svcChecks input:checked').forEach(c=>svcs.push(c.value));
   const priceEl=document.querySelector('#priceRadios input:checked');
-  const ig=document.getElementById('fInstagram').value.trim().replace(/^@/,'');
-  const tk=document.getElementById('fTiktok').value.trim().replace(/^@/,'');
   return{
     name,
     slug:claimData?claimData.slug:name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
@@ -484,53 +374,39 @@ function getFormData(){
     zip:document.getElementById('fZip').value.trim(),
     phone:document.getElementById('fPhone').value.trim(),
     email:userEmail,
-    website:document.getElementById('fWebsite').value.trim(),
     services:svcs,
     price_range:priceEl?priceEl.value:'$$',
     about:document.getElementById('fAbout').value.trim(),
-    instagram:ig,
-    facebook:document.getElementById('fFacebook').value.trim(),
-    tiktok:tk,
     claimed:true
   };
 }
-
-function renderPreview(){
-  const d=getFormData();
-  const ini=d.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-  const av=avatarData?`<img src="${avatarData}">`:`${ini}`;
-  let links='';
-  if(d.website)links+=`<span>🌐 ${d.website.replace(/https?:\/\//,'')}</span>`;
-  if(d.instagram)links+=`<span>📷 @${d.instagram}</span>`;
-  if(d.facebook)links+=`<span>📘 Facebook</span>`;
-  if(d.tiktok)links+=`<span>🎵 @${d.tiktok}</span>`;
-
-  document.getElementById('previewCard').innerHTML=`<div class="preview">
-    <div class="pv-head">
-      <div class="pv-av">${av}</div>
-      <div class="pv-info">
-        <div class="pv-name">${esc(d.name)||'Your Business Name'}</div>
-        <div class="pv-loc">${esc(d.city?d.city+', '+d.state:'')}</div>
-        <div class="pv-price">${d.price_range}</div>
-      </div>
-    </div>
-    ${d.about?`<div class="pv-about">${esc(d.about)}</div>`:''}
-    ${d.services.length?`<div class="pv-tags">${d.services.map(s=>'<span class="pv-tag">'+esc(s)+'</span>').join('')}</div>`:''}
-    ${links?`<div class="pv-links">${links}</div>`:''}
-  </div>`;
-}
-
-function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 // --- PUBLISH ---
 async function publish(){
   const d=getFormData();
   if(!d.name){alert('Business name is required.');goStep(2);return;}
   const btn=document.getElementById('publishBtn');
-  btn.disabled=true;btn.textContent='Publishing...';
+  btn.disabled=true;btn.textContent='Saving...';
 
   const{data:{user}}=await SB.auth.getUser();
-  const row={...d,claimed_by:user?user.id:null};
+  if(!user){alert('Session expired. Please refresh and try again.');btn.disabled=false;btn.textContent='Finish & Save';return;}
+
+  // Upload avatar to Supabase Storage if a file was selected
+  let avatarUrl=null;
+  if(avatarFile){
+    const ext=avatarFile.name.split('.').pop();
+    const path=user.id+'/avatar.'+ext;
+    const{error:upErr}=await SB.storage.from('avatars').upload(path,avatarFile,{upsert:true});
+    if(!upErr){
+      const{data:urlData}=SB.storage.from('avatars').getPublicUrl(path);
+      avatarUrl=urlData.publicUrl;
+    }else{
+      console.error('Avatar upload error:',upErr);
+    }
+  }
+
+  const row={...d,claimed_by:user.id};
+  if(avatarUrl)row.avatar_url=avatarUrl;
   console.log('Publishing listing:',JSON.parse(JSON.stringify(row)));
 
   let result;
@@ -541,17 +417,12 @@ async function publish(){
   }
 
   if(result.error){
-    btn.disabled=false;btn.textContent='Publish Listing';
-    alert('Error publishing: '+result.error.message);
+    btn.disabled=false;btn.textContent='Finish & Save';
+    alert('Error saving: '+result.error.message);
     return;
   }
 
-  document.getElementById('previewCard').style.display='none';
-  document.querySelector('#step5 .actions').style.display='none';
-  document.getElementById('successView').style.display='block';
-  document.getElementById('viewListingBtn').href='/#/'+d.slug;
-  document.getElementById('progFill').style.width='100%';
-  document.getElementById('progLabel').textContent='Complete';
+  goStep(4);
 }
 
 // --- INIT ---
