@@ -366,7 +366,7 @@ function trackBooking(){
   }
 })();
 
-// Owner nav detection
+// Owner nav — swap dropdown menu items, keep Near Me + dropdown button
 (function(){
   if(!CLAIMED_BY_ID)return;
   function setupOwnerNav(){
@@ -375,12 +375,14 @@ function trackBooking(){
     if(!sb)return;
     sb.auth.getUser().then(function(r){
       if(r.data&&r.data.user&&r.data.user.id===CLAIMED_BY_ID){
-        var nr=document.querySelector('.nav-r');
-        if(nr){
-          var fromDash=document.referrer&&document.referrer.indexOf('dashboard')!==-1;
-          nr.innerHTML=(fromDash?'<a href="${basicListingUrl}">View Page</a>':'')+
-            '<a href="/dashboard.html">Edit Page</a>'+
-            '<button class="btn btn-o" onclick="(window._sbc||window.supabase.createClient(\\''+SB_URL+'\\',\\''+SB_KEY+'\\')).auth.signOut().then(function(){location.reload()})">Log Out</button>';
+        var menu=document.querySelector('#navDD .nav-menu');
+        if(menu){
+          menu.innerHTML='<a href="${basicListingUrl}">View Page</a><a href="/dashboard.html">Edit Page</a><div class="nm-sep"></div><a href="#" onclick="event.preventDefault();(window._sbc||window.supabase.createClient(\\''+SB_URL+'\\',\\''+SB_KEY+'\\')).auth.signOut().then(function(){location.reload()})">Sign Out</a>';
+        }
+        // Also update mobile drawer
+        var mob=document.querySelector('.mob-drawer nav');
+        if(mob){
+          mob.innerHTML='<a href="/near-me/">Near Me</a><a href="${basicListingUrl}">View Page</a><a href="/dashboard.html">Edit Page</a><a href="#" onclick="event.preventDefault();(window._sbc||window.supabase.createClient(\\''+SB_URL+'\\',\\''+SB_KEY+'\\')).auth.signOut().then(function(){location.reload()})">Sign Out</a>';
         }
       }
     }).catch(function(){});
@@ -611,8 +613,7 @@ ${getHead(title, desc, canonical, ogImage)}
 .msg-consent{display:flex;align-items:flex-start;gap:.5rem;margin-bottom:1rem;font-size:.75rem;color:var(--t2)}.msg-consent input[type="checkbox"]{margin-top:2px;flex-shrink:0}
 .msg-submit{width:100%;padding:.75rem;background:var(--ac);color:#fff;border-radius:var(--rs);font-weight:600;font-size:.875rem;transition:background .15s;cursor:pointer;border:none;font-family:var(--f)}.msg-submit:hover{background:var(--ac2)}
 .msg-ok{text-align:center;padding:2rem 1rem}.msg-ok h4{font-size:1.125rem;margin-bottom:.5rem;color:var(--ac)}.msg-ok p{color:var(--t2);font-size:.875rem}
-.owner-nav-r a{color:rgba(255,255,255,.9);font-size:.875rem;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.3);text-decoration:none;transition:color .15s}.owner-nav-r a:hover{color:#fff}
-.owner-nav-r button{background:rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:8px;font-size:.8125rem;font-weight:500;cursor:pointer;border:none;font-family:var(--f);text-shadow:none;transition:background .15s}.owner-nav-r button:hover{background:rgba(255,255,255,.35)}
+
 ${getPostsCSS()}</style>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"><\/script>
 </head>
@@ -659,18 +660,13 @@ ${getPostsCSS()}</style>
 <div class="content-area">
   <div class="tabs">
     <button class="tab active" data-tab="posts">Posts</button>
-    <button class="tab" data-tab="portfolio">Portfolio</button>
     <button class="tab" data-tab="about">About</button>
     <button class="tab" data-tab="reviews">Reviews</button>
     <button class="tab" data-tab="location">Location</button>
   </div>
   <div class="tab-content active" id="tab-posts">
-    <div class="posts-toggle"><div class="toggle-group"><button class="toggle-btn active" data-view="grid" onclick="setPostsView('grid')">&#9638;</button><button class="toggle-btn" data-view="feed" onclick="setPostsView('feed')">&#9776;</button></div><span class="posts-count" id="postsCount"></span></div>
+    <div class="posts-toggle"><div class="toggle-group"><button class="toggle-btn active" data-view="feed" onclick="setPostsView('feed')">\uD83D\uDCF0 Posts</button><button class="toggle-btn" data-view="grid" onclick="setPostsView('grid')">\uD83D\uDCF7 Gallery</button></div><span class="posts-count" id="postsCount"></span></div>
     <div id="postsContainer"><div style="text-align:center;padding:3rem;color:#888">Loading posts...</div></div>
-  </div>
-  <div class="tab-content" id="tab-portfolio">
-    <div class="gallery-count">${galleryCountText}</div>
-    <div class="gallery-grid">${galleryHTML}</div>
   </div>
   <div class="tab-content" id="tab-about">
     ${servicesHTML ? `<div class="about-section"><div class="section-label">SERVICES OFFERED</div><div class="services-grid">${servicesHTML}</div></div>` : ''}
@@ -775,7 +771,7 @@ function trackBooking(){
   }
 })();
 
-// Owner nav detection
+// Owner nav — swap dropdown menu items, keep Near Me + dropdown button
 (function(){
   if(!CLAIMED_BY_ID)return;
   function setupOwnerNav(){
@@ -784,13 +780,9 @@ function trackBooking(){
     if(!sb)return;
     sb.auth.getUser().then(function(r){
       if(r.data&&r.data.user&&r.data.user.id===CLAIMED_BY_ID){
-        var nr=document.getElementById('navRight');
-        if(nr){
-          var fromDash=document.referrer&&document.referrer.indexOf('dashboard')!==-1;
-          nr.innerHTML=(fromDash?'<a href="'+LISTING_URL+'">View Page</a>':'')+
-            '<a href="/dashboard.html">Edit Page</a>'+
-            '<button onclick="(window._sbc||window.supabase.createClient(\\''+SB_URL+'\\',\\''+SB_KEY+'\\')).auth.signOut().then(function(){location.reload()})">Log Out</button>';
-          nr.className='nav-r owner-nav-r';
+        var menu=document.querySelector('#navDD .nav-menu');
+        if(menu){
+          menu.innerHTML='<a href="'+LISTING_URL+'">View Page</a><a href="/dashboard.html">Edit Page</a><div class="nm-sep"></div><a href="#" onclick="event.preventDefault();(window._sbc||window.supabase.createClient(\\''+SB_URL+'\\',\\''+SB_KEY+'\\')).auth.signOut().then(function(){location.reload()})">Sign Out</a>';
         }
       }
     }).catch(function(){});
@@ -860,7 +852,7 @@ function getPostsJS(l, ini, pfpUrl, isPromoted) {
   // Shared compose + auth JS
   let js = `
 var CLAIMED_BY='${claimedBy}',IS_PROMOTED=${prom},PROFILE_PHOTO='${pfp}',LISTING_NAME='${name}',LISTING_CITY='${city}',LISTING_STATE='${state}',INI='${ini}';
-var allPosts=[],composeFiles=[],postsView='grid';
+var allPosts=[],composeFiles=[],postsView='feed';
 function initSBC(){if(window._sbc)return window._sbc;if(window.supabase)window._sbc=window.supabase.createClient(SB_URL,SB_KEY);return window._sbc||null;}
 document.addEventListener('DOMContentLoaded',function(){checkOwner();${isPromoted?'loadPosts();':''}});
 async function checkOwner(){if(!CLAIMED_BY)return;var sb=initSBC();if(!sb)return;try{var r=await sb.auth.getUser();if(r.data&&r.data.user&&r.data.user.id===CLAIMED_BY)document.getElementById('createPostBar').style.display='flex';}catch(e){}}
