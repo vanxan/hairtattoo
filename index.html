@@ -802,7 +802,7 @@ function getVisitorId(){var m=document.cookie.match(/ht_visitor=([^;]+)/);if(m)r
 var HT_VISITOR=getVisitorId(),gfLikedSet=new Set();
 
 // ── Explore Posts ──
-let gfPosts=[],gfOffset=0;const GF_LIMIT=20;
+let gfPosts=[],gfOffset=0;const GF_LIMIT=20;let gfProfilePhotos={};
 const GF_SB_URL='https://ingorrzmoudvoknhwjjb.supabase.co';const GF_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc';
 function gfMurl(m){return GF_SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
 function gfRelTime(d){const s=Math.floor((Date.now()-new Date(d).getTime())/1000);if(s<60)return 'just now';const m=Math.floor(s/60);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<7)return dy+'d ago';const w=Math.floor(dy/7);if(w<5)return w+'w ago';return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});}
@@ -818,6 +818,10 @@ async function loadExplorePosts(append){
     if(!append)gfPosts=[];
     gfPosts=gfPosts.concat(posts);
     gfOffset+=posts.length;
+    // Fetch profile photos for listing avatars
+    const listingIds=[...new Set(gfPosts.map(p=>p.listing_id).filter(Boolean))];
+    const needPfp=listingIds.filter(id=>!gfProfilePhotos[id]);
+    if(needPfp.length){try{const pr=await fetch(GF_SB_URL+'/rest/v1/media?listing_id=in.('+needPfp.join(',')+')'+'&is_profile=eq.true&select=listing_id,storage_path,is_placeholder',{headers:{'apikey':GF_SB_KEY,'Authorization':'Bearer '+GF_SB_KEY}});const pfps=await pr.json()||[];pfps.forEach(m=>{gfProfilePhotos[m.listing_id]=gfMurl(m);});}catch(e){}}
     // Fetch visitor likes for loaded posts
     const ids=gfPosts.map(p=>p.id);
     if(ids.length){try{const lr=await fetch(GF_SB_URL+'/rest/v1/post_likes?visitor_id=eq.'+HT_VISITOR+'&post_id=in.('+ids.join(',')+')'+'&select=post_id',{headers:{'apikey':GF_SB_KEY,'Authorization':'Bearer '+GF_SB_KEY}});const likes=await lr.json()||[];likes.forEach(l=>gfLikedSet.add(l.post_id));}catch(e){}}
@@ -834,8 +838,9 @@ function renderGfPost(p){
   const cs=gfCitySlug(l.city,l.state);
   const href='/near-me/'+cs+'/'+l.slug;
   const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  const pfpUrl=gfProfilePhotos[p.listing_id];
   let h='<div class="gf-pc"><a class="gf-hd" href="'+href+'">';
-  h+='<div class="gf-av" style="'+avR+'"><span style="font-family:var(--se);font-size:.875rem;color:var(--ac)">'+ini+'</span></div>';
+  h+='<div class="gf-av" style="'+avR+'">'+(pfpUrl?'<img src="'+pfpUrl+'" alt="'+gfEsc(l.name)+'">':'<span style="font-family:var(--se);font-size:.875rem;color:var(--ac)">'+ini+'</span>')+'</div>';
   h+='<div class="gf-meta"><div class="gf-name">'+gfEsc(l.name)+(isProm?' \u2B50':'')+'</div><div class="gf-loc">'+gfEsc(l.city)+', '+gfEsc(l.state)+'</div></div>';
   h+='<span class="gf-time">'+gfRelTime(p.created_at)+'</span></a>';
   if(media.length)h+=renderGfMedia(media);
