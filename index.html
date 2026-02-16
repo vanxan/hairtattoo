@@ -137,16 +137,19 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .msg-ok h4{font-size:1.125rem;margin-bottom:.5rem;color:var(--ac)}
 .msg-ok p{color:var(--t2);font-size:.875rem;margin-bottom:1rem}
 
-/* MASONRY FEED */
-.masonry{columns:4;column-gap:6px;max-width:1200px;margin:0 auto;padding:0 1rem 3rem}
-.m-item{break-inside:avoid;margin-bottom:6px;border-radius:8px;overflow:hidden;position:relative;cursor:pointer}
-.m-item:hover .m-ov{opacity:1}
-.m-img{width:100%;display:block;background:linear-gradient(135deg,var(--al),#c8dbd0);min-height:160px;object-fit:cover}
-.m-ov{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.65));opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:.75rem}
-.m-ov-name{color:#fff;font-weight:700;font-size:.8125rem;line-height:1.3}
-.m-ov-loc{color:rgba(255,255,255,.75);font-size:.6875rem}
-.m-dots{position:absolute;bottom:.5rem;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:1}
-.m-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5)}.m-dot.on{background:#fff}
+/* EXPLORE FEED */
+.explore-wrap{max-width:700px;margin:0 auto;padding:0 1rem 3rem}
+.explore-toggle{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.explore-toggle .toggle-group{display:flex;background:#F0EFEB;border-radius:10px;padding:3px}
+.explore-toggle .toggle-btn{padding:6px 12px;border:none;background:none;cursor:pointer;border-radius:8px;font-size:.875rem;color:#888;font-family:var(--f);transition:all .2s}
+.explore-toggle .toggle-btn.active{background:#fff;color:var(--ac);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.explore-count{color:#888;font-size:.8125rem}
+.ex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.ex-grid-item{aspect-ratio:1;overflow:hidden;cursor:pointer;position:relative;background:var(--al)}
+.ex-grid-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;display:block}
+.ex-grid-item:hover img{transform:scale(1.05)}
+.ex-grid-txt{background:#F5F4F0;display:flex;align-items:center;justify-content:center;padding:1rem;text-align:center}
+.ex-grid-txt p{font-size:.8125rem;color:#444;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* DETAIL PAGE */
 .detail-page{display:none;max-width:720px;margin:0 auto;padding:1rem 1rem 3rem}
@@ -216,11 +219,10 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .skel{background:linear-gradient(90deg,var(--bd) 25%,#f0eeeb 50%,var(--bd) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r);height:220px}
-.global-feed-section{max-width:700px;margin:3rem auto;padding:0 1rem}.gf-heading{font-family:var(--se);font-size:1.25rem;font-weight:400;margin-bottom:.25rem}.gf-sub{color:var(--t2);font-size:.875rem;margin-bottom:1.5rem}.gf-feed{max-width:640px}.gf-pc{background:var(--card);border:1px solid var(--bd);border-radius:16px;margin-bottom:1.25rem;overflow:hidden}.gf-hd{display:flex;align-items:center;gap:10px;padding:14px 16px;text-decoration:none;color:inherit}.gf-av{width:36px;height:36px;overflow:hidden;background:var(--al);display:flex;align-items:center;justify-content:center;flex-shrink:0}.gf-av img{width:100%;height:100%;object-fit:cover}.gf-meta{flex:1;min-width:0}.gf-name{font-weight:600;font-size:.875rem;display:flex;align-items:center;gap:6px}.gf-loc{font-size:.75rem;color:var(--t3)}.gf-time{font-size:.75rem;color:#999;flex-shrink:0}.gf-media{position:relative}.gf-mg{display:grid;gap:3px}.gf-mg img{width:100%;height:100%;object-fit:cover;display:block}.gf-over{position:absolute;bottom:0;right:0;width:calc(50% - 1.5px);height:calc(50% - 1.5px);background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.75rem;font-weight:700}.gf-acts{display:flex;align-items:center;gap:4px;padding:8px 16px}.gf-act{background:none;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--t3);font-family:var(--f);display:inline-flex;align-items:center;gap:4px;font-size:.875rem}.gf-act:hover{background:var(--al)}.gf-cap{padding:4px 16px 14px;font-size:.875rem;line-height:1.5}.gf-cap b{font-weight:600}.gf-cap .gf-more{color:var(--ac);cursor:pointer;font-size:.8125rem}.gf-txt{padding:20px 16px;font-size:1rem;line-height:1.65;color:var(--t2)}.gf-load{display:inline-block;padding:.625rem 1.5rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;color:var(--t2);cursor:pointer;background:var(--card);font-family:var(--f)}.gf-load:hover{border-color:var(--ac);color:var(--ac)}.gf-empty{text-align:center;padding:2rem;color:var(--t3)}
+.gf-pc{background:var(--card);border:1px solid var(--bd);border-radius:16px;margin-bottom:1.25rem;overflow:hidden}.gf-hd{display:flex;align-items:center;gap:10px;padding:14px 16px;text-decoration:none;color:inherit}.gf-av{width:36px;height:36px;overflow:hidden;background:var(--al);display:flex;align-items:center;justify-content:center;flex-shrink:0}.gf-av img{width:100%;height:100%;object-fit:cover}.gf-meta{flex:1;min-width:0}.gf-name{font-weight:600;font-size:.875rem;display:flex;align-items:center;gap:6px}.gf-loc{font-size:.75rem;color:var(--t3)}.gf-time{font-size:.75rem;color:#999;flex-shrink:0}.gf-media{position:relative}.gf-mg{display:grid;gap:3px}.gf-mg img{width:100%;height:100%;object-fit:cover;display:block}.gf-over{position:absolute;bottom:0;right:0;width:calc(50% - 1.5px);height:calc(50% - 1.5px);background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.75rem;font-weight:700}.gf-acts{display:flex;align-items:center;gap:4px;padding:8px 16px}.gf-act{background:none;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--t3);font-family:var(--f);display:inline-flex;align-items:center;gap:4px;font-size:.875rem}.gf-act:hover{background:var(--al)}.gf-cap{padding:4px 16px 14px;font-size:.875rem;line-height:1.5}.gf-cap b{font-weight:600}.gf-cap .gf-more{color:var(--ac);cursor:pointer;font-size:.8125rem}.gf-txt{padding:20px 16px;font-size:1rem;line-height:1.65;color:var(--t2)}.gf-load{display:inline-block;padding:.625rem 1.5rem;border:1px solid var(--bd);border-radius:var(--rs);font-size:.875rem;color:var(--t2);cursor:pointer;background:var(--card);font-family:var(--f)}.gf-load:hover{border-color:var(--ac);color:var(--ac)}.gf-empty{text-align:center;padding:2rem;color:var(--t3)}
 
 @media(max-width:768px){
-  .masonry{columns:2;column-gap:4px}
-  .m-item{margin-bottom:4px}
+  .ex-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
   .hero h1{font-size:1.75rem}
@@ -228,8 +230,6 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
   .s-loc{border-left:0;border-top:1px solid var(--bd);width:100%}
   .s-btn{width:calc(100% - 8px)}
   .grid{grid-template-columns:1fr}
-  .masonry{columns:2;column-gap:3px}
-  .m-item{margin-bottom:3px;border-radius:4px}
   .nav-r .hm,.nav-dd{display:none}
   .hamburger{display:flex}
   .filters{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
@@ -330,16 +330,18 @@ footer p{max-width:500px;margin:0 auto .75rem;line-height:1.6}
     <div class="pager" id="pager"></div>
   </div>
   <div id="feedView" style="display:none">
-    <div class="masonry" id="masonryGrid"></div>
+    <div class="explore-wrap">
+      <div class="explore-toggle">
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-view="feed" onclick="setExploreView('feed')">📰 Posts</button>
+          <button class="toggle-btn" data-view="gallery" onclick="setExploreView('gallery')">📷 Gallery</button>
+        </div>
+        <span class="explore-count" id="exploreCount"></span>
+      </div>
+      <div id="exploreContainer"><div style="text-align:center;padding:2rem;color:#888">Loading posts...</div></div>
+      <div style="text-align:center;margin-top:1rem" id="exploreLoadMore"></div>
+    </div>
   </div>
-</div>
-
-<!-- GLOBAL FEED -->
-<div class="global-feed-section" id="globalFeedSection">
-  <h2 class="gf-heading">Latest from SMP Artists</h2>
-  <p class="gf-sub">Fresh work and updates from professionals across the country</p>
-  <div class="gf-feed" id="globalFeed"><div style="text-align:center;padding:2rem;color:#888">Loading posts...</div></div>
-  <div style="text-align:center;margin-top:1rem" id="gfLoadMore"></div>
 </div>
 
 <!-- DETAIL PAGE (hash routed) -->
@@ -662,9 +664,6 @@ function openLb(listingId,idx){
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function openLbFeed(listingId){
-  openLb(listingId,0);
-}
 function renderLb(){
   const item=lbItems[lbIdx];if(!item)return;
   const imgEl=document.getElementById('lbImg');
@@ -681,41 +680,51 @@ function renderLb(){
 function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
 function lbNav(dir){lbIdx=(lbIdx+dir+lbItems.length)%lbItems.length;renderLb();}
 
-// === MASONRY FEED ===
+// === EXPLORE TAB ===
+let exploreView='feed';
 function showTab(t){
   currentTab=t;
   document.getElementById('tabDir').classList.toggle('on',t==='directory');
   document.getElementById('tabFeed').classList.toggle('on',t==='feed');
   document.getElementById('dirView').style.display=t==='directory'?'':'none';
   document.getElementById('feedView').style.display=t==='feed'?'':'none';
-  if(t==='feed')renderMasonry();
+  if(t==='feed'&&!gfPosts.length)loadExplorePosts(false);
 }
 
-function renderMasonry(){
-  const items=L.filter(l=>l.about.length>30).sort(()=>Math.random()-.5).slice(0,80);
-  const g=document.getElementById('masonryGrid');
-  const colors=['#c8dbd0','#b8d0c2','#a8c5b4','#d4e4d9','#bcd4c6','#96b8a5','#aecabb','#d0ddd5','#c2d6cc','#b0c9b9'];
-  const heights=[180,220,260,200,300,240,280,190,250,210,270,230];
-  const labels=['Before & After','Hairline Design','Density Session','Scar Camouflage','Fresh Results','Client Transformation','Natural Finish','SMP Artistry'];
+function setExploreView(v){
+  exploreView=v;
+  document.querySelectorAll('.explore-toggle .toggle-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  renderExplore();
+}
 
-  g.innerHTML=items.map((l,i)=>{
-    const ini=l.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-    const h=heights[i%heights.length]+(i%3)*20;
-    const c=colors[i%colors.length];
-    const mg=l._media&&l._media[0];
-    const hasMulti=l._media&&l._media.length>1;
-    const dots=hasMulti?`<div class="m-dots">${l._media.slice(0,6).map((_,j)=>'<span class="m-dot'+(j===0?' on':'')+'"></span>').join('')}</div>`:'';
-    const imgHTML=mg?`<img class="m-img" src="${mediaUrl(mg.storage_path)}" loading="lazy" width="300" height="${h}" alt="${l.name}" style="height:100%;width:100%;object-fit:cover">`:`<div class="m-img" style="height:100%;background:linear-gradient(${135+i*15}deg,${c},${colors[(i+3)%colors.length]});display:flex;align-items:center;justify-content:center;flex-direction:column"><span style="font-family:var(--se);font-size:2rem;color:var(--ac);opacity:.4">${ini}</span></div>`;
-    return `<div class="m-item" onclick="openLbFeed(${l.id})" style="height:${h}px">
-      ${imgHTML}
-      ${mg&&mg.is_placeholder?'<span class="c-pill" style="position:absolute;bottom:2.5rem;left:.5rem">📷 Sample photo</span>':''}
-      ${dots}
-      <div class="m-ov">
-        <div class="m-ov-name">${l.name}</div>
-        <div class="m-ov-loc">${l.city}, ${l.state}</div>
-      </div>
-    </div>`;
-  }).join('');
+function renderExplore(){
+  const c=document.getElementById('exploreContainer');
+  const ct=document.getElementById('exploreCount');
+  if(ct)ct.textContent=gfPosts.length+' post'+(gfPosts.length!==1?'s':'');
+  if(!gfPosts.length){c.innerHTML='<div class="gf-empty">No posts yet \u2014 SMP artists, <a href="/for-professionals">share your latest work!</a></div>';return;}
+  exploreView==='gallery'?renderExploreGrid(c):renderExploreFeed(c);
+}
+
+function renderExploreFeed(c){
+  let h='';
+  gfPosts.forEach(p=>{h+=renderGfPost(p);});
+  c.innerHTML=h||'<div class="gf-empty">No posts yet</div>';
+}
+
+function renderExploreGrid(c){
+  let h='<div class="ex-grid">';
+  gfPosts.forEach((p,i)=>{
+    const media=(p.media||[]).filter(m=>!m.is_profile&&!m.is_cover);
+    if(media.length){
+      media.forEach(m=>{
+        h+='<div class="ex-grid-item"><img src="'+gfMurl(m)+'" loading="lazy" alt=""></div>';
+      });
+    } else if(p.body){
+      h+='<div class="ex-grid-item ex-grid-txt"><p>'+gfEsc(p.body)+'</p></div>';
+    }
+  });
+  h+='</div>';
+  c.innerHTML=h;
 }
 
 // === SIGNUP ===
@@ -788,28 +797,26 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-// ── Global Feed ──
-let gfPosts=[],gfOffset=0;const GF_LIMIT=10;
+// ── Explore Posts ──
+let gfPosts=[],gfOffset=0;const GF_LIMIT=20;
 const GF_SB_URL='https://ingorrzmoudvoknhwjjb.supabase.co';const GF_SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZ29ycnptb3Vkdm9rbmh3ampiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NDY1NTIsImV4cCI6MjA4NjIyMjU1Mn0.rpcraVuvgRWX1NJtZyUQAzDp4rZhw4cpRm4dRx9yxJc';
 function gfMurl(m){return GF_SB_URL+'/storage/v1/object/public/'+(m.is_placeholder?'placeholders':'media')+'/'+m.storage_path;}
 function gfRelTime(d){const s=Math.floor((Date.now()-new Date(d).getTime())/1000);if(s<60)return 'just now';const m=Math.floor(s/60);if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<7)return dy+'d ago';const w=Math.floor(dy/7);if(w<5)return w+'w ago';return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});}
 function gfEsc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
 function gfCitySlug(c,st){return c.toLowerCase().replace(/\s+/g,'-')+'-'+st.toLowerCase();}
 
-async function loadGlobalFeed(append){
-  const feed=document.getElementById('globalFeed'),lm=document.getElementById('gfLoadMore');
-  if(!append){feed.innerHTML='<div style="text-align:center;padding:2rem;color:#888">Loading posts...</div>';}
+async function loadExplorePosts(append){
+  const lm=document.getElementById('exploreLoadMore');
+  if(!append){document.getElementById('exploreContainer').innerHTML='<div style="text-align:center;padding:2rem;color:#888">Loading posts...</div>';}
   try{
     const res=await fetch(GF_SB_URL+'/rest/v1/posts?order=created_at.desc&limit='+GF_LIMIT+'&offset='+gfOffset+'&select=*,listings(id,name,slug,city,state,promoted,promoted_until),media(*)',{headers:{'apikey':GF_SB_KEY,'Authorization':'Bearer '+GF_SB_KEY}});
     const posts=await res.json()||[];
     if(!append)gfPosts=[];
     gfPosts=gfPosts.concat(posts);
-    if(!gfPosts.length){feed.innerHTML='<div class="gf-empty">No posts yet \u2014 SMP artists, <a href="/for-professionals">share your latest work!</a></div>';lm.innerHTML='';return;}
-    if(!append)feed.innerHTML='';
-    posts.forEach(p=>feed.insertAdjacentHTML('beforeend',renderGfPost(p)));
     gfOffset+=posts.length;
-    lm.innerHTML=posts.length>=GF_LIMIT?'<button class="gf-load" onclick="loadGlobalFeed(true)">Load More</button>':'';
-  }catch(e){if(!append)feed.innerHTML='<div class="gf-empty">Could not load posts</div>';}
+    renderExplore();
+    lm.innerHTML=posts.length>=GF_LIMIT?'<button class="gf-load" onclick="loadExplorePosts(true)">Load More</button>':'';
+  }catch(e){document.getElementById('exploreContainer').innerHTML='<div class="gf-empty">Could not load posts</div>';}
 }
 
 function renderGfPost(p){
@@ -839,8 +846,6 @@ function renderGfMedia(media){
   else{h+='<div class="gf-mg" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1">';for(let i=0;i<Math.min(4,n);i++){h+='<div style="position:relative"><img src="'+gfMurl(media[i])+'" loading="lazy" style="height:100%">';if(i===3&&n>4)h+='<div class="gf-over">+'+(n-3)+'</div>';h+='</div>';}h+='</div>';}
   h+='</div>';return h;
 }
-// Load global feed on page load
-document.addEventListener('DOMContentLoaded',()=>loadGlobalFeed(false));
 </script>
 </body>
 </html>
