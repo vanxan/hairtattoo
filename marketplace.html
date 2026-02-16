@@ -131,6 +131,8 @@ input,textarea,select{font-family:var(--f);font-size:1rem}
 .mk-m-ext{flex:1;padding:14px;background:#4A6CF7;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;font-family:var(--f);transition:background .15s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .mk-m-ext:hover{background:#3B5DE7;color:#fff}
 .mk-m-ext-note{font-size:.6875rem;color:var(--t3);text-align:center;margin-top:6px}
+.mk-m-page-link{display:block;text-align:center;font-size:.8125rem;font-weight:500;color:var(--ac);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd);transition:color .15s}
+.mk-m-page-link:hover{color:var(--ac2)}
 
 /* ORDER FORM */
 .mk-form{padding:1.5rem}
@@ -383,6 +385,10 @@ function openModal(productId){
   if(!isCurated&&p.sell_mode==='external'&&p.external_url){
     h+='<div class="mk-m-ext-note">You\'ll be redirected to the seller\'s store</div>';
   }
+
+  // Link to dedicated product page
+  var pSlug=p.slug||p.id;
+  h+='<a href="/marketplace/'+pSlug+'" class="mk-m-page-link">View full product page →</a>';
 
   h+='</div>';
   document.getElementById('mkModal').innerHTML=h;
