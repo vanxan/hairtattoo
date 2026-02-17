@@ -645,7 +645,7 @@ ${products.length ? getShopCSS() : ''}</style>
       <a href="/" class="logo">Hair<span>Tattoo</span></a>
       <div class="nav-r" id="navRight">
         <a href="/near-me/">Near Me</a>
-        <a href="/marketplace.html">Marketplace</a>
+        <!-- marketplace hidden -->
         <div class="nav-dd" id="navDD">
           <button class="nav-dd-btn" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
           <div class="nav-menu">

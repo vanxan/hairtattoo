@@ -1,3 +1,12 @@
+/*
+ * MARKETPLACE HIDDEN — product detail pages redirect to homepage.
+ * To re-enable, restore the original handler below this redirect block.
+ */
+export async function onRequestGet(context) {
+  return Response.redirect('https://hairtattoo.com/', 301);
+}
+
+/* ── Original marketplace product page handler (preserved for re-enabling) ──
 import { getHead, getNav, getFooter, esc, citySlug } from '../../templates/shared.js';
 
 const SB_URL = 'https://ingorrzmoudvoknhwjjb.supabase.co';
@@ -12,7 +21,7 @@ function affUrl(url) {
   } catch (e) { return url; }
 }
 
-export async function onRequestGet(context) {
+async function onRequestGet_ORIGINAL(context) {
   try {
     const { params } = context;
     const slug = params.slug;
@@ -184,3 +193,4 @@ ${getFooter()}
     return new Response('Error: ' + err.message, { status: 500, headers: { 'Content-Type': 'text/plain' } });
   }
 }
+── End of original marketplace handler ── */

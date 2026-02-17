@@ -253,7 +253,7 @@ function getNav() {
   <a href="/" class="logo" title="Hair Tattoo - SMP Artist Directory">Hair<span>Tattoo</span></a>
   <div class="nav-r">
     <a href="/near-me/" class="hm" title="Find SMP artists near you">Near Me</a>
-    <a href="/marketplace.html" class="hm" title="SMP Marketplace">Marketplace</a>
+    <!-- marketplace hidden: <a href="/marketplace.html" class="hm" title="SMP Marketplace">Marketplace</a> -->
     <div class="nav-dd" id="navDD">
       <button class="nav-dd-btn" title="Tools and resources for SMP professionals" onclick="document.getElementById('navDD').classList.toggle('open')">For Pros <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="nav-menu">
@@ -271,7 +271,7 @@ function getNav() {
     <span class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">&times;</span>
     <nav>
       <a href="/near-me/" title="Find SMP artists near you">Near Me</a>
-      <a href="/marketplace.html" title="SMP Marketplace">Marketplace</a>
+      <!-- marketplace hidden: <a href="/marketplace.html" title="SMP Marketplace">Marketplace</a> -->
       <a href="/for-professionals" title="Why SMP artists choose Hair Tattoo">Why Hair Tattoo?</a>
       <a href="/signup.html?mode=signin" title="Sign in to your Hair Tattoo dashboard">Sign In</a>
       <a href="/signup.html" title="Create your free SMP artist profile">Create Your Page</a>
@@ -297,7 +297,7 @@ function getFooter() {
   </div>
   <p style="font-size:.75rem;margin-top:1rem">\u00a9 2025 Hair Tattoo. All rights reserved.</p>
   <div class="f-links">
-    <a href="/for-professionals" title="Tools and resources for SMP professionals">For Professionals</a><a href="/marketplace.html" title="SMP Marketplace">Marketplace</a><a href="/privacy" title="Hair Tattoo Privacy Policy">Privacy</a><a href="/terms" title="Hair Tattoo Terms of Service">Terms</a><a href="/contact" title="Contact Hair Tattoo">Contact</a>
+    <a href="/for-professionals" title="Tools and resources for SMP professionals">For Professionals</a><!-- marketplace hidden: <a href="/marketplace.html" title="SMP Marketplace">Marketplace</a> --><a href="/privacy" title="Hair Tattoo Privacy Policy">Privacy</a><a href="/terms" title="Hair Tattoo Terms of Service">Terms</a><a href="/contact" title="Contact Hair Tattoo">Contact</a>
   </div>
 </footer>`;
 }
