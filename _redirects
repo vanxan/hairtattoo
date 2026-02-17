@@ -1,0 +1,3 @@
+# Redirect malformed city pages to the near-me directory
+/near-me/matthews-/ /near-me/ 301
+/near-me/matthews-  /near-me/ 301

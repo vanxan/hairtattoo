@@ -617,7 +617,8 @@ function toggleMenu(id,btnEl){
     <button class="act-item" onclick="openEdit(${id})">Edit</button>
     <button class="act-item" onclick="toggleHide(${id})">${st==='hidden'?'Unhide':'Hide'}</button>
     <button class="act-item" onclick="togglePromote(${id})">${l.promoted?'Unpromote':'Promote'}</button>
-    <button class="act-item danger" onclick="confirmDelete(${id})">Delete</button>`;
+    <button class="act-item" onclick="confirmDelete(${id},'archive')">Archive</button>
+    <button class="act-item danger" onclick="confirmDelete(${id},'permanent')">Delete Permanently</button>`;
 
   // Position menu relative to button
   const rect=btnEl.getBoundingClientRect();
@@ -657,16 +658,29 @@ async function togglePromote(id){
   renderListings();
 }
 
-// ── DELETE (ARCHIVE) ──
+// ── DELETE (ARCHIVE / PERMANENT) ──
 let deleteId=null;
-function confirmDelete(id){
+function confirmDelete(id,mode){
   closeMenus();
   const l=allListings.find(x=>x.id===id);if(!l)return;
   deleteId=id;
-  document.getElementById('confirmTitle').textContent='Delete "'+l.name+'"?';
+  if(mode==='permanent'){
+    document.getElementById('confirmTitle').textContent='Permanently delete "'+l.name+'"?';
+    document.getElementById('confirmText').textContent='This will permanently remove this listing and all related data (views, leads, reviews). This cannot be undone.';
+    document.getElementById('confirmAction').textContent='Delete Forever';
+  } else {
+    document.getElementById('confirmTitle').textContent='Archive "'+l.name+'"?';
+    document.getElementById('confirmText').textContent='This will archive the listing. It can be restored later.';
+    document.getElementById('confirmAction').textContent='Archive';
+  }
   document.getElementById('confirmOverlay').classList.add('open');
   document.getElementById('confirmAction').onclick=async function(){
-    await SB.from('listings').update({status:'archived'}).eq('id',id);
+    if(mode==='permanent'){
+      const{error}=await SB.rpc('admin_delete_listing',{target_id:id});
+      if(error){alert('Delete failed: '+error.message);closeConfirm();return;}
+    } else {
+      await SB.from('listings').update({status:'archived'}).eq('id',id);
+    }
     allListings=allListings.filter(x=>x.id!==id);
     document.getElementById('sTotal').textContent=allListings.length;
     document.getElementById('cntListings').textContent=allListings.length;
@@ -832,7 +846,7 @@ function renderSignups(){
       <td style="white-space:nowrap">${isPending
         ?`<button class="su-btn su-approve" onclick="approveSignup(${i})">Approve</button> <button class="su-btn su-reject" onclick="rejectSignup(${i})">Reject</button>`
         :`<button class="su-btn su-view" onclick="viewSignup(${i})">View</button>`
-      }</td>
+      } <button class="su-btn su-reject" onclick="deleteSignup(${i})" title="Delete permanently">🗑</button></td>
     </tr>`;
   }).join('');
 }
@@ -872,6 +886,16 @@ async function rejectSignup(idx){
   const{error}=await SB.from('signups').update({status:'rejected'}).eq('id',s.id);
   if(error){alert('Error: '+error.message);return;}
   s.status='rejected';
+  renderSignups();
+}
+
+async function deleteSignup(idx){
+  const s=allSignups[idx];if(!s)return;
+  if(!confirm('Permanently delete signup "'+s.business_name+'"? This cannot be undone.'))return;
+  const{error}=await SB.rpc('admin_delete_signup',{target_id:s.id});
+  if(error){alert('Delete failed: '+error.message);return;}
+  allSignups.splice(idx,1);
+  document.getElementById('cntSignups').textContent=allSignups.length;
   renderSignups();
 }
 
